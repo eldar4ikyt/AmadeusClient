@@ -3,6 +3,7 @@ package it.amadeus.client.mods;
 import it.amadeus.client.clickgui.util.values.valuetypes.ModeValue;
 import it.amadeus.client.clickgui.util.values.valuetypes.NumberValue;
 import it.amadeus.client.event.Event;
+import it.amadeus.client.event.events.MoveFlying;
 import it.amadeus.client.event.events.PreMotion;
 import it.amadeus.client.event.events.Update;
 import it.amadeus.client.module.Module;
@@ -64,11 +65,13 @@ public class Flight extends Module {
                 MotionUtil.setMotion(speed.getValue().floatValue());
             }
         }
-        if (event instanceof PreMotion) {
-            double offset = -.015625f;
+        if(event instanceof MoveFlying){
             if (this.mode.getValue().equals(Mode.DAMAGE)) {
-                ((PreMotion) event).setYaw(0);
-                ((PreMotion) event).setPitch(0);
+                MotionUtil.legitStrafeMovement((MoveFlying) event, mc.thePlayer.rotationYaw);
+            }
+        }
+        if(event instanceof  PreMotion){
+            if (this.mode.getValue().equals(Mode.DAMAGE)) {
                 mc.thePlayer.motionX = 0;
                 mc.thePlayer.motionY = 0;
                 mc.thePlayer.motionZ = 0;
@@ -83,7 +86,7 @@ public class Flight extends Module {
                 } else {
                     motion = 0.15f;
                 }
-                MotionUtil.strafe(motion, mc.thePlayer.rotationYaw, true);
+                MotionUtil.strafe(motion, mc.thePlayer.rotationYaw, false);
             }
         }
     }

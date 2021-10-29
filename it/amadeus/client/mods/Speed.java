@@ -36,11 +36,7 @@ public class Speed extends Module {
     public void onEvent(Event event) {
         if (event instanceof Moving) {
             if (this.mode.getValue().equals(Mode.BLATANT)) {
-                double offset = -.015625f;
-                if (mc.thePlayer.isMovingOnGround() && !mc.thePlayer.isJumping && !mc.getAmadeus().getModManager().getModuleByClass(Flight.class).isToggled()) {
-                    ((Moving) event).setY(mc.thePlayer.posY = offset);
-                    MotionUtil.setMotion(1.3f);
-                }
+                MotionUtil.setMotion(1f);
             }
         }
         if (event instanceof PreMotion) {

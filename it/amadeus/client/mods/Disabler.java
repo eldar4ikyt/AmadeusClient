@@ -19,6 +19,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S2APacketParticles;
+import net.optifine.util.MathUtils;
+import org.apache.commons.lang3.RandomUtils;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -30,7 +32,7 @@ public class Disabler extends Module {
     private final ModeValue<Mode> mode = new ModeValue<>("Mode", Mode.BLOCKSMC, this);
     private final ModeValue<PACKET_TYPE> latestVerusType = new ModeValue<>("Packet Type", PACKET_TYPE.EXTRA, this);
     private final NumberValue<Double> delay = new NumberValue<>("Delay", 68.62D, 1.0D, 145.0D, this);
-    private final NumberValue<Float> blocksmc_spoof = new NumberValue<>("BlocksMC Ping", 307F, 1.0F, 750.0F, this);
+    private final NumberValue<Float> pingSpoof = new NumberValue<>("PingSpoof", 307F, 1.0F, 750.0F, this);
     private final BooleanValue<Boolean> latestVerusInventoryFix = new BooleanValue<>("Fix Inventory", true, this);
     private final BooleanValue<Boolean> ground_check = new BooleanValue<>("Ground Check", true, this);
    // private final BooleanValue<Boolean> packetinputnuke = new BooleanValue<>("Dev Fix", false, this);
@@ -90,12 +92,24 @@ public class Disabler extends Module {
                         }
                         timer.reset();
                     }*/
-                    if (this.timer.delay(blocksmc_spoof.getValue())) {
-                        if (!packetQueue.isEmpty()) {
-                            sendDirect(this.packetQueue.poll());
-                        }
-                        timer.reset();
+
+                    if(packetQueue.size() > 247){
+                        sendDirect(packetQueue.poll());
+                        packetQueue.clear();
                     }
+
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(9000);
+                            if (!packetQueue.isEmpty() && !(mc.thePlayer.movementInput.moveForward != 0)){
+                                if(packetQueue.size() >= 245){//245, 125
+                                    ChatUtil.print(""+packetQueue.size());
+                                    sendDirect(packetQueue.poll());
+                                }
+                            }
+                        } catch (Exception ignored) {
+                        }
+                    }).start();
                   /*  if (mc.getAmadeus().getModManager().getModuleByClass(Flight.class).isToggled()&& !doHittingProcess()&& packetinputnuke.getValue()) {
                         for (int i = 0; i < packetinputdelay.getValue().intValue(); i++) {
                             mc.thePlayer.sendQueue.addToSendQueue(new C0CPacketInput());
@@ -106,7 +120,7 @@ public class Disabler extends Module {
                     }
                     break;
                 case VERUS:
-                    if (this.timer.delay(300)) {
+                    if (this.timer.delay(pingSpoof.getValue())) {
                         if (!packetQueue.isEmpty()) {
                             sendDirect(this.packetQueue.poll());
                         }
@@ -138,7 +152,7 @@ public class Disabler extends Module {
                     }
                     break;
                 case VERUS:
-                    if (mc.thePlayer == null || mc.thePlayer.ticksExisted < 50) {
+                    if (mc.theWorld == null||mc.thePlayer == null || mc.thePlayer.ticksExisted < 50) {
                         return;
                     }
                     if (packet instanceof C00PacketKeepAlive) {
@@ -186,12 +200,9 @@ public class Disabler extends Module {
                 case BLOCKSMC:
                     if (packet instanceof C00PacketKeepAlive) {//reach by ping manipulation?
                         C00PacketKeepAlive packetKeepAlive = (C00PacketKeepAlive) packet;
-                        if(Killaura.getCurrentTarget() != null){
-                            packetKeepAlive.setKey(getKey() *  4);
-                            if (mc.thePlayer.ticksExisted % 5 == 0) { //5
+                       /* for (int i = 0; i < 4; i++) { //5
                                 this.packetQueue.add(packetKeepAlive);
-                            }
-                        }
+                        }*/
                         ((PacketSend) event).setCancelled(true);
                     }
                     if (packet instanceof C0FPacketConfirmTransaction) {
@@ -200,7 +211,7 @@ public class Disabler extends Module {
                         if (block && CONFIRM.getUid() > 0 && CONFIRM.getUid() < 100) {
                             return;
                         }
-                        if (mc.thePlayer.ticksExisted % 5 == 0) {
+                        for (int i = 0; i < 4; i++) {
                             this.packetQueue.add(CONFIRM);
                         }
                         ((PacketSend) event).setCancelled(true);

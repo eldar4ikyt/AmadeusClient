@@ -2,6 +2,7 @@ package it.amadeus.client.utilities;
 
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import it.amadeus.client.event.events.MoveFlying;
 import it.amadeus.client.event.events.Moving;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -12,6 +13,7 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0CPacketInput;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovementInput;
 
 public final class MotionUtil {
@@ -50,6 +52,32 @@ public final class MotionUtil {
             rotationYaw += 90F * forward;
 
         return Math.toRadians(rotationYaw);
+    }
+
+    public static void legitStrafeMovement(MoveFlying event, float yaw) {
+        float strafe = event.getStrafe();
+        float friction = event.getFriction();
+        float forward = event.getForward();
+
+        float speed = strafe * strafe + forward * forward;
+
+        if (speed >= 1.0E-4F) {
+            speed = MathHelper.sqrt_float(speed);
+
+            if (speed < 1.0F) speed = 1.0F;
+
+            speed = friction / speed;
+            strafe *= speed;
+            forward *= speed;
+
+            float yawSin = MathHelper.sin((float) (yaw * Math.PI / 180F));
+            float yawCos = MathHelper.cos((float) (yaw * Math.PI / 180F));
+
+            mc.thePlayer.motionX += strafe * yawCos - forward * yawSin;
+            mc.thePlayer.motionZ += forward * yawCos + strafe * yawSin;
+        }
+
+        event.setCancelled(true);
     }
 
     public static void damage() {
