@@ -6,6 +6,7 @@ import it.amadeus.client.event.events.Overlay;
 import it.amadeus.client.module.Module;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 public class Hud extends Module {
@@ -33,8 +34,10 @@ public class Hud extends Module {
     @Override
     public void onEvent(Event event) {
         if (event instanceof Overlay) {
+            GlStateManager.color(1,1,1,1);
             mc.getTextureManager().bindTexture(new ResourceLocation("amadeus/Hud.png"));
             Gui.drawModalRectWithCustomSizedTexture(1, 1, 0.0F, 0.0F, 126, 66, 126.0F, 66.0F);
+            GlStateManager.color(1,1,1,1);
             newArrayList();
         }
     }

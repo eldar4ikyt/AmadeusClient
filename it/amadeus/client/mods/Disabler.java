@@ -158,7 +158,7 @@ public class Disabler extends Module {
                         double offset = -.015625f;
                         ((C03PacketPlayer) packet).y += 0.002D;
                         if (ground_check.getValue() && mc.thePlayer.onGround) return;
-                        boolean canTicked = mc.thePlayer.ticksExisted % Math.round(68.62D) == 0;//integer
+                        boolean canTicked = mc.thePlayer.ticksExisted % Math.round(68.62D) == 0;
                         boolean canSendPacket = canTicked && intentionalMove();
                         if (canSendPacket) {
                             MotionUtil.sendDirect(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, offset, mc.thePlayer.posZ, mc.thePlayer.onGround));
