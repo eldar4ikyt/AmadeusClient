@@ -15,12 +15,10 @@ import lombok.Getter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.util.*;
-import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
@@ -39,6 +37,8 @@ public class Killaura extends Module {
     private final BooleanValue<Boolean> autoblock = new BooleanValue<>("AutoBlock", true, this);
     private final BooleanValue<Boolean> noRots = new BooleanValue<>("Bypass", true, this);
     private final TimerUtil timer = new TimerUtil();
+    private float tempYaw;
+    private float tempPitch;
     private boolean canBlock;
     private boolean blockedBefore;
 
@@ -69,9 +69,14 @@ public class Killaura extends Module {
     @Override
     public void onEvent(Event event) {
         if (event instanceof MoveFlying) {
-            if (noRots.getValue()) {
-                MotionUtil.legitStrafeMovement((MoveFlying) event, rotations[0]);
-            }
+            rotations = RotationUtils.getRotations(currentTarget, 180F, true);
+            float f = 0.40140846f * 0.6F + 0.2F;
+            float f1 = f * f * f * 8.0F;
+            tempYaw = rotations[0] - (rotations[0] % f1);
+            tempPitch = rotations[1] - (rotations[1] % f1);
+           // if (noRots.getValue()) {
+                MotionUtil.legitStrafeMovement((MoveFlying) event, tempYaw);
+          //  }
         }
         if (event instanceof PreMotion) {
             if (currentTarget == null) {
@@ -85,15 +90,14 @@ public class Killaura extends Module {
                 }
             } else {
                 if (isValidTarget(currentTarget)) {
-                    rotations = RotationUtils.getRotations(currentTarget, 180F, true);
-                    if (noRots.getValue()){
-                        ((PreMotion) event).setYaw(rotations[0]);
-                        ((PreMotion) event).setPitch(rotations[1]);
+                    if (noRots.getValue()) {
+                        ((PreMotion) event).setYaw(tempYaw);
+                        ((PreMotion) event).setPitch(tempPitch);
                     }
                     if (autoblock.getValue()) {
                         ItemStack heldItem = mc.thePlayer.getHeldItem();
                         this.canBlock = (currentTarget == getAnglePriority() && heldItem != null && heldItem.getItem() instanceof net.minecraft.item.ItemSword);
-                        if(canBlock){
+                        if (canBlock) {
                             mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem());
                         }
                         if (!currentTarget.isDead) {
@@ -130,11 +134,11 @@ public class Killaura extends Module {
 
     //todo: fix this shit
     private void attack(EntityLivingBase e) {
-        final Entity target = raycasting(rotations[0], rotations[1], e);
-        if (target != null) {
-            if (isValidTarget((EntityLivingBase) target) && !target.isDead) {
+        //final Entity target = raycasting(rotations[0], rotations[1], e);
+        if (e != null) {
+            if (isValidTarget(e) && !e.isDead) {
                 mc.thePlayer.swingItem();
-                mc.playerController.attackEntity(mc.thePlayer, target);
+                mc.playerController.attackEntity(mc.thePlayer, e);
             }
         }
     }

@@ -35,13 +35,6 @@ public class Disabler extends Module {
     private final NumberValue<Float> pingSpoof = new NumberValue<>("PingSpoof", 307F, 1.0F, 750.0F, this);
     private final BooleanValue<Boolean> latestVerusInventoryFix = new BooleanValue<>("Fix Inventory", true, this);
     private final BooleanValue<Boolean> ground_check = new BooleanValue<>("Ground Check", true, this);
-   // private final BooleanValue<Boolean> packetinputnuke = new BooleanValue<>("Dev Fix", false, this);
-   // private final NumberValue<Double> packetinputdelay = new NumberValue<>("Dev Fix Delay", 23.52D, 1.0D, 75.0D, this);
-
-    //Controlla Che Il Player Non Stia Attaccando o usando l'oggetto
-   /* public static boolean doHittingProcess() {
-        return mc.thePlayer.isBlocking() || mc.thePlayer.isSwingInProgress && mc.thePlayer.swingProgress != 0;
-    }*/
 
     @Override
     public String getName() {
@@ -66,7 +59,7 @@ public class Disabler extends Module {
     @Override
     public void onEnable() {
         if (this.mode.getValue().equals(Mode.BLOCKSMC)) {
-            ChatUtil.print("BlocksMC Disabler Is Experimental");
+            ChatUtil.print("BlocksMC (Movements Disabler)");
         }
         this.timer.reset();
         super.onEnable();
@@ -83,49 +76,29 @@ public class Disabler extends Module {
         if (event instanceof Update) {
             switch (this.mode.getValue()) {
                 case BLOCKSMC:
-                    /*if(mc.thePlayer.isDead){
-                        for (int i = 0; i < 20; i++) {
-                            mc.thePlayer.sendQueue.addToSendQueue(new C0CPacketInput());
-                        }
-                        if (!packetQueue.isEmpty()){
-                            sendDirect(this.packetQueue.poll());
-                        }
-                        timer.reset();
-                    }*/
-
-                    if(packetQueue.size() > 247){
-                        sendDirect(packetQueue.poll());
-                        packetQueue.clear();
-                    }
-
                     new Thread(() -> {
                         try {
-                            Thread.sleep(9000);
-                            if (!packetQueue.isEmpty() && !(mc.thePlayer.movementInput.moveForward != 0)){
-                                if(packetQueue.size() >= 245){//245, 125
-                                    ChatUtil.print(""+packetQueue.size());
+                            Thread.sleep(300);
+                            if (!packetQueue.isEmpty()) {
+                                if (packetQueue.size() >= 245) {//245, 125
+                                    ChatUtil.print("" + packetQueue.size());
                                     sendDirect(packetQueue.poll());
                                 }
                             }
                         } catch (Exception ignored) {
                         }
                     }).start();
-                  /*  if (mc.getAmadeus().getModManager().getModuleByClass(Flight.class).isToggled()&& !doHittingProcess()&& packetinputnuke.getValue()) {
-                        for (int i = 0; i < packetinputdelay.getValue().intValue(); i++) {
-                            mc.thePlayer.sendQueue.addToSendQueue(new C0CPacketInput());
-                        }
-                    }*/
-                    if(mc.getAmadeus().getModManager().getModuleByClass(Flight.class).isToggled() || mc.getAmadeus().getModManager().getModuleByClass(Speed.class).isToggled()){
-                        setPremissionFly();
-                    }
                     break;
                 case VERUS:
-                    if (this.timer.delay(pingSpoof.getValue())) {
-                        if (!packetQueue.isEmpty()) {
-                            sendDirect(this.packetQueue.poll());
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(pingSpoof.getValue().longValue());
+                            if (!packetQueue.isEmpty()){
+                                sendDirect(packetQueue.poll());
+                            }
+                        } catch (Exception ignored) {
                         }
-                        timer.reset();
-                    }
+                    }).start();
                     break;
             }
         }
@@ -200,9 +173,6 @@ public class Disabler extends Module {
                 case BLOCKSMC:
                     if (packet instanceof C00PacketKeepAlive) {//reach by ping manipulation?
                         C00PacketKeepAlive packetKeepAlive = (C00PacketKeepAlive) packet;
-                       /* for (int i = 0; i < 4; i++) { //5
-                                this.packetQueue.add(packetKeepAlive);
-                        }*/
                         ((PacketSend) event).setCancelled(true);
                     }
                     if (packet instanceof C0FPacketConfirmTransaction) {
@@ -216,7 +186,6 @@ public class Disabler extends Module {
                         }
                         ((PacketSend) event).setCancelled(true);
                     }
-                    //TODO: DA RIVEDERE
                     if (packet instanceof C07PacketPlayerDigging && mc.thePlayer.isBlocking()) {
                         ((PacketSend) event).setCancelled(true);
                     }
@@ -225,9 +194,8 @@ public class Disabler extends Module {
                         sendDirect(new C0CPacketInput());
                         C03PacketPlayer c03PacketPlayer = (C03PacketPlayer) packet;
                         if (mc.currentScreen instanceof GuiContainer) return;
-                        double offset = -.015625f;//test
+                        double offset = -.015625f;
                         ((C03PacketPlayer) packet).y += 0.002D;
-                       // ((C03PacketPlayer) packet).setMoving(false);
                         if (ground_check.getValue() && mc.thePlayer.onGround) return;//fixed fly by intentional move
                         boolean canTicked = mc.thePlayer.ticksExisted % this.delay.getValue().intValue() == 0;
                         boolean canSendPacket = canTicked && intentionalMove();
@@ -248,7 +216,6 @@ public class Disabler extends Module {
                             pc2.mode = 4;
                         }
                     }
-                    //potevo anche solo cancellarlo lol
                     if ((packet instanceof C0BPacketEntityAction)) {
                         ((PacketSend) event).setCancelled(true);
                     }
