@@ -27,6 +27,10 @@ import java.util.Objects;
 
 public class Killaura extends Module {
 
+    /***
+     * da fixare flagga a merda su verus...
+     */
+
     @Getter
     private static EntityLivingBase currentTarget;
     private static float[] rotations;

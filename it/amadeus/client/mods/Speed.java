@@ -36,7 +36,12 @@ public class Speed extends Module {
     public void onEvent(Event event) {
         if (event instanceof Moving) {
             if (this.mode.getValue().equals(Mode.BLATANT)) {
-                MotionUtil.setMotion(1f);
+                if(mc.thePlayer.isMovingOnGround()){
+                    ((Moving) event).setY(mc.thePlayer.motionY = 0.41999998688697815D);
+                    MotionUtil.setMotion(2f);
+                }else{
+                    MotionUtil.setMotion(0.772F);
+                }
             }
         }
         if (event instanceof PreMotion) {
