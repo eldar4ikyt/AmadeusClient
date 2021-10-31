@@ -44,7 +44,7 @@ public class Insulter extends Module {
             "sei di un patetico che fa spavento", "la tua faccia e' pari alle tue skill in pvp", "l'anticheat l'avete trovato su blackspigot?", "come sei uscito dal libro della giungla?", "omar ti ha venduto la bamba tarocca", "credo di aver capito il motivo della tua calvizia", "sei un completo disabile, sembri una scimmia"
             , "non so se ha piu' peli malachiel o le tue ascelle", "stai aspettando malachiel per il corso di pedofilia?", "immagina giocare legit su sto server", "immagina essere un cazzo di terrone", "spostati devo parlare con malachiel, sono il capo del crack.", "il tuo naso sempra un aspirapolvere", "ma sei paralizzato o sei 2008?"
             , "io l'ho sempre detto che comprando le mozzarelle blu della lidl si diventa come te", "non un cazzo, nasconditi", "sei stato adottato, mi dispiace dirtelo", "sei come una nuola, quando sparisci e' un bellissimo giorno", "ho finito le scorte di bianca, ci vediamo settimana prossima", "che confusione la raccolta differenziata, non so dove buttarti xo",
-            "sei talmente brutto che a carnevale non ti serve travestirti", "serio?! ti hanno gia' accettato la richiesta per la pensione di invalidita'!?"};
+            "sei talmente brutto che a carnevale non ti serve travestirti", "serio?! ti hanno gia' accettato la richiesta per la pensione di invalidita'!?", "sei una donna per tanto non hai diritti lol"};
 
     private List<String> getAllPlayers() {
         NetHandlerPlayClient nethandlerplayclient = mc.thePlayer.sendQueue;

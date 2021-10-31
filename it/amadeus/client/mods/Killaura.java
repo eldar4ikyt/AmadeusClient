@@ -18,7 +18,9 @@ import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.util.*;
+import org.apache.commons.lang3.RandomUtils;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
@@ -26,10 +28,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Killaura extends Module {
-
-    /***
-     * da fixare flagga a merda su verus...
-     */
 
     @Getter
     private static EntityLivingBase currentTarget;
@@ -72,16 +70,6 @@ public class Killaura extends Module {
 
     @Override
     public void onEvent(Event event) {
-        if (event instanceof MoveFlying) {
-            rotations = RotationUtils.getRotations(currentTarget, 180F, true);
-            float f = 0.40140846f * 0.6F + 0.2F;
-            float f1 = f * f * f * 8.0F;
-            tempYaw = rotations[0] - (rotations[0] % f1);
-            tempPitch = rotations[1] - (rotations[1] % f1);
-           // if (noRots.getValue()) {
-                MotionUtil.legitStrafeMovement((MoveFlying) event, tempYaw);
-          //  }
-        }
         if (event instanceof PreMotion) {
             if (currentTarget == null) {
                 switch (this.mode.getValue()) {
@@ -94,23 +82,15 @@ public class Killaura extends Module {
                 }
             } else {
                 if (isValidTarget(currentTarget)) {
-                    if (noRots.getValue()) {
-                        ((PreMotion) event).setYaw(tempYaw);
-                        ((PreMotion) event).setPitch(tempPitch);
+                    if (timer.hasTimeElapsed((randomClickDelay(min_aps.getValue(), max_aps.getValue()) + RandomUtils.nextLong(100,300)))) {
+                        attack(currentTarget);
+                        timer.reset();
                     }
                     if (autoblock.getValue()) {
                         ItemStack heldItem = mc.thePlayer.getHeldItem();
-                        this.canBlock = (currentTarget == getAnglePriority() && heldItem != null && heldItem.getItem() instanceof net.minecraft.item.ItemSword);
-                        if (canBlock) {
-                            mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem());
-                        }
-                        if (!currentTarget.isDead) {
-                            this.blockedBefore = true;
-                        }
-                    }
-                    if (timer.hasTimeElapsed(randomClickDelay(min_aps.getValue(), max_aps.getValue()))) {
-                        attack(currentTarget);
-                        timer.reset();
+                        this.canBlock = heldItem != null && heldItem.getItem() instanceof net.minecraft.item.ItemSword;
+                        if (canBlock) { mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem());}
+                        if (!currentTarget.isDead) {this.blockedBefore = true;}
                     }
                 }
                 if (currentTarget.getDistanceToEntity(mc.thePlayer) > reach.getValue() || currentTarget.isDead) {
@@ -126,6 +106,11 @@ public class Killaura extends Module {
                     this.blockedBefore = false;
                 }
             }
+            if (packet instanceof S08PacketPlayerPosLook && currentTarget != null && mc.thePlayer.swingProgress > 0) {
+                S08PacketPlayerPosLook packet2 = (S08PacketPlayerPosLook)packet;
+                packet2.setPitch(mc.thePlayer.rotationPitch);
+                packet2.setYaw(mc.thePlayer.rotationYaw);
+            }
         }
     }
 
@@ -136,76 +121,13 @@ public class Killaura extends Module {
         super.onDisable();
     }
 
-    //todo: fix this shit
     private void attack(EntityLivingBase e) {
-        //final Entity target = raycasting(rotations[0], rotations[1], e);
         if (e != null) {
             if (isValidTarget(e) && !e.isDead) {
                 mc.thePlayer.swingItem();
                 mc.playerController.attackEntity(mc.thePlayer, e);
             }
         }
-    }
-
-
-    private Entity raycasting(float yaw, float pitch, EntityLivingBase target) {
-        Entity pointedEntity = null;
-        float p_78473_1_ = 1.0F;
-        Entity var2 = mc.getRenderViewEntity();
-        if (var2 != null && mc.theWorld != null) {
-            mc.mcProfiler.startSection("pick");
-            mc.pointedEntity = null;
-            double var3 = mc.playerController.getBlockReachDistance();
-            mc.objectMouseOver = var2.rayTrace(var3, 1.0F);
-            Vec3 var5 = var2.getPositionEyes(var2.getEyeHeight());
-            var3 = target.getDistanceToEntity(mc.thePlayer);
-            double var4 = target.getDistanceToEntity(mc.thePlayer);
-            if (mc.objectMouseOver != null)
-                var4 = mc.objectMouseOver.hitVec.distanceTo(var5);
-            Vec3 var6 = var2.getRotationVec(pitch, yaw);
-            Vec3 var7 = var5.addVector(var6.xCoord * var3, var6.yCoord * var3, var6.zCoord * var3);
-            pointedEntity = null;
-            Vec3 var8 = null;
-            float var9 = 0.3F;
-            List<Entity> var10 = mc.theWorld.getEntitiesWithinAABBExcludingEntity(var2, var2.getEntityBoundingBox().addCoord(var6.xCoord * var3, var6.yCoord * var3, var6.zCoord * var3).expand(0.30000001192092896D, 0.30000001192092896D, 0.30000001192092896D));
-            double var11 = var4;
-            for (Entity o : var10) {
-                Entity var13 = o;
-                if (var13.canBeCollidedWith()) {
-                    float var14 = var13.getCollisionBorderSize();
-                    AxisAlignedBB var15 = var13.getEntityBoundingBox().expand(var14, var14, var14);
-                    MovingObjectPosition var16 = var15.calculateIntercept(var5, var7);
-                    if (var15.isVecInside(var5)) {
-                        if (0.0D < var11 || var11 == 0.0D) {
-                            pointedEntity = var13;
-                            var8 = (var16 == null) ? var5 : var16.hitVec;
-                            var11 = 0.0D;
-                        }
-                        continue;
-                    }
-                    double var17;
-                    if (var16 != null && ((var17 = var5.distanceTo(var16.hitVec)) < var11 || var11 == 0.0D)) {
-                        if (var13 == var2.ridingEntity) {
-                            if (var11 == 0.0D) {
-                                pointedEntity = var13;
-                                var8 = var16.hitVec;
-                            }
-                            continue;
-                        }
-                        pointedEntity = var13;
-                        var8 = var16.hitVec;
-                        var11 = var17;
-                    }
-                }
-            }
-            if (pointedEntity != null && (var11 < var4 || mc.objectMouseOver == null)) {
-                mc.objectMouseOver = new MovingObjectPosition(pointedEntity, var8);
-                if (pointedEntity instanceof EntityLivingBase || pointedEntity instanceof net.minecraft.entity.item.EntityItemFrame)
-                    mc.pointedEntity = pointedEntity;
-            }
-            mc.mcProfiler.endSection();
-        }
-        return pointedEntity;
     }
 
     public EntityLivingBase getAnglePriority() {
@@ -246,7 +168,6 @@ public class Killaura extends Module {
         return entities.get(0);
     }
 
-    //TODO: FINIRE TEAMS CHECK
     private boolean isValidTarget(EntityLivingBase entityLivingBase) {
         if (Objects.isNull(entityLivingBase)) {
             return false;
@@ -267,7 +188,6 @@ public class Killaura extends Module {
         }
         return false;
     }
-
 
     public enum Mode {DISTANCE, HEALT}
 }
