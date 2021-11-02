@@ -16,7 +16,7 @@ public class Flight extends Module {
 
     private final ModeValue<Mode> mode = new ModeValue<>("Mode", Mode.VANILLA, this);
     private final NumberValue<Double> damage_ticks = new NumberValue<>("Damage Tick", 20.0D, 5.0D, 25.0D, this);
-    private final NumberValue<Double> speed = new NumberValue<>("Speed", 2.25D, 1.0D, 10.0D, this);
+    private final NumberValue<Double> speed = new NumberValue<>("Speed", 2.72D, 1.0D, 10.0D, this);
     private int boostTicks = 0;
     private float motion;
 
@@ -57,11 +57,6 @@ public class Flight extends Module {
                 double offset = -.015625f;
                 MovementInput movementInput = mc.thePlayer.movementInput;
                 mc.thePlayer.motionY = movementInput.jump ? 0.87 : movementInput.sneak ? -0.87 : 0.0F;
-                if (!mc.isSingleplayer()) {
-                    if (mc.getCurrentServerData().serverIP.equalsIgnoreCase("Blocksmc.com")) {
-                       // mc.thePlayer.posY = offset;
-                    }
-                }
                 MotionUtil.setMotion(speed.getValue().floatValue());
             }
         }

@@ -23,16 +23,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Disabler extends Module {
 
-    /***
-     * Il Disabler Di Verus Disabilità solo I Movimenti e non i check del combact (per quelli non esiste)
-     *
-     * By AdrianCode
-     */
 
     private final TimerUtil timer = new TimerUtil();
     private final Queue<Packet<?>> packetQueue = new ConcurrentLinkedQueue<>();
     private final ModeValue<Mode> mode = new ModeValue<>("Mode", Mode.VERUS, this);
+    private final ModeValue<SPOOF_TYPE> spoof = new ModeValue<>("Spoof", SPOOF_TYPE.NEW, this);
+    private final ModeValue<PACKET_TYPE> packet = new ModeValue<>("Packet", PACKET_TYPE.EXTRA, this);
     private final BooleanValue<Boolean> ground_check = new BooleanValue<>("Ground Check", true, this);
+    private long nextTime;
 
     @Override
     public String getName() {
@@ -56,9 +54,7 @@ public class Disabler extends Module {
 
     @Override
     public void onEnable() {
-        if (this.mode.getValue().equals(Mode.VERUS)) {
-            ChatUtil.print("Verus Only Movements Disabler");
-        } else if (this.mode.getValue().equals(Mode.ALICE)) {
+        if (this.mode.getValue().equals(Mode.ALICE)) {
             MotionUtil.sendDirect(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, Double.MAX_VALUE, mc.thePlayer.posZ, false));
             mc.thePlayer.setPosition(mc.thePlayer.posX, Double.MAX_VALUE, mc.thePlayer.posZ);
             mc.renderGlobal.loadRenderers();
@@ -78,20 +74,35 @@ public class Disabler extends Module {
         if (event instanceof Update) {
             switch (this.mode.getValue()) {
                 case VERUS:
-                    new Thread(() -> {
-                        try {
-                            Thread.sleep(300);
-                            if (!packetQueue.isEmpty()) {
-                                if (packetQueue.size() >= 245) {
+                    switch (this.spoof.getValue()) {
+                        case NEW:
+
+                            if (mc.thePlayer != null && mc.thePlayer.ticksExisted < 3) {
+                                this.packetQueue.clear();
+                                this.timer.reset();
+                            }
+                            if (timer.sleep(nextTime)) {
+
+                                this.nextTime = (long) (310L + Math.random());
+
+                                if (!packetQueue.isEmpty() && packetQueue.size() > 79) {
+                                    MotionUtil.sendDirect(packetQueue.poll());
+                                    this.packetQueue.clear();
+                                }
+                                timer.reset();
+                            }
+                            break;
+                        case OLD:
+                            if (mc.thePlayer.ticksExisted % 180 == 0) {
+                                if (!packetQueue.isEmpty() && packetQueue.size() > 125) {
                                     MotionUtil.sendDirect(packetQueue.poll());
                                 }
                             }
-                        } catch (Exception ignored) {
-                        }
-                    }).start();
+                            break;
+                    }
                     break;
                 case DUPLICATE:
-                    if (mc.thePlayer.ticksExisted % 3 == 1){
+                    if (mc.thePlayer.ticksExisted % 3 == 1) {
                         mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
                     }
                     break;
@@ -143,46 +154,32 @@ public class Disabler extends Module {
                         if (block && CONFIRM.getUid() > 0 && CONFIRM.getUid() < 100) {
                             return;
                         }
+                        ((PacketSend) event).setCancelled(true);
                         for (int i = 0; i < 4; i++) {
                             this.packetQueue.add(CONFIRM);
                         }
-                        ((PacketSend) event).setCancelled(true);
-                    }
-                    if (packet instanceof C07PacketPlayerDigging && mc.thePlayer.isBlocking()) {
-                        ((PacketSend) event).setCancelled(true);
                     }
                     if (packet instanceof C03PacketPlayer) {
-                        MotionUtil.sendDirect(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
-                        MotionUtil.sendDirect(new C0CPacketInput());
+                        final double offset = -0.015625f;
                         if (mc.currentScreen instanceof GuiContainer) return;
-                        double offset = -.015625f;
-                        ((C03PacketPlayer) packet).y += 0.002D;
                         if (ground_check.getValue() && mc.thePlayer.onGround) return;
-                        boolean canTicked = mc.thePlayer.ticksExisted % Math.round(68.62D) == 0;
-                        boolean canSendPacket = canTicked && intentionalMove();
+                        boolean canTicked = mc.thePlayer.ticksExisted % 64 == 0;
+                        boolean canSendPacket = canTicked && intentionalMove() && !mc.thePlayer.isOnLadder() && !mc.thePlayer.isJumping && !mc.thePlayer.isCollidedHorizontally && mc.thePlayer.hurtTime <= 0 && !doHittingProcess();
                         if (canSendPacket) {
-                            MotionUtil.sendDirect(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, offset, mc.thePlayer.posZ, mc.thePlayer.onGround));
+                            switch (this.packet.getValue()) {
+                                case EXTRA:
+                                    MotionUtil.sendDirect(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, offset, mc.thePlayer.posZ, mc.thePlayer.onGround));
+                                    break;
+                                case CURRENT:
+                                    ((C03PacketPlayer) packet).setY(offset);
+                                    ((C03PacketPlayer) packet).setOnGround(false);
+                                    ((C03PacketPlayer) packet).setMoving(false);
+                                    break;
+                            }
                         }
-                        if (mc.thePlayer.ticksExisted % 3 == 1)
+                         if (mc.thePlayer.ticksExisted % 3 == 1){
                             ((PacketSend) event).setCancelled(true);
-                    }
-                    if (packet instanceof C0EPacketClickWindow) {
-                        C0EPacketClickWindow pc2 = (C0EPacketClickWindow) packet;
-                        if (mc.thePlayer.ticksExisted % 136 == 0) {
-                            pc2.windowId = 0;
-                            pc2.slotId = -999;
-                            pc2.usedButton = 0;
-                            pc2.actionNumber = 1;
-                            pc2.clickedItem = null;
-                            pc2.mode = 4;
                         }
-                    }
-                    if ((packet instanceof C0BPacketEntityAction)) {
-                        ((PacketSend) event).setCancelled(true);
-                    }
-                    if (mc.thePlayer != null && mc.thePlayer.ticksExisted < 8) {
-                        this.packetQueue.clear();
-                        this.timer.reset();
                     }
                     break;
                 case SPECTATE:
@@ -224,7 +221,25 @@ public class Disabler extends Module {
         return !(!mc.gameSettings.keyBindForward && !mc.gameSettings.keyBindBack.pressed && !mc.gameSettings.keyBindLeft.pressed && !mc.gameSettings.keyBindRight.pressed);
     }
 
+    private void setPremissionFly() {
+        PlayerCapabilities pc = new PlayerCapabilities();
+        pc.disableDamage = false;
+        pc.isFlying = false;
+        pc.allowFlying = false;
+        pc.isCreativeMode = false;
+        pc.setFlySpeed(0.0F);
+        pc.setPlayerWalkSpeed(0.0F);
+        mc.thePlayer.sendQueue.addToSendQueue(new C13PacketPlayerAbilities(pc));
+    }
+
+    public boolean doHittingProcess() {
+        return (mc.thePlayer.isBlocking() || mc.thePlayer.isSwingInProgress || mc.thePlayer.isUsingItem() || mc.thePlayer
+                .isOnLadder() || mc.thePlayer.isEating() || mc.currentScreen instanceof net.minecraft.client.gui.inventory.GuiInventory || mc.currentScreen instanceof net.minecraft.client.gui.inventory.GuiChest);
+    }
+
     public enum Mode {VERUS, RIDING, SPECTATE, ALICE, NEGATVITY, DUPLICATE}
+
+    public enum SPOOF_TYPE {OLD, NEW}
 
     public enum PACKET_TYPE {EXTRA, CURRENT}
 }

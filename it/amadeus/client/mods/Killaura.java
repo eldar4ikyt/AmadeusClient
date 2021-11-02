@@ -4,11 +4,9 @@ import it.amadeus.client.clickgui.util.values.valuetypes.BooleanValue;
 import it.amadeus.client.clickgui.util.values.valuetypes.ModeValue;
 import it.amadeus.client.clickgui.util.values.valuetypes.NumberValue;
 import it.amadeus.client.event.Event;
-import it.amadeus.client.event.events.MoveFlying;
 import it.amadeus.client.event.events.PacketSend;
 import it.amadeus.client.event.events.PreMotion;
 import it.amadeus.client.module.Module;
-import it.amadeus.client.utilities.MotionUtil;
 import it.amadeus.client.utilities.RotationUtils;
 import it.amadeus.client.utilities.TimerUtil;
 import lombok.Getter;
@@ -19,7 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import org.apache.commons.lang3.RandomUtils;
 import org.lwjgl.input.Keyboard;
 
@@ -43,6 +42,7 @@ public class Killaura extends Module {
     private float tempPitch;
     private boolean canBlock;
     private boolean blockedBefore;
+    private double LegitValue;
 
     public static long randomClickDelay(final double minCPS, final double maxCPS) {
         return (long) ((Math.random() * (1000 / minCPS - 1000 / maxCPS + 1)) + 1000 / maxCPS);
@@ -82,18 +82,27 @@ public class Killaura extends Module {
                 }
             } else {
                 if (isValidTarget(currentTarget)) {
-                    if (timer.hasTimeElapsed((randomClickDelay(min_aps.getValue(), max_aps.getValue()) + RandomUtils.nextLong(100,300)))) {
+                    if (timer.hasTimeElapsed((randomClickDelay(min_aps.getValue(), max_aps.getValue()) + RandomUtils.nextLong(100, 300)))) {
                         attack(currentTarget);
                         timer.reset();
                     }
                     if (autoblock.getValue()) {
                         ItemStack heldItem = mc.thePlayer.getHeldItem();
                         this.canBlock = heldItem != null && heldItem.getItem() instanceof net.minecraft.item.ItemSword;
-                        if (canBlock) { mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem());}
-                        if (!currentTarget.isDead) {this.blockedBefore = true;}
+                        if (canBlock) {
+                            mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem());
+                        }
+                        if (!currentTarget.isDead) {
+                            this.blockedBefore = true;
+                        }
                     }
                 }
-                if (currentTarget.getDistanceToEntity(mc.thePlayer) > reach.getValue() || currentTarget.isDead) {
+                if (!mc.isSingleplayer() && mc.getCurrentServerData().serverIP.equalsIgnoreCase("blocksmc.com")) {
+                    LegitValue = (reach.getValue() + 3);
+                } else {
+                    LegitValue = reach.getValue();
+                }
+                if (currentTarget.getDistanceToEntity(mc.thePlayer) > LegitValue || currentTarget.isDead) {
                     currentTarget = null;
                 }
             }
@@ -107,7 +116,7 @@ public class Killaura extends Module {
                 }
             }
             if (packet instanceof S08PacketPlayerPosLook && currentTarget != null && mc.thePlayer.swingProgress > 0) {
-                S08PacketPlayerPosLook packet2 = (S08PacketPlayerPosLook)packet;
+                S08PacketPlayerPosLook packet2 = (S08PacketPlayerPosLook) packet;
                 packet2.setPitch(mc.thePlayer.rotationPitch);
                 packet2.setYaw(mc.thePlayer.rotationYaw);
             }
