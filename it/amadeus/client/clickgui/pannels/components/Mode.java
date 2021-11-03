@@ -5,12 +5,12 @@ import it.amadeus.client.clickgui.ClickGui;
 import it.amadeus.client.clickgui.util.values.valuetypes.ModeValue;
 import net.minecraft.client.gui.Gui;
 
-public class Mode extends SetComp {
+public final class Mode extends SetComp {
 
     private final ModeValue set;
-    private int x;
-    private int y;
-    private int height;
+
+    private int x, y, height;
+
     private boolean hovered;
     private int lastIndex = 0;
 

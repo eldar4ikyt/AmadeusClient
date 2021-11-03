@@ -3,16 +3,19 @@ package it.amadeus.client.mods;
 import it.amadeus.client.clickgui.util.values.valuetypes.ModeValue;
 import it.amadeus.client.clickgui.util.values.valuetypes.NumberValue;
 import it.amadeus.client.event.Event;
+import it.amadeus.client.event.events.EventCollide;
 import it.amadeus.client.event.events.MoveFlying;
 import it.amadeus.client.event.events.PreMotion;
 import it.amadeus.client.event.events.Update;
 import it.amadeus.client.module.Module;
 import it.amadeus.client.utilities.MotionUtil;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C0CPacketInput;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovementInput;
 import org.lwjgl.input.Keyboard;
 
-public class Flight extends Module {
+public final class Flight extends Module {
 
     private final ModeValue<Mode> mode = new ModeValue<>("Mode", Mode.VANILLA, this);
     private final NumberValue<Double> damage_ticks = new NumberValue<>("Damage Tick", 20.0D, 5.0D, 25.0D, this);
@@ -83,6 +86,10 @@ public class Flight extends Module {
                 }
                 MotionUtil.strafe(motion, mc.thePlayer.rotationYaw, false);
             }
+        }if(event instanceof EventCollide){
+            if (this.mode.getValue().equals(Mode.VERUS) && mc.theWorld != null && !mc.thePlayer.isSneaking()) {
+                ((EventCollide) event).setAxisalignedbb((new AxisAlignedBB(-2.0D, -1.0D, -2.0D, 2.0D, 1.0D, 2.0D)).offset(((EventCollide) event).getX(), ((EventCollide) event).getY(), ((EventCollide) event).getZ()));
+            }
         }
     }
 
@@ -99,5 +106,5 @@ public class Flight extends Module {
         super.onDisable();
     }
 
-    public enum Mode {VANILLA, DAMAGE}
+    public enum Mode {VANILLA, DAMAGE, VERUS}
 }

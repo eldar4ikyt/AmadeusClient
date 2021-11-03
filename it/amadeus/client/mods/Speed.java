@@ -8,7 +8,7 @@ import it.amadeus.client.module.Module;
 import it.amadeus.client.utilities.MotionUtil;
 import org.lwjgl.input.Keyboard;
 
-public class Speed extends Module {
+public final class Speed extends Module {
 
     private final ModeValue<Mode> mode = new ModeValue<>("Mode", Mode.BLATANT, this);
 
@@ -45,7 +45,7 @@ public class Speed extends Module {
             }
         }
         if (event instanceof PreMotion) {
-            if (this.mode.getValue().equals(Mode.LEGIT)) {
+            if (this.mode.getValue().equals(Mode.VERUS)) {
                 if (mc.thePlayer.isMoving()) {
                     if (mc.thePlayer.hurtTime != 0)
                         mc.thePlayer.motionY = -2.0D;
@@ -65,5 +65,5 @@ public class Speed extends Module {
         super.onDisable();
     }
 
-    public enum Mode {LEGIT, BLATANT}
+    public enum Mode {VERUS, BLATANT}
 }

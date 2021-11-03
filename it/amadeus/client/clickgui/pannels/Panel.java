@@ -11,16 +11,16 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Panel {
+public final class Panel {
     private final TimerUtil upTimer;
     private final TimerUtil downTimer;
     private final Module.Category category;
-    private final ArrayList<Button> buttons = new ArrayList<>();
+    private final List<Button> buttons = new ArrayList<>();
     public double lastClickedMs = 0.0;
     public boolean onTop;
-    private int x;
-    private int y;
+    private int x, y;
     private int width = 115;
     private int height = 15;
     private int animation = 0;
@@ -34,9 +34,8 @@ public class Panel {
         this.y = y;
         category = cat;
 
-        for (Module m : Minecraft.getMinecraft().getAmadeus().getModManager().getModsByCat(category)) {
-            buttons.add(new Button(m));
-        }
+        Minecraft.getMinecraft().getAmadeus().getModManager().getModsByCat(category).stream().map(Button::new).forEach(buttons::add);
+
         buttons.sort((a, b) -> Double.compare(b.lastInteract, a.lastInteract));
         upTimer = new TimerUtil();
         downTimer = new TimerUtil();
@@ -45,9 +44,8 @@ public class Panel {
     public void reload() {
         buttons.clear();
 
-        for (Module m : Minecraft.getMinecraft().getAmadeus().getModManager().getModsByCat(category)) {
-            buttons.add(new Button(m));
-        }
+        Minecraft.getMinecraft().getAmadeus().getModManager().getModsByCat(category).stream().map(Button::new).forEach(buttons::add);
+
         buttons.sort((a, b) -> Double.compare(b.lastInteract, a.lastInteract));
     }
 

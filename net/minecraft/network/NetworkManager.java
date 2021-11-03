@@ -391,8 +391,8 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
                 p_initChannel_1_.pipeline().addLast("timeout", new ReadTimeoutHandler(30)).addLast("splitter", new MessageDeserializer2()).addLast("decoder", new MessageDeserializer(EnumPacketDirection.CLIENTBOUND)).addLast("prepender", new MessageSerializer2()).addLast("encoder", new MessageSerializer(EnumPacketDirection.SERVERBOUND)).addLast("packet_handler", networkmanager);
                 if (p_initChannel_1_ instanceof io.netty.channel.socket.SocketChannel && ViaMCP.getInstance().getVersion() != 335) {
                     UserConnectionImpl userConnectionImpl = new UserConnectionImpl(p_initChannel_1_, true);
-                    new ProtocolPipelineImpl((UserConnection)userConnectionImpl);
-                    p_initChannel_1_.pipeline().addBefore("encoder", "via-encoder", (ChannelHandler)new VREncodeHandler((UserConnection)userConnectionImpl)).addBefore("decoder", "via-decoder", (ChannelHandler)new VRDecodeHandler((UserConnection)userConnectionImpl));
+                    new ProtocolPipelineImpl(userConnectionImpl);
+                    p_initChannel_1_.pipeline().addBefore("encoder", "via-encoder", new VREncodeHandler(userConnectionImpl)).addBefore("decoder", "via-decoder", new VRDecodeHandler(userConnectionImpl));
                 }
             }
         }).channel(oclass).connect(address, serverPort).syncUninterruptibly();
@@ -474,12 +474,12 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
             if (this.channel.pipeline().get("decompress") instanceof NettyCompressionDecoder) {
                 ((NettyCompressionDecoder)this.channel.pipeline().get("decompress")).setCompressionTreshold(threshold);
             } else {
-                NettyUtil.decodeEncodePlacement(this.channel.pipeline(), "decoder", "decompress", (ChannelHandler)new NettyCompressionDecoder(threshold));
+                NettyUtil.decodeEncodePlacement(this.channel.pipeline(), "decoder", "decompress", new NettyCompressionDecoder(threshold));
             }
             if (this.channel.pipeline().get("compress") instanceof NettyCompressionEncoder) {
                 ((NettyCompressionEncoder)this.channel.pipeline().get("compress")).setCompressionTreshold(threshold);
             } else {
-                NettyUtil.decodeEncodePlacement(this.channel.pipeline(), "encoder", "compress", (ChannelHandler)new NettyCompressionEncoder(threshold));
+                NettyUtil.decodeEncodePlacement(this.channel.pipeline(), "encoder", "compress", new NettyCompressionEncoder(threshold));
             }
         } else {
             if (this.channel.pipeline().get("decompress") instanceof NettyCompressionDecoder)

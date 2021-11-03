@@ -13,13 +13,17 @@ import it.amadeus.client.clickgui.pannels.Panel;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
-public class ClickGui extends GuiScreen {
+public final class ClickGui extends GuiScreen {
 
-    public static ArrayList<Panel> panels = new ArrayList<>();
+    public static List<Panel> panels = new ArrayList<>();
     public static boolean dragging = false;
+
     private static UnicodeFontRenderer fontRender;
     private final Translate translate = new Translate(0.0F, 0.0F);
+
     public boolean createdPanels;
     public Mode mode;
 
@@ -84,7 +88,7 @@ public class ClickGui extends GuiScreen {
         GL11.glTranslatef((-sr.getScaledWidth() >> 1), (-sr.getScaledHeight() >> 1), 0.0F);
         GL11.glColor4f(1F, 1F, 1F, 1F);
 
-        panels.sort((a, b) -> Double.compare(a.lastClickedMs, b.lastClickedMs));
+        panels.sort(Comparator.comparingDouble(a -> a.lastClickedMs));
         for (int i = 0; i < panels.size(); i++) {
             panels.get(i).onTop = i == 0;
             panels.get(i).drawScreen(mouseX, mouseY);
@@ -94,16 +98,12 @@ public class ClickGui extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for (Panel p : ClickGui.panels) {
-            p.mouseClicked(mouseX, mouseY, mouseButton);
-        }
+        ClickGui.panels.forEach(p -> p.mouseClicked(mouseX, mouseY, mouseButton));
     }
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
-        for (Panel p : ClickGui.panels) {
-            p.mouseReleased(mouseX, mouseY, state);
-        }
+        ClickGui.panels.forEach(p -> p.mouseReleased(mouseX, mouseY, state));
     }
 
     public boolean doesGuiPauseGame() {
@@ -111,9 +111,7 @@ public class ClickGui extends GuiScreen {
     }
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        for (Panel p : ClickGui.panels) {
-            p.keyTyped(typedChar, keyCode);
-        }
+        ClickGui.panels.forEach(p -> p.keyTyped(typedChar, keyCode));
         super.keyTyped(typedChar, keyCode);
     }
 }

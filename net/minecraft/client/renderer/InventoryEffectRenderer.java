@@ -1,6 +1,8 @@
 package net.minecraft.client.renderer;
 
 import java.util.Collection;
+
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
@@ -31,12 +33,12 @@ public abstract class InventoryEffectRenderer extends GuiContainer
     {
         if (!this.mc.thePlayer.getActivePotionEffects().isEmpty())
         {
-            this.guiLeft = 160 + (this.width - this.xSize - 200) / 2;
+            this.guiLeft = 160 + (width - this.xSize - 200) / 2;
             this.hasActivePotionEffects = true;
         }
         else
         {
-            this.guiLeft = (this.width - this.xSize) / 2;
+            this.guiLeft = (width - this.xSize) / 2;
             this.hasActivePotionEffects = false;
         }
     }

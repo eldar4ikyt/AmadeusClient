@@ -813,7 +813,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
     }
 
-    public void addToSendQueue(Packet p_147297_1_)
+    public void addToSendQueue(Packet<?> p_147297_1_)
     {
         PacketSend packetSend = new PacketSend(p_147297_1_);
         Minecraft.getMinecraft().getAmadeus().getEventManager().hook(packetSend);

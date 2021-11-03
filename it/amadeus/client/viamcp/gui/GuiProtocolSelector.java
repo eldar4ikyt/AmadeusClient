@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class GuiProtocolSelector extends GuiScreen
 {
-    private GuiScreen parent;
+    private final GuiScreen parent;
     public SlotList list;
 
     public GuiProtocolSelector(GuiScreen parent)
@@ -53,7 +53,7 @@ public class GuiProtocolSelector extends GuiScreen
         list.drawScreen(p_drawScreen_1_, p_drawScreen_2_, p_drawScreen_3_);
         GL11.glPushMatrix();
         GL11.glScalef(2.0F, 2.0F, 2.0F);
-        this.drawCenteredString(this.fontRendererObj, EnumChatFormatting.YELLOW + "Versions", this.width / 4, 6, 16777215);
+        this.drawCenteredString(this.fontRendererObj, EnumChatFormatting.YELLOW + "Versions", width / 4, 6, 16777215);
         GL11.glPopMatrix();
         super.drawScreen(p_drawScreen_1_, p_drawScreen_2_, p_drawScreen_3_);
     }

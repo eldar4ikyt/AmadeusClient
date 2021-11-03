@@ -12,8 +12,8 @@ public class TooltipProviderOptions implements TooltipProvider
 {
     public Rectangle getTooltipBounds(GuiScreen guiScreen, int x, int y)
     {
-        int i = guiScreen.width / 2 - 150;
-        int j = guiScreen.height / 6 - 7;
+        int i = GuiScreen.width / 2 - 150;
+        int j = GuiScreen.height / 6 - 7;
 
         if (y <= j + 98)
         {

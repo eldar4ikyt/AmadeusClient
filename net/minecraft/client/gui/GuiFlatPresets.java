@@ -50,12 +50,12 @@ public class GuiFlatPresets extends GuiScreen
         this.presetsTitle = I18n.format("createWorld.customize.presets.title");
         this.presetsShare = I18n.format("createWorld.customize.presets.share");
         this.field_146436_r = I18n.format("createWorld.customize.presets.list");
-        this.field_146433_u = new GuiTextField(2, this.fontRendererObj, 50, 40, this.width - 100, 20);
+        this.field_146433_u = new GuiTextField(2, this.fontRendererObj, 50, 40, width - 100, 20);
         this.field_146435_s = new GuiFlatPresets.ListSlot();
         this.field_146433_u.setMaxStringLength(1230);
         this.field_146433_u.setText(this.parentScreen.func_146384_e());
-        this.buttonList.add(this.field_146434_t = new GuiButton(0, this.width / 2 - 155, this.height - 28, 150, 20, I18n.format("createWorld.customize.presets.select")));
-        this.buttonList.add(new GuiButton(1, this.width / 2 + 5, this.height - 28, 150, 20, I18n.format("gui.cancel")));
+        this.buttonList.add(this.field_146434_t = new GuiButton(0, width / 2 - 155, height - 28, 150, 20, I18n.format("createWorld.customize.presets.select")));
+        this.buttonList.add(new GuiButton(1, width / 2 + 5, height - 28, 150, 20, I18n.format("gui.cancel")));
         this.func_146426_g();
     }
 
@@ -120,7 +120,7 @@ public class GuiFlatPresets extends GuiScreen
     {
         this.drawDefaultBackground();
         this.field_146435_s.drawScreen(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, this.presetsTitle, this.width / 2, 8, 16777215);
+        this.drawCenteredString(this.fontRendererObj, this.presetsTitle, width / 2, 8, 16777215);
         this.drawString(this.fontRendererObj, this.presetsShare, 50, 30, 10526880);
         this.drawString(this.fontRendererObj, this.field_146436_r, 50, 70, 10526880);
         this.field_146433_u.drawTextBox();
@@ -214,7 +214,7 @@ public class GuiFlatPresets extends GuiScreen
 
         public ListSlot()
         {
-            super(GuiFlatPresets.this.mc, GuiFlatPresets.this.width, GuiFlatPresets.this.height, 80, GuiFlatPresets.this.height - 37, 24);
+            super(GuiFlatPresets.this.mc, GuiScreen.width, GuiScreen.height, 80, GuiScreen.height - 37, 24);
         }
 
         private void func_178054_a(int p_178054_1_, int p_178054_2_, Item p_178054_3_, int p_178054_4_)

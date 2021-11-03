@@ -59,8 +59,8 @@ public class GuiMerchant extends GuiContainer
     public void initGui()
     {
         super.initGui();
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
+        int i = (width - this.xSize) / 2;
+        int j = (height - this.ySize) / 2;
         this.buttonList.add(this.nextButton = new GuiMerchant.MerchantButton(1, i + 120 + 27, j + 24 - 1, true));
         this.buttonList.add(this.previousButton = new GuiMerchant.MerchantButton(2, i + 36 - 19, j + 24 - 1, false));
         this.nextButton.enabled = false;
@@ -139,8 +139,8 @@ public class GuiMerchant extends GuiContainer
     {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(MERCHANT_GUI_TEXTURE);
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
+        int i = (width - this.xSize) / 2;
+        int j = (height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
         MerchantRecipeList merchantrecipelist = this.merchant.getRecipes(this.mc.thePlayer);
 
@@ -176,8 +176,8 @@ public class GuiMerchant extends GuiContainer
 
         if (merchantrecipelist != null && !merchantrecipelist.isEmpty())
         {
-            int i = (this.width - this.xSize) / 2;
-            int j = (this.height - this.ySize) / 2;
+            int i = (width - this.xSize) / 2;
+            int j = (height - this.ySize) / 2;
             int k = this.selectedMerchantRecipe;
             MerchantRecipe merchantrecipe = merchantrecipelist.get(k);
             ItemStack itemstack = merchantrecipe.getItemToBuy();

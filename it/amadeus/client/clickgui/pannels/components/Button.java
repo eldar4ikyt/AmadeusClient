@@ -17,25 +17,28 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-public class Button {
+public final class Button {
+
     private final Module mod;
+
     private final TimerUtil upTimer;
     private final TimerUtil downTimer;
+
     public long lastInteract;
     public int animation;
     public boolean opened = false;
-    public ArrayList<Component> settings = new ArrayList<>();
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+    public List<Component> settings = new ArrayList<>();
+    private int x, y, width, height;
+
     private boolean hovered;
     private boolean clickable = false;
     private boolean isMiddleClick = false;
-    private float lastRed = (float) ClickGui.getSecondaryColor(false).getRed() / 255F;
-    private float lastGreen = (float) ClickGui.getSecondaryColor(false).getGreen() / 255F;
-    private float lastBlue = (float) ClickGui.getSecondaryColor(false).getBlue() / 255F;
+
+    private final float lastRed = (float) ClickGui.getSecondaryColor(false).getRed() / 255F;
+    private final float lastGreen = (float) ClickGui.getSecondaryColor(false).getGreen() / 255F;
+    private final float lastBlue = (float) ClickGui.getSecondaryColor(false).getBlue() / 255F;
 
     public Button(Module mod) {
         this.mod = mod;

@@ -23,6 +23,7 @@ public final class ModuleManager {
         mods.add(new PlayerESP());
         mods.add(new PingSpoof());
         mods.add(new Insulter());
+        mods.add(new NoFall());
         mods.add(new Hud());
         mods.add(new Click());
     }

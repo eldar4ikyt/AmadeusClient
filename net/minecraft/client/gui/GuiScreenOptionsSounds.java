@@ -35,19 +35,19 @@ public class GuiScreenOptionsSounds extends GuiScreen
         int i = 0;
         this.field_146507_a = I18n.format("options.sounds.title");
         this.field_146508_h = I18n.format("options.off");
-        this.buttonList.add(new GuiScreenOptionsSounds.Button(SoundCategory.MASTER.getCategoryId(), this.width / 2 - 155 + i % 2 * 160, this.height / 6 - 12 + 24 * (i >> 1), SoundCategory.MASTER, true));
+        this.buttonList.add(new GuiScreenOptionsSounds.Button(SoundCategory.MASTER.getCategoryId(), width / 2 - 155 + i % 2 * 160, height / 6 - 12 + 24 * (i >> 1), SoundCategory.MASTER, true));
         i = i + 2;
 
         for (SoundCategory soundcategory : SoundCategory.values())
         {
             if (soundcategory != SoundCategory.MASTER)
             {
-                this.buttonList.add(new GuiScreenOptionsSounds.Button(soundcategory.getCategoryId(), this.width / 2 - 155 + i % 2 * 160, this.height / 6 - 12 + 24 * (i >> 1), soundcategory, false));
+                this.buttonList.add(new GuiScreenOptionsSounds.Button(soundcategory.getCategoryId(), width / 2 - 155 + i % 2 * 160, height / 6 - 12 + 24 * (i >> 1), soundcategory, false));
                 ++i;
             }
         }
 
-        this.buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, I18n.format("gui.done")));
+        this.buttonList.add(new GuiButton(200, width / 2 - 100, height / 6 + 168, I18n.format("gui.done")));
     }
 
     /**
@@ -71,7 +71,7 @@ public class GuiScreenOptionsSounds extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.field_146507_a, this.width / 2, 15, 16777215);
+        this.drawCenteredString(this.fontRendererObj, this.field_146507_a, width / 2, 15, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

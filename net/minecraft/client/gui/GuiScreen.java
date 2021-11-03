@@ -229,7 +229,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
                 k += 2 + (textLines.size() - 1) * 10;
             }
 
-            if (l1 + i > this.width) {
+            if (l1 + i > width) {
                 l1 -= 28 + i;
             }
 
@@ -487,14 +487,14 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
         this.mc = mc;
         this.itemRender = mc.getRenderItem();
         this.fontRendererObj = mc.fontRendererObj;
-        this.width = width;
+        GuiScreen.width = width;
         GuiScreen.height = height;
         this.buttonList.clear();
         this.initGui();
     }
 
     public void a(int p_a_1_, int p_a_2_) {
-        this.width = p_a_1_;
+        width = p_a_1_;
         height = p_a_2_;
     }
 
@@ -526,7 +526,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
      * Handles mouse input.
      */
     public void handleMouseInput() throws IOException {
-        int i = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int i = Mouse.getEventX() * width / this.mc.displayWidth;
         int j = height - Mouse.getEventY() * height / this.mc.displayHeight - 1;
         int k = Mouse.getEventButton();
 
@@ -583,7 +583,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
 
     public void drawWorldBackground(int tint) {
         if (this.mc.theWorld != null) {
-            this.drawGradientRect(0, 0, this.width, height, -1072689136, -804253680);
+            this.drawGradientRect(0, 0, width, height, -1072689136, -804253680);
         } else {
             this.drawBackground(tint);
         }

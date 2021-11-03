@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class Spotify extends Module {
+public final class Spotify extends Module {
 
     public static final String NAME = "Spotify";
 

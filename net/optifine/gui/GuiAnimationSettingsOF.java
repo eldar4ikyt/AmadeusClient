@@ -33,8 +33,8 @@ public class GuiAnimationSettingsOF extends GuiScreen
         for (int i = 0; i < enumOptions.length; ++i)
         {
             GameSettings.Options gamesettings$options = enumOptions[i];
-            int j = this.width / 2 - 155 + i % 2 * 160;
-            int k = this.height / 6 + 21 * (i / 2) - 12;
+            int j = width / 2 - 155 + i % 2 * 160;
+            int k = height / 6 + 21 * (i / 2) - 12;
 
             if (!gamesettings$options.getEnumFloat())
             {
@@ -46,9 +46,9 @@ public class GuiAnimationSettingsOF extends GuiScreen
             }
         }
 
-        this.buttonList.add(new GuiButton(210, this.width / 2 - 155, this.height / 6 + 168 + 11, 70, 20, Lang.get("of.options.animation.allOn")));
-        this.buttonList.add(new GuiButton(211, this.width / 2 - 155 + 80, this.height / 6 + 168 + 11, 70, 20, Lang.get("of.options.animation.allOff")));
-        this.buttonList.add(new GuiOptionButton(200, this.width / 2 + 5, this.height / 6 + 168 + 11, I18n.format("gui.done")));
+        this.buttonList.add(new GuiButton(210, width / 2 - 155, height / 6 + 168 + 11, 70, 20, Lang.get("of.options.animation.allOn")));
+        this.buttonList.add(new GuiButton(211, width / 2 - 155 + 80, height / 6 + 168 + 11, 70, 20, Lang.get("of.options.animation.allOff")));
+        this.buttonList.add(new GuiOptionButton(200, width / 2 + 5, height / 6 + 168 + 11, I18n.format("gui.done")));
     }
 
     /**
@@ -91,7 +91,7 @@ public class GuiAnimationSettingsOF extends GuiScreen
     public void drawScreen(int x, int y, float f)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 15, 16777215);
+        this.drawCenteredString(this.fontRendererObj, this.title, width / 2, 15, 16777215);
         super.drawScreen(x, y, f);
     }
 }

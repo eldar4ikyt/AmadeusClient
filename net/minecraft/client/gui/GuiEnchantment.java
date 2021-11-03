@@ -85,8 +85,8 @@ public class GuiEnchantment extends GuiContainer
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
+        int i = (width - this.xSize) / 2;
+        int j = (height - this.ySize) / 2;
 
         for (int k = 0; k < 3; ++k)
         {
@@ -107,8 +107,8 @@ public class GuiEnchantment extends GuiContainer
     {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(ENCHANTMENT_TABLE_GUI_TEXTURE);
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
+        int i = (width - this.xSize) / 2;
+        int j = (height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
         GlStateManager.pushMatrix();
         GlStateManager.matrixMode(5889);

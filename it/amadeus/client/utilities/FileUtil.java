@@ -6,7 +6,7 @@ import java.io.*;
 
 public class FileUtil {
 
-    private static String mainPath = (Minecraft.getMinecraft()).mcDataDir + "/" + "Amadeus";
+    private static final String mainPath = (Minecraft.getMinecraft()).mcDataDir + "/" + "Amadeus";
 
     public static String LoadSpotify() throws IOException {
         if (!(new File(mainPath)).exists())

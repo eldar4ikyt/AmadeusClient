@@ -4,12 +4,10 @@ import it.amadeus.client.clickgui.ClickGui;
 import it.amadeus.client.clickgui.util.values.valuetypes.ModeValue;
 import net.minecraft.client.gui.Gui;
 
-public class ModeButton extends Component {
+public final class ModeButton extends Component {
 
     private final ModeValue set;
-    private int x;
-    private int y;
-    private int height;
+    private int x, y,height;
     private boolean hovered;
     private int lastIndex = 0;
 
@@ -37,7 +35,7 @@ public class ModeButton extends Component {
         if ((button == 0 || button == 1) && this.hovered) {
             if (button == 0) {
                 lastIndex++;
-            } else if (button == 1) {
+            } else {
                 lastIndex--;
             }
             if (lastIndex >= this.set.getModes().length) {

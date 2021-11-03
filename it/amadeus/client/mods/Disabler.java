@@ -17,11 +17,12 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S2APacketParticles;
+import net.minecraft.util.BlockPos;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class Disabler extends Module {
+public final class Disabler extends Module {
 
 
     private final TimerUtil timer = new TimerUtil();
@@ -73,6 +74,16 @@ public class Disabler extends Module {
     public void onEvent(Event event) {
         if (event instanceof Update) {
             switch (this.mode.getValue()) {
+                case BLINK:
+                    if (timer.sleep(nextTime)) {
+                        this.nextTime = (long) (310L + Math.random());
+                        if (!packetQueue.isEmpty() && packetQueue.size() > 47) {
+                            MotionUtil.sendDirect(packetQueue.poll());
+                            packetQueue.clear();
+                        }
+                        timer.reset();
+                    }
+                    break;
                 case VERUS:
                     switch (this.spoof.getValue()) {
                         case NEW:
@@ -144,6 +155,35 @@ public class Disabler extends Module {
                         }
                     }
                     break;
+                case BLINK:
+                    if (packet instanceof C00PacketKeepAlive) {
+                        ((PacketSend) event).setCancelled(true);
+                    }
+                    if (packet instanceof C0FPacketConfirmTransaction) {
+                        C0FPacketConfirmTransaction CONFIRM = (C0FPacketConfirmTransaction) packet;
+                        boolean block = mc.currentScreen instanceof GuiInventory;
+                        if (block && CONFIRM.getUid() > 0 && CONFIRM.getUid() < 100) {
+                            return;
+                        }
+                        ((PacketSend) event).setCancelled(true);
+                        for (int i = 0; i < 4; i++) {
+                            this.packetQueue.add(CONFIRM);
+                        }
+                    }
+                    if (packet instanceof C03PacketPlayer) {
+                        ((PacketSend) event).setCancelled(true);
+                        MotionUtil.sendDirect(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
+                        setPremissionFly(true);
+                        final PlayerCapabilities capabilities = new PlayerCapabilities();
+                        capabilities.allowFlying = true;
+                        capabilities.disableDamage = true;
+                        capabilities.isFlying = true;
+                        capabilities.isCreativeMode = true;
+                        MotionUtil.sendDirect(new C13PacketPlayerAbilities(capabilities));
+                        if (mc.currentScreen instanceof GuiContainer) return;
+                        MotionUtil.sendDirect(new C03PacketPlayer.C06PacketPlayerPosLook(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, mc.thePlayer.onGround));
+                    }
+                    break;
                 case VERUS:
                     if (packet instanceof C00PacketKeepAlive) {
                         ((PacketSend) event).setCancelled(true);
@@ -196,6 +236,7 @@ public class Disabler extends Module {
             if (mc.isSingleplayer()) return;
             Packet<?> packet = ((PacketReceive) event).getPacket();
             switch (this.mode.getValue()) {
+                case BLINK:
                 case VERUS:
                     if (packet instanceof S2APacketParticles) {
                         ((PacketReceive) event).setCancelled(true);
@@ -221,14 +262,12 @@ public class Disabler extends Module {
         return !(!mc.gameSettings.keyBindForward && !mc.gameSettings.keyBindBack.pressed && !mc.gameSettings.keyBindLeft.pressed && !mc.gameSettings.keyBindRight.pressed);
     }
 
-    private void setPremissionFly() {
+    private void setPremissionFly(boolean can) {
         PlayerCapabilities pc = new PlayerCapabilities();
-        pc.disableDamage = false;
-        pc.isFlying = false;
-        pc.allowFlying = false;
-        pc.isCreativeMode = false;
-        pc.setFlySpeed(0.0F);
-        pc.setPlayerWalkSpeed(0.0F);
+        pc.disableDamage = can;
+        pc.isFlying = can;
+        pc.allowFlying = can;
+        pc.isCreativeMode = can;
         mc.thePlayer.sendQueue.addToSendQueue(new C13PacketPlayerAbilities(pc));
     }
 
@@ -237,7 +276,7 @@ public class Disabler extends Module {
                 .isOnLadder() || mc.thePlayer.isEating() || mc.currentScreen instanceof net.minecraft.client.gui.inventory.GuiInventory || mc.currentScreen instanceof net.minecraft.client.gui.inventory.GuiChest);
     }
 
-    public enum Mode {VERUS, RIDING, SPECTATE, ALICE, NEGATVITY, DUPLICATE}
+    public enum Mode {VERUS, RIDING, SPECTATE, ALICE, NEGATVITY, DUPLICATE, BLINK}
 
     public enum SPOOF_TYPE {OLD, NEW}
 

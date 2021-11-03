@@ -113,12 +113,12 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
 
     public void addWorldSelectionButtons()
     {
-        this.buttonList.add(this.selectButton = new GuiButton(1, this.width / 2 - 154, this.height - 52, 150, 20, I18n.format("selectWorld.select")));
-        this.buttonList.add(new GuiButton(3, this.width / 2 + 4, this.height - 52, 150, 20, I18n.format("selectWorld.create")));
-        this.buttonList.add(this.renameButton = new GuiButton(6, this.width / 2 - 154, this.height - 28, 72, 20, I18n.format("selectWorld.rename")));
-        this.buttonList.add(this.deleteButton = new GuiButton(2, this.width / 2 - 76, this.height - 28, 72, 20, I18n.format("selectWorld.delete")));
-        this.buttonList.add(this.recreateButton = new GuiButton(7, this.width / 2 + 4, this.height - 28, 72, 20, I18n.format("selectWorld.recreate")));
-        this.buttonList.add(new GuiButton(0, this.width / 2 + 82, this.height - 28, 72, 20, I18n.format("gui.cancel")));
+        this.buttonList.add(this.selectButton = new GuiButton(1, width / 2 - 154, height - 52, 150, 20, I18n.format("selectWorld.select")));
+        this.buttonList.add(new GuiButton(3, width / 2 + 4, height - 52, 150, 20, I18n.format("selectWorld.create")));
+        this.buttonList.add(this.renameButton = new GuiButton(6, width / 2 - 154, height - 28, 72, 20, I18n.format("selectWorld.rename")));
+        this.buttonList.add(this.deleteButton = new GuiButton(2, width / 2 - 76, height - 28, 72, 20, I18n.format("selectWorld.delete")));
+        this.buttonList.add(this.recreateButton = new GuiButton(7, width / 2 + 4, height - 28, 72, 20, I18n.format("selectWorld.recreate")));
+        this.buttonList.add(new GuiButton(0, width / 2 + 82, height - 28, 72, 20, I18n.format("gui.cancel")));
         this.selectButton.enabled = false;
         this.deleteButton.enabled = false;
         this.renameButton.enabled = false;
@@ -235,7 +235,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.availableWorlds.drawScreen(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, this.screenTitle, this.width / 2, 20, 16777215);
+        this.drawCenteredString(this.fontRendererObj, this.screenTitle, width / 2, 20, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -262,7 +262,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
     {
         public List(Minecraft mcIn)
         {
-            super(mcIn, GuiSelectWorld.this.width, GuiSelectWorld.this.height, 32, GuiSelectWorld.this.height - 64, 36);
+            super(mcIn, GuiScreen.width, GuiScreen.height, 32, GuiScreen.height - 64, 36);
         }
 
         protected int getSize()

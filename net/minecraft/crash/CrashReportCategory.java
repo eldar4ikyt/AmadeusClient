@@ -239,7 +239,7 @@ public class CrashReportCategory
                 }
                 else
                 {
-                    String s = String.format("%4s", new Object[] {Integer.toBinaryString(blockData)}).replace(" ", "0");
+                    String s = String.format("%4s", Integer.toBinaryString(blockData)).replace(" ", "0");
                     return String.format("%1$d / 0x%1$X / 0b%2$s", Integer.valueOf(blockData), s);
                 }
             }

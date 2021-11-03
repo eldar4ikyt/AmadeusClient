@@ -215,9 +215,9 @@ public class RenderManager
 
     public void setRenderPosition(double renderPosXIn, double renderPosYIn, double renderPosZIn)
     {
-        this.renderPosX = renderPosXIn;
-        this.renderPosY = renderPosYIn;
-        this.renderPosZ = renderPosZIn;
+        renderPosX = renderPosXIn;
+        renderPosY = renderPosYIn;
+        renderPosZ = renderPosZIn;
     }
 
     public <T extends Entity> Render<T> getEntityClassRenderObject(Class <? extends Entity > entityClass)
@@ -350,7 +350,7 @@ public class RenderManager
         int k = i / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        return this.doRenderEntity(entity, d0 - this.renderPosX, d1 - this.renderPosY, d2 - this.renderPosZ, f, partialTicks, hideDebugBox);
+        return this.doRenderEntity(entity, d0 - renderPosX, d1 - renderPosY, d2 - renderPosZ, f, partialTicks, hideDebugBox);
     }
 
     public void renderWitherSkull(Entity entityIn, float partialTicks)
@@ -367,7 +367,7 @@ public class RenderManager
             int k = i / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            render.renderName(entityIn, d0 - this.renderPosX, d1 - this.renderPosY, d2 - this.renderPosZ);
+            render.renderName(entityIn, d0 - renderPosX, d1 - renderPosY, d2 - renderPosZ);
         }
     }
 

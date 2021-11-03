@@ -42,8 +42,8 @@ public class GuiRepair extends GuiContainer implements ICrafting
     {
         super.initGui();
         Keyboard.enableRepeatEvents(true);
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
+        int i = (width - this.xSize) / 2;
+        int j = (height - this.ySize) / 2;
         this.nameField = new GuiTextField(0, this.fontRendererObj, i + 62, j + 24, 103, 12);
         this.nameField.setTextColor(-1);
         this.nameField.setDisabledTextColour(-1);
@@ -174,8 +174,8 @@ public class GuiRepair extends GuiContainer implements ICrafting
     {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(anvilResource);
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
+        int i = (width - this.xSize) / 2;
+        int j = (height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
         this.drawTexturedModalRect(i + 59, j + 20, 0, this.ySize + (this.anvil.getSlot(0).getHasStack() ? 0 : 16), 110, 16);
 

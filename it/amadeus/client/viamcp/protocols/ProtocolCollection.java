@@ -58,9 +58,9 @@ public enum ProtocolCollection
     R1_7_6(new ProtocolVersion(5, -1, "1.7.6-1.7.10 (May Not Work)", new VersionRange("1.7", 6, 10))),
     R1_7(new ProtocolVersion(4, -1, "1.7-1.7.5 (May Not Work)", new VersionRange("1.7", 0, 5)));
 
-    private ProtocolVersion version;
+    private final ProtocolVersion version;
 
-    private ProtocolCollection(ProtocolVersion version)
+    ProtocolCollection(ProtocolVersion version)
     {
         this.version = version;
     }

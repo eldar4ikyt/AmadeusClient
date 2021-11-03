@@ -35,9 +35,9 @@ public class GuiDisconnected extends GuiScreen
     public void initGui()
     {
         this.buttonList.clear();
-        this.multilineMessage = this.fontRendererObj.listFormattedStringToWidth(this.message.getFormattedText(), this.width - 50);
+        this.multilineMessage = this.fontRendererObj.listFormattedStringToWidth(this.message.getFormattedText(), width - 50);
         this.field_175353_i = this.multilineMessage.size() * this.fontRendererObj.FONT_HEIGHT;
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu")));
+        this.buttonList.add(new GuiButton(0, width / 2 - 100, height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu")));
     }
 
     /**
@@ -57,14 +57,14 @@ public class GuiDisconnected extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.reason, this.width / 2, this.height / 2 - this.field_175353_i / 2 - this.fontRendererObj.FONT_HEIGHT * 2, 11184810);
-        int i = this.height / 2 - this.field_175353_i / 2;
+        this.drawCenteredString(this.fontRendererObj, this.reason, width / 2, height / 2 - this.field_175353_i / 2 - this.fontRendererObj.FONT_HEIGHT * 2, 11184810);
+        int i = height / 2 - this.field_175353_i / 2;
 
         if (this.multilineMessage != null)
         {
             for (String s : this.multilineMessage)
             {
-                this.drawCenteredString(this.fontRendererObj, s, this.width / 2, i, 16777215);
+                this.drawCenteredString(this.fontRendererObj, s, width / 2, i, 16777215);
                 i += this.fontRendererObj.FONT_HEIGHT;
             }
         }

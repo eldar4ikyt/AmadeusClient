@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Insulter extends Module {
+public final class Insulter extends Module {
 
     private static final ArrayList<String> players = new ArrayList<>();
     private final ModeValue<Mode> mode = new ModeValue<>("Mode", Mode.ENGLISH, this);

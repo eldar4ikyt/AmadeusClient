@@ -132,7 +132,7 @@ public class GuiConnecting extends GuiScreen
     public void initGui()
     {
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, I18n.format("gui.cancel")));
+        this.buttonList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120 + 12, I18n.format("gui.cancel")));
     }
 
     /**
@@ -162,11 +162,11 @@ public class GuiConnecting extends GuiScreen
 
         if (this.networkManager == null)
         {
-            this.drawCenteredString(this.fontRendererObj, I18n.format("connect.connecting"), this.width / 2, this.height / 2 - 50, 16777215);
+            this.drawCenteredString(this.fontRendererObj, I18n.format("connect.connecting"), width / 2, height / 2 - 50, 16777215);
         }
         else
         {
-            this.drawCenteredString(this.fontRendererObj, I18n.format("connect.authorizing"), this.width / 2, this.height / 2 - 50, 16777215);
+            this.drawCenteredString(this.fontRendererObj, I18n.format("connect.authorizing"), width / 2, height / 2 - 50, 16777215);
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);

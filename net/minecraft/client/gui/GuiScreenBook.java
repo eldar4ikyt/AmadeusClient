@@ -117,17 +117,17 @@ public class GuiScreenBook extends GuiScreen
 
         if (this.bookIsUnsigned)
         {
-            this.buttonList.add(this.buttonSign = new GuiButton(3, this.width / 2 - 100, 4 + this.bookImageHeight, 98, 20, I18n.format("book.signButton")));
-            this.buttonList.add(this.buttonDone = new GuiButton(0, this.width / 2 + 2, 4 + this.bookImageHeight, 98, 20, I18n.format("gui.done")));
-            this.buttonList.add(this.buttonFinalize = new GuiButton(5, this.width / 2 - 100, 4 + this.bookImageHeight, 98, 20, I18n.format("book.finalizeButton")));
-            this.buttonList.add(this.buttonCancel = new GuiButton(4, this.width / 2 + 2, 4 + this.bookImageHeight, 98, 20, I18n.format("gui.cancel")));
+            this.buttonList.add(this.buttonSign = new GuiButton(3, width / 2 - 100, 4 + this.bookImageHeight, 98, 20, I18n.format("book.signButton")));
+            this.buttonList.add(this.buttonDone = new GuiButton(0, width / 2 + 2, 4 + this.bookImageHeight, 98, 20, I18n.format("gui.done")));
+            this.buttonList.add(this.buttonFinalize = new GuiButton(5, width / 2 - 100, 4 + this.bookImageHeight, 98, 20, I18n.format("book.finalizeButton")));
+            this.buttonList.add(this.buttonCancel = new GuiButton(4, width / 2 + 2, 4 + this.bookImageHeight, 98, 20, I18n.format("gui.cancel")));
         }
         else
         {
-            this.buttonList.add(this.buttonDone = new GuiButton(0, this.width / 2 - 100, 4 + this.bookImageHeight, 200, 20, I18n.format("gui.done")));
+            this.buttonList.add(this.buttonDone = new GuiButton(0, width / 2 - 100, 4 + this.bookImageHeight, 200, 20, I18n.format("gui.done")));
         }
 
-        int i = (this.width - this.bookImageWidth) / 2;
+        int i = (width - this.bookImageWidth) / 2;
         int j = 2;
         this.buttonList.add(this.buttonNextPage = new GuiScreenBook.NextPageButton(1, i + 120, j + 154, true));
         this.buttonList.add(this.buttonPreviousPage = new GuiScreenBook.NextPageButton(2, i + 38, j + 154, false));
@@ -410,7 +410,7 @@ public class GuiScreenBook extends GuiScreen
     {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(bookGuiTextures);
-        int i = (this.width - this.bookImageWidth) / 2;
+        int i = (width - this.bookImageWidth) / 2;
         int j = 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.bookImageWidth, this.bookImageHeight);
 
@@ -591,7 +591,7 @@ public class GuiScreenBook extends GuiScreen
         }
         else
         {
-            int i = p_175385_1_ - (this.width - this.bookImageWidth) / 2 - 36;
+            int i = p_175385_1_ - (width - this.bookImageWidth) / 2 - 36;
             int j = p_175385_2_ - 2 - 16 - 16;
 
             if (i >= 0 && j >= 0)

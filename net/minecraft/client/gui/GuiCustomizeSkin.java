@@ -30,7 +30,7 @@ public class GuiCustomizeSkin extends GuiScreen
 
         for (EnumPlayerModelParts enumplayermodelparts : EnumPlayerModelParts.values())
         {
-            this.buttonList.add(new GuiCustomizeSkin.ButtonPart(enumplayermodelparts.getPartId(), this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, enumplayermodelparts));
+            this.buttonList.add(new GuiCustomizeSkin.ButtonPart(enumplayermodelparts.getPartId(), width / 2 - 155 + i % 2 * 160, height / 6 + 24 * (i >> 1), 150, 20, enumplayermodelparts));
             ++i;
         }
 
@@ -39,9 +39,9 @@ public class GuiCustomizeSkin extends GuiScreen
             ++i;
         }
 
-        this.buttonList.add(new GuiButtonOF(210, this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), I18n.format("of.options.skinCustomisation.ofCape")));
+        this.buttonList.add(new GuiButtonOF(210, width / 2 - 100, height / 6 + 24 * (i >> 1), I18n.format("of.options.skinCustomisation.ofCape")));
         i = i + 2;
-        this.buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), I18n.format("gui.done")));
+        this.buttonList.add(new GuiButton(200, width / 2 - 100, height / 6 + 24 * (i >> 1), I18n.format("gui.done")));
     }
 
     /**
@@ -76,7 +76,7 @@ public class GuiCustomizeSkin extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 20, 16777215);
+        this.drawCenteredString(this.fontRendererObj, this.title, width / 2, 20, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

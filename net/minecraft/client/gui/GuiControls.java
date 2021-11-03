@@ -38,8 +38,8 @@ public class GuiControls extends GuiScreen
     public void initGui()
     {
         this.keyBindingList = new GuiKeyBindingList(this, this.mc);
-        this.buttonList.add(new GuiButton(200, this.width / 2 - 155, this.height - 29, 150, 20, I18n.format("gui.done")));
-        this.buttonList.add(this.buttonReset = new GuiButton(201, this.width / 2 - 155 + 160, this.height - 29, 150, 20, I18n.format("controls.resetAll")));
+        this.buttonList.add(new GuiButton(200, width / 2 - 155, height - 29, 150, 20, I18n.format("gui.done")));
+        this.buttonList.add(this.buttonReset = new GuiButton(201, width / 2 - 155 + 160, height - 29, 150, 20, I18n.format("controls.resetAll")));
         this.screenTitle = I18n.format("controls.title");
         int i = 0;
 
@@ -47,11 +47,11 @@ public class GuiControls extends GuiScreen
         {
             if (gamesettings$options.getEnumFloat())
             {
-                this.buttonList.add(new GuiOptionSlider(gamesettings$options.returnEnumOrdinal(), this.width / 2 - 155 + i % 2 * 160, 18 + 24 * (i >> 1), gamesettings$options));
+                this.buttonList.add(new GuiOptionSlider(gamesettings$options.returnEnumOrdinal(), width / 2 - 155 + i % 2 * 160, 18 + 24 * (i >> 1), gamesettings$options));
             }
             else
             {
-                this.buttonList.add(new GuiOptionButton(gamesettings$options.returnEnumOrdinal(), this.width / 2 - 155 + i % 2 * 160, 18 + 24 * (i >> 1), gamesettings$options, this.options.getKeyBinding(gamesettings$options)));
+                this.buttonList.add(new GuiOptionButton(gamesettings$options.returnEnumOrdinal(), width / 2 - 155 + i % 2 * 160, 18 + 24 * (i >> 1), gamesettings$options, this.options.getKeyBinding(gamesettings$options)));
             }
 
             ++i;
@@ -158,7 +158,7 @@ public class GuiControls extends GuiScreen
     {
         this.drawDefaultBackground();
         this.keyBindingList.drawScreen(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, this.screenTitle, this.width / 2, 8, 16777215);
+        this.drawCenteredString(this.fontRendererObj, this.screenTitle, width / 2, 8, 16777215);
         boolean flag = true;
 
         for (KeyBinding keybinding : this.options.mc)

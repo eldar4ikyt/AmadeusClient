@@ -41,8 +41,8 @@ public class GuiScreenResourcePacks extends GuiScreen
      */
     public void initGui()
     {
-        this.buttonList.add(new GuiOptionButton(2, this.width / 2 - 154, this.height - 48, I18n.format("resourcePack.openFolder")));
-        this.buttonList.add(new GuiOptionButton(1, this.width / 2 + 4, this.height - 48, I18n.format("gui.done")));
+        this.buttonList.add(new GuiOptionButton(2, width / 2 - 154, height - 48, I18n.format("resourcePack.openFolder")));
+        this.buttonList.add(new GuiOptionButton(1, width / 2 + 4, height - 48, I18n.format("gui.done")));
 
         if (!this.changed)
         {
@@ -66,11 +66,11 @@ public class GuiScreenResourcePacks extends GuiScreen
             this.selectedResourcePacks.add(new ResourcePackListEntryDefault(this));
         }
 
-        this.availableResourcePacksList = new GuiResourcePackAvailable(this.mc, 200, this.height, this.availableResourcePacks);
-        this.availableResourcePacksList.setSlotXBoundsFromLeft(this.width / 2 - 4 - 200);
+        this.availableResourcePacksList = new GuiResourcePackAvailable(this.mc, 200, height, this.availableResourcePacks);
+        this.availableResourcePacksList.setSlotXBoundsFromLeft(width / 2 - 4 - 200);
         this.availableResourcePacksList.registerScrollButtons(7, 8);
-        this.selectedResourcePacksList = new GuiResourcePackSelected(this.mc, 200, this.height, this.selectedResourcePacks);
-        this.selectedResourcePacksList.setSlotXBoundsFromLeft(this.width / 2 + 4);
+        this.selectedResourcePacksList = new GuiResourcePackSelected(this.mc, 200, height, this.selectedResourcePacks);
+        this.selectedResourcePacksList.setSlotXBoundsFromLeft(width / 2 + 4);
         this.selectedResourcePacksList.registerScrollButtons(7, 8);
     }
 
@@ -228,8 +228,8 @@ public class GuiScreenResourcePacks extends GuiScreen
         this.drawBackground(0);
         this.availableResourcePacksList.drawScreen(mouseX, mouseY, partialTicks);
         this.selectedResourcePacksList.drawScreen(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("resourcePack.title"), this.width / 2, 16, 16777215);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("resourcePack.folderInfo"), this.width / 2 - 77, this.height - 26, 8421504);
+        this.drawCenteredString(this.fontRendererObj, I18n.format("resourcePack.title"), width / 2, 16, 16777215);
+        this.drawCenteredString(this.fontRendererObj, I18n.format("resourcePack.folderInfo"), width / 2 - 77, height - 26, 8421504);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

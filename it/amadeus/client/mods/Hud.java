@@ -9,7 +9,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
-public class Hud extends Module {
+public final class Hud extends Module {
 
     @Override
     public String getName() {

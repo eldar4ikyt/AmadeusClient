@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Killaura extends Module {
+public final class Killaura extends Module {
 
     @Getter
     private static EntityLivingBase currentTarget;

@@ -86,14 +86,14 @@ public class GuiStats extends GuiScreen implements IProgressMeter
 
     public void createButtons()
     {
-        this.buttonList.add(new GuiButton(0, this.width / 2 + 4, this.height - 28, 150, 20, I18n.format("gui.done")));
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 160, this.height - 52, 80, 20, I18n.format("stat.generalButton")));
+        this.buttonList.add(new GuiButton(0, width / 2 + 4, height - 28, 150, 20, I18n.format("gui.done")));
+        this.buttonList.add(new GuiButton(1, width / 2 - 160, height - 52, 80, 20, I18n.format("stat.generalButton")));
         GuiButton guibutton;
-        this.buttonList.add(guibutton = new GuiButton(2, this.width / 2 - 80, this.height - 52, 80, 20, I18n.format("stat.blocksButton")));
+        this.buttonList.add(guibutton = new GuiButton(2, width / 2 - 80, height - 52, 80, 20, I18n.format("stat.blocksButton")));
         GuiButton guibutton1;
-        this.buttonList.add(guibutton1 = new GuiButton(3, this.width / 2, this.height - 52, 80, 20, I18n.format("stat.itemsButton")));
+        this.buttonList.add(guibutton1 = new GuiButton(3, width / 2, height - 52, 80, 20, I18n.format("stat.itemsButton")));
         GuiButton guibutton2;
-        this.buttonList.add(guibutton2 = new GuiButton(4, this.width / 2 + 80, this.height - 52, 80, 20, I18n.format("stat.mobsButton")));
+        this.buttonList.add(guibutton2 = new GuiButton(4, width / 2 + 80, height - 52, 80, 20, I18n.format("stat.mobsButton")));
 
         if (this.blockStats.getSize() == 0)
         {
@@ -153,13 +153,13 @@ public class GuiStats extends GuiScreen implements IProgressMeter
         if (this.doesGuiPauseGame)
         {
             this.drawDefaultBackground();
-            this.drawCenteredString(this.fontRendererObj, I18n.format("multiplayer.downloadingStats"), this.width / 2, this.height / 2, 16777215);
-            this.drawCenteredString(this.fontRendererObj, lanSearchStates[(int)(Minecraft.getSystemTime() / 150L % (long)lanSearchStates.length)], this.width / 2, this.height / 2 + this.fontRendererObj.FONT_HEIGHT * 2, 16777215);
+            this.drawCenteredString(this.fontRendererObj, I18n.format("multiplayer.downloadingStats"), width / 2, height / 2, 16777215);
+            this.drawCenteredString(this.fontRendererObj, lanSearchStates[(int)(Minecraft.getSystemTime() / 150L % (long)lanSearchStates.length)], width / 2, height / 2 + this.fontRendererObj.FONT_HEIGHT * 2, 16777215);
         }
         else
         {
             this.displaySlot.drawScreen(mouseX, mouseY, partialTicks);
-            this.drawCenteredString(this.fontRendererObj, this.screenTitle, this.width / 2, 20, 16777215);
+            this.drawCenteredString(this.fontRendererObj, this.screenTitle, width / 2, 20, 16777215);
             super.drawScreen(mouseX, mouseY, partialTicks);
         }
     }
@@ -232,7 +232,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
 
         protected Stats(Minecraft mcIn)
         {
-            super(mcIn, GuiStats.this.width, GuiStats.this.height, 32, GuiStats.this.height - 64, 20);
+            super(mcIn, GuiScreen.width, GuiScreen.height, 32, GuiScreen.height - 64, 20);
             this.setShowSelectionBox(false);
             this.setHasListHeader(true, 20);
         }
@@ -587,7 +587,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
     {
         public StatsGeneral(Minecraft mcIn)
         {
-            super(mcIn, GuiStats.this.width, GuiStats.this.height, 32, GuiStats.this.height - 64, 10);
+            super(mcIn, GuiScreen.width, GuiScreen.height, 32, GuiScreen.height - 64, 10);
             this.setShowSelectionBox(false);
         }
 
@@ -761,7 +761,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
 
         public StatsMobsList(Minecraft mcIn)
         {
-            super(mcIn, GuiStats.this.width, GuiStats.this.height, 32, GuiStats.this.height - 64, GuiStats.this.fontRendererObj.FONT_HEIGHT * 4);
+            super(mcIn, GuiScreen.width, GuiScreen.height, 32, GuiScreen.height - 64, GuiStats.this.fontRendererObj.FONT_HEIGHT * 4);
             this.setShowSelectionBox(false);
 
             for (EntityList.EntityEggInfo entitylist$entityegginfo : EntityList.entityEggs.values())

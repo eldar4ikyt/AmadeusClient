@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 
-public class PlayerESP extends Module {
+public final class PlayerESP extends Module {
 
     @Override
     public String getName() {
@@ -32,8 +32,8 @@ public class PlayerESP extends Module {
         return Category.RENDER;
     }
 
-    private TessellatorModel hitlerHead = new TessellatorModel("/assets/minecraft/amadeus/hitler/head.obj");
-    private TessellatorModel hitlerBody = new TessellatorModel("/assets/minecraft/amadeus/hitler/body.obj");
+    private final TessellatorModel hitlerHead = new TessellatorModel("/assets/minecraft/amadeus/hitler/head.obj");
+    private final TessellatorModel hitlerBody = new TessellatorModel("/assets/minecraft/amadeus/hitler/body.obj");
 
     @Override
     public void onEvent(Event event) {

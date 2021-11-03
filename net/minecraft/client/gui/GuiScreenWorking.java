@@ -68,7 +68,7 @@ public class GuiScreenWorking extends GuiScreen implements IProgressUpdate
         {
             if (this.customLoadingScreen != null && this.mc.theWorld == null)
             {
-                this.customLoadingScreen.drawBackground(this.width, this.height);
+                this.customLoadingScreen.drawBackground(width, height);
             }
             else
             {
@@ -77,8 +77,8 @@ public class GuiScreenWorking extends GuiScreen implements IProgressUpdate
 
             if (this.progress > 0)
             {
-                this.drawCenteredString(this.fontRendererObj, this.field_146591_a, this.width / 2, 70, 16777215);
-                this.drawCenteredString(this.fontRendererObj, this.field_146589_f + " " + this.progress + "%", this.width / 2, 90, 16777215);
+                this.drawCenteredString(this.fontRendererObj, this.field_146591_a, width / 2, 70, 16777215);
+                this.drawCenteredString(this.fontRendererObj, this.field_146589_f + " " + this.progress + "%", width / 2, 90, 16777215);
             }
 
             super.drawScreen(mouseX, mouseY, partialTicks);

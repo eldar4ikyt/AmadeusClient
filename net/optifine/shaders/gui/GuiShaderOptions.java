@@ -84,8 +84,8 @@ public class GuiShaderOptions extends GuiScreenOF
                 {
                     int j2 = i2 % k1;
                     int k2 = i2 / k1;
-                    int l2 = Math.min(this.width / k1, 200);
-                    j = (this.width - l2 * k1) / 2;
+                    int l2 = Math.min(width / k1, 200);
+                    j = (width - l2 * k1) / 2;
                     int i3 = j2 * l2 + 5 + j;
                     int j3 = k + k2 * l;
                     int k3 = l2 - 10;
@@ -107,8 +107,8 @@ public class GuiShaderOptions extends GuiScreenOF
             }
         }
 
-        this.buttonList.add(new GuiButton(201, this.width / 2 - i1 - 20, this.height / 6 + 168 + 11, i1, j1, I18n.format("controls.reset")));
-        this.buttonList.add(new GuiButton(200, this.width / 2 + 20, this.height / 6 + 168 + 11, i1, j1, I18n.format("gui.done")));
+        this.buttonList.add(new GuiButton(201, width / 2 - i1 - 20, height / 6 + 168 + 11, i1, j1, I18n.format("controls.reset")));
+        this.buttonList.add(new GuiButton(200, width / 2 + 20, height / 6 + 168 + 11, i1, j1, I18n.format("gui.done")));
     }
 
     public static String getButtonText(ShaderOption so, int btnWidth)
@@ -261,11 +261,11 @@ public class GuiShaderOptions extends GuiScreenOF
 
         if (this.screenText != null)
         {
-            this.drawCenteredString(this.fontRendererObj, this.screenText, this.width / 2, 15, 16777215);
+            this.drawCenteredString(this.fontRendererObj, this.screenText, width / 2, 15, 16777215);
         }
         else
         {
-            this.drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 15, 16777215);
+            this.drawCenteredString(this.fontRendererObj, this.title, width / 2, 15, 16777215);
         }
 
         super.drawScreen(x, y, f);

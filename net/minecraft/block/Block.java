@@ -2,11 +2,14 @@ package net.minecraft.block;
 
 import java.util.List;
 import java.util.Random;
+
+import it.amadeus.client.event.events.EventCollide;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -488,8 +491,10 @@ public class Block
      */
     public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
     {
-        AxisAlignedBB axisalignedbb = this.getCollisionBoundingBox(worldIn, pos, state);
-
+        EventCollide eventCollide = new EventCollide(collidingEntity, pos.getX(), pos.getY(), pos.getZ(), this.getCollisionBoundingBox(worldIn, pos, state), this);
+        Minecraft.getMinecraft().getAmadeus().getEventManager().hook(eventCollide);
+        AxisAlignedBB axisalignedbb = eventCollide.getAxisalignedbb();
+        if (eventCollide.isCancelled()) return;
         if (axisalignedbb != null && mask.intersectsWith(axisalignedbb))
         {
             list.add(axisalignedbb);

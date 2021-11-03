@@ -40,11 +40,11 @@ public class GuiStreamOptions extends GuiScreen
         {
             if (gamesettings$options.getEnumFloat())
             {
-                this.buttonList.add(new GuiOptionSlider(gamesettings$options.returnEnumOrdinal(), this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), gamesettings$options));
+                this.buttonList.add(new GuiOptionSlider(gamesettings$options.returnEnumOrdinal(), width / 2 - 155 + i % 2 * 160, height / 6 + 24 * (i >> 1), gamesettings$options));
             }
             else
             {
-                this.buttonList.add(new GuiOptionButton(gamesettings$options.returnEnumOrdinal(), this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), gamesettings$options, this.field_152318_h.getKeyBinding(gamesettings$options)));
+                this.buttonList.add(new GuiOptionButton(gamesettings$options.returnEnumOrdinal(), width / 2 - 155 + i % 2 * 160, height / 6 + 24 * (i >> 1), gamesettings$options, this.field_152318_h.getKeyBinding(gamesettings$options)));
             }
 
             ++i;
@@ -55,25 +55,25 @@ public class GuiStreamOptions extends GuiScreen
             ++i;
         }
 
-        this.field_152314_s = this.height / 6 + 24 * (i >> 1) + 6;
+        this.field_152314_s = height / 6 + 24 * (i >> 1) + 6;
         i = i + 2;
 
         for (GameSettings.Options gamesettings$options1 : field_152316_f)
         {
             if (gamesettings$options1.getEnumFloat())
             {
-                this.buttonList.add(new GuiOptionSlider(gamesettings$options1.returnEnumOrdinal(), this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), gamesettings$options1));
+                this.buttonList.add(new GuiOptionSlider(gamesettings$options1.returnEnumOrdinal(), width / 2 - 155 + i % 2 * 160, height / 6 + 24 * (i >> 1), gamesettings$options1));
             }
             else
             {
-                this.buttonList.add(new GuiOptionButton(gamesettings$options1.returnEnumOrdinal(), this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), gamesettings$options1, this.field_152318_h.getKeyBinding(gamesettings$options1)));
+                this.buttonList.add(new GuiOptionButton(gamesettings$options1.returnEnumOrdinal(), width / 2 - 155 + i % 2 * 160, height / 6 + 24 * (i >> 1), gamesettings$options1, this.field_152318_h.getKeyBinding(gamesettings$options1)));
             }
 
             ++i;
         }
 
-        this.buttonList.add(new GuiButton(200, this.width / 2 - 155, this.height / 6 + 168, 150, 20, I18n.format("gui.done")));
-        GuiButton guibutton = new GuiButton(201, this.width / 2 + 5, this.height / 6 + 168, 150, 20, I18n.format("options.stream.ingestSelection"));
+        this.buttonList.add(new GuiButton(200, width / 2 - 155, height / 6 + 168, 150, 20, I18n.format("gui.done")));
+        GuiButton guibutton = new GuiButton(201, width / 2 + 5, height / 6 + 168, 150, 20, I18n.format("options.stream.ingestSelection"));
         guibutton.enabled = this.mc.getTwitchStream().isReadyToBroadcast() && this.mc.getTwitchStream().func_152925_v().length > 0 || this.mc.getTwitchStream().func_152908_z();
         this.buttonList.add(guibutton);
     }
@@ -131,12 +131,12 @@ public class GuiStreamOptions extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.field_152319_i, this.width / 2, 20, 16777215);
-        this.drawCenteredString(this.fontRendererObj, this.field_152313_r, this.width / 2, this.field_152314_s, 16777215);
+        this.drawCenteredString(this.fontRendererObj, this.field_152319_i, width / 2, 20, 16777215);
+        this.drawCenteredString(this.fontRendererObj, this.field_152313_r, width / 2, this.field_152314_s, 16777215);
 
         if (this.field_152315_t)
         {
-            this.drawCenteredString(this.fontRendererObj, EnumChatFormatting.RED + I18n.format("options.stream.changes", new Object[0]), this.width / 2, 20 + this.fontRendererObj.FONT_HEIGHT, 16777215);
+            this.drawCenteredString(this.fontRendererObj, EnumChatFormatting.RED + I18n.format("options.stream.changes", new Object[0]), width / 2, 20 + this.fontRendererObj.FONT_HEIGHT, 16777215);
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);

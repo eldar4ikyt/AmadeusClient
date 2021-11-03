@@ -173,14 +173,14 @@ public class GuiTwitchUserMode extends GuiScreen
      */
     public void initGui()
     {
-        int i = this.width / 3;
+        int i = width / 3;
         int j = i - 130;
-        this.buttonList.add(new GuiButton(1, i * 0 + j / 2, this.height - 70, 130, 20, I18n.format("stream.userinfo.timeout")));
-        this.buttonList.add(new GuiButton(0, i * 1 + j / 2, this.height - 70, 130, 20, I18n.format("stream.userinfo.ban")));
-        this.buttonList.add(new GuiButton(2, i * 2 + j / 2, this.height - 70, 130, 20, I18n.format("stream.userinfo.mod")));
-        this.buttonList.add(new GuiButton(5, i * 0 + j / 2, this.height - 45, 130, 20, I18n.format("gui.cancel")));
-        this.buttonList.add(new GuiButton(3, i * 1 + j / 2, this.height - 45, 130, 20, I18n.format("stream.userinfo.unban")));
-        this.buttonList.add(new GuiButton(4, i * 2 + j / 2, this.height - 45, 130, 20, I18n.format("stream.userinfo.unmod")));
+        this.buttonList.add(new GuiButton(1, i * 0 + j / 2, height - 70, 130, 20, I18n.format("stream.userinfo.timeout")));
+        this.buttonList.add(new GuiButton(0, i * 1 + j / 2, height - 70, 130, 20, I18n.format("stream.userinfo.ban")));
+        this.buttonList.add(new GuiButton(2, i * 2 + j / 2, height - 70, 130, 20, I18n.format("stream.userinfo.mod")));
+        this.buttonList.add(new GuiButton(5, i * 0 + j / 2, height - 45, 130, 20, I18n.format("gui.cancel")));
+        this.buttonList.add(new GuiButton(3, i * 1 + j / 2, height - 45, 130, 20, I18n.format("stream.userinfo.unban")));
+        this.buttonList.add(new GuiButton(4, i * 2 + j / 2, height - 45, 130, 20, I18n.format("stream.userinfo.unmod")));
         int k = 0;
 
         for (IChatComponent ichatcomponent : this.field_152332_r)
@@ -188,7 +188,7 @@ public class GuiTwitchUserMode extends GuiScreen
             k = Math.max(k, this.fontRendererObj.getStringWidth(ichatcomponent.getFormattedText()));
         }
 
-        this.field_152334_t = this.width / 2 - k / 2;
+        this.field_152334_t = width / 2 - k / 2;
     }
 
     /**
@@ -229,7 +229,7 @@ public class GuiTwitchUserMode extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.field_152338_i.getUnformattedText(), this.width / 2, 70, 16777215);
+        this.drawCenteredString(this.fontRendererObj, this.field_152338_i.getUnformattedText(), width / 2, 70, 16777215);
         int i = 80;
 
         for (IChatComponent ichatcomponent : this.field_152332_r)

@@ -9,12 +9,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import java.awt.*;
 
 
-public class Checkbox extends Component {
+public final class Checkbox extends Component {
 
     private final BooleanValue set;
-    private int x;
-    private int y;
-    private int height;
+    private int x, y, height;
     private boolean hovered;
     private float lastX1 = 1.5F;
     private float lastX2 = -0.5F;

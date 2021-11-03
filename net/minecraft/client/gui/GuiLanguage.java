@@ -45,8 +45,8 @@ public class GuiLanguage extends GuiScreen
      */
     public void initGui()
     {
-        this.buttonList.add(this.forceUnicodeFontBtn = new GuiOptionButton(100, this.width / 2 - 155, this.height - 38, GameSettings.Options.FORCE_UNICODE_FONT, this.game_settings_3.getKeyBinding(GameSettings.Options.FORCE_UNICODE_FONT)));
-        this.buttonList.add(this.confirmSettingsBtn = new GuiOptionButton(6, this.width / 2 - 155 + 160, this.height - 38, I18n.format("gui.done")));
+        this.buttonList.add(this.forceUnicodeFontBtn = new GuiOptionButton(100, width / 2 - 155, height - 38, GameSettings.Options.FORCE_UNICODE_FONT, this.game_settings_3.getKeyBinding(GameSettings.Options.FORCE_UNICODE_FONT)));
+        this.buttonList.add(this.confirmSettingsBtn = new GuiOptionButton(6, width / 2 - 155 + 160, height - 38, I18n.format("gui.done")));
         this.list = new GuiLanguage.List(this.mc);
         this.list.registerScrollButtons(7, 8);
     }
@@ -101,8 +101,8 @@ public class GuiLanguage extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.list.drawScreen(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("options.language"), this.width / 2, 16, 16777215);
-        this.drawCenteredString(this.fontRendererObj, "(" + I18n.format("options.languageWarning") + ")", this.width / 2, this.height - 56, 8421504);
+        this.drawCenteredString(this.fontRendererObj, I18n.format("options.language"), width / 2, 16, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "(" + I18n.format("options.languageWarning") + ")", width / 2, height - 56, 8421504);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -113,7 +113,7 @@ public class GuiLanguage extends GuiScreen
 
         public List(Minecraft mcIn)
         {
-            super(mcIn, GuiLanguage.this.width, GuiLanguage.this.height, 32, GuiLanguage.this.height - 65 + 4, 18);
+            super(mcIn, GuiScreen.width, GuiScreen.height, 32, GuiScreen.height - 65 + 4, 18);
 
             for (Language language : GuiLanguage.this.languageManager.getLanguages())
             {

@@ -22,8 +22,8 @@ public class GuiScreenDemo extends GuiScreen
     {
         this.buttonList.clear();
         int i = -16;
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 116, this.height / 2 + 62 + i, 114, 20, I18n.format("demo.help.buy")));
-        this.buttonList.add(new GuiButton(2, this.width / 2 + 2, this.height / 2 + 62 + i, 114, 20, I18n.format("demo.help.later")));
+        this.buttonList.add(new GuiButton(1, width / 2 - 116, height / 2 + 62 + i, 114, 20, I18n.format("demo.help.buy")));
+        this.buttonList.add(new GuiButton(2, width / 2 + 2, height / 2 + 62 + i, 114, 20, I18n.format("demo.help.later")));
     }
 
     /**
@@ -71,8 +71,8 @@ public class GuiScreenDemo extends GuiScreen
         super.drawDefaultBackground();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(field_146348_f);
-        int i = (this.width - 248) / 2;
-        int j = (this.height - 166) / 2;
+        int i = (width - 248) / 2;
+        int j = (height - 166) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, 248, 166);
     }
 
@@ -82,8 +82,8 @@ public class GuiScreenDemo extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        int i = (this.width - 248) / 2 + 10;
-        int j = (this.height - 166) / 2 + 8;
+        int i = (width - 248) / 2 + 10;
+        int j = (height - 166) / 2 + 8;
         this.fontRendererObj.drawString(I18n.format("demo.help.title"), i, j, 2039583);
         j = j + 12;
         GameSettings gamesettings = this.mc.gameSettings;

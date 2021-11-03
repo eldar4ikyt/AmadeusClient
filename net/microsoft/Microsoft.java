@@ -176,10 +176,10 @@ public class Microsoft {
             params.add(new BasicNameValuePair("code", authorizeCode));
             params.add(new BasicNameValuePair("grant_type", "authorization_code"));
             params.add(new BasicNameValuePair("redirect_uri", "http://localhost:26669/relogin"));
-            post.setEntity((HttpEntity)new UrlEncodedFormEntity(params, "UTF-8"));
+            post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
             post.setHeader("Accept", "application/x-www-form-urlencoded");
             post.setHeader("Content-type", "application/x-www-form-urlencoded");
-            CloseableHttpResponse closeableHttpResponse = this.client.execute((HttpUriRequest)post);
+            CloseableHttpResponse closeableHttpResponse = this.client.execute(post);
             if (closeableHttpResponse.getEntity() == null)
                 throw new RuntimeException("No entity!");
             JsonObject obj = parseObject(EntityUtils.toString(closeableHttpResponse.getEntity()));
@@ -198,15 +198,15 @@ public class Microsoft {
             props.addProperty("AuthMethod", "RPS");
             props.addProperty("SiteName", "user.auth.xboxlive.com");
             props.addProperty("RpsTicket", "d=" + accessToken);
-            obj.add("Properties", (JsonElement)props);
+            obj.add("Properties", props);
             obj.addProperty("RelyingParty", "http://auth.xboxlive.com");
             obj.addProperty("TokenType", "JWT");
             StringEntity requestEntity = new StringEntity(obj.toString(), ContentType.APPLICATION_JSON);
-            post.setEntity((HttpEntity)requestEntity);
-            CloseableHttpResponse closeableHttpResponse = this.client.execute((HttpUriRequest)post);
+            post.setEntity(requestEntity);
+            CloseableHttpResponse closeableHttpResponse = this.client.execute(post);
             if (closeableHttpResponse.getEntity() == null)
                 throw new RuntimeException("No entity!");
-            JsonObject responseObj = parseObject((HttpResponse)closeableHttpResponse);
+            JsonObject responseObj = parseObject(closeableHttpResponse);
             return new XblToken(responseObj.get("Token").getAsString(), responseObj.get("DisplayClaims").getAsJsonObject().get("xui").getAsJsonArray().get(0).getAsJsonObject().get("uhs").getAsString());
         } catch (Exception e) {
             this.errorMsg = ExceptionUtils.getStackTrace(e);
@@ -223,14 +223,14 @@ public class Microsoft {
             JsonElement asd = new JsonParser().parse(xblToken.token);
             token.add(asd);
             props.addProperty("SandboxId", "RETAIL");
-            props.add("UserTokens", (JsonElement)token);
-            obj.add("Properties", (JsonElement)props);
+            props.add("UserTokens", token);
+            obj.add("Properties", props);
             obj.addProperty("RelyingParty", "rp://api.minecraftservices.com/");
             obj.addProperty("TokenType", "JWT");
             StringEntity entity = new StringEntity(obj.toString(), ContentType.APPLICATION_JSON);
-            post.setEntity((HttpEntity)entity);
-            CloseableHttpResponse closeableHttpResponse = this.client.execute((HttpUriRequest)post);
-            return new XstsToken(parseObject((HttpResponse)closeableHttpResponse).get("Token").getAsString());
+            post.setEntity(entity);
+            CloseableHttpResponse closeableHttpResponse = this.client.execute(post);
+            return new XstsToken(parseObject(closeableHttpResponse).get("Token").getAsString());
         } catch (Exception e) {
             this.errorMsg = ExceptionUtils.getStackTrace(e);
             return null;
@@ -243,9 +243,9 @@ public class Microsoft {
             JsonObject obj = new JsonObject();
             obj.addProperty("identityToken", "XBL3.0 x=" + xblToken.ush + ";" + xstsToken.token);
             StringEntity entity = new StringEntity(obj.toString(), ContentType.APPLICATION_JSON);
-            post.setEntity((HttpEntity)entity);
-            CloseableHttpResponse closeableHttpResponse = this.client.execute((HttpUriRequest)post);
-            JsonObject responseObj = parseObject((HttpResponse)closeableHttpResponse);
+            post.setEntity(entity);
+            CloseableHttpResponse closeableHttpResponse = this.client.execute(post);
+            JsonObject responseObj = parseObject(closeableHttpResponse);
             return new MinecraftToken(responseObj.get("access_token").getAsString());
         } catch (Exception e) {
             this.errorMsg = ExceptionUtils.getStackTrace(e);
@@ -257,8 +257,8 @@ public class Microsoft {
         try {
             HttpGet get = new HttpGet("https://api.minecraftservices.com/minecraft/profile");
             get.setHeader("Authorization", "Bearer " + minecraftToken.accessToken);
-            CloseableHttpResponse closeableHttpResponse = this.client.execute((HttpUriRequest)get);
-            JsonObject obj = parseObject((HttpResponse)closeableHttpResponse);
+            CloseableHttpResponse closeableHttpResponse = this.client.execute(get);
+            JsonObject obj = parseObject(closeableHttpResponse);
             return new MinecraftProfile(obj.get("name").getAsString(), obj.get("id").getAsString(), minecraftToken);
         } catch (Exception e) {
             this.errorMsg = ExceptionUtils.getStackTrace(e);

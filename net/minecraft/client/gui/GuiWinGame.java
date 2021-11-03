@@ -47,7 +47,7 @@ public class GuiWinGame extends GuiScreen
 
         soundhandler.update();
         ++this.field_146581_h;
-        float f = (float)(this.field_146579_r + this.height + this.height + 24) / this.field_146578_s;
+        float f = (float)(this.field_146579_r + height + height + 24) / this.field_146578_s;
 
         if ((float)this.field_146581_h > f)
         {
@@ -150,12 +150,12 @@ public class GuiWinGame extends GuiScreen
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         this.mc.getTextureManager().bindTexture(Gui.optionsBackground);
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-        int i = this.width;
+        int i = width;
         float f = 0.0F - ((float)this.field_146581_h + p_146575_3_) * 0.5F * this.field_146578_s;
-        float f1 = (float)this.height - ((float)this.field_146581_h + p_146575_3_) * 0.5F * this.field_146578_s;
+        float f1 = (float) height - ((float)this.field_146581_h + p_146575_3_) * 0.5F * this.field_146578_s;
         float f2 = 0.015625F;
         float f3 = ((float)this.field_146581_h + p_146575_3_ - 0.0F) * 0.02F;
-        float f4 = (float)(this.field_146579_r + this.height + this.height + 24) / this.field_146578_s;
+        float f4 = (float)(this.field_146579_r + height + height + 24) / this.field_146578_s;
         float f5 = (f4 - 20.0F - ((float)this.field_146581_h + p_146575_3_)) * 0.005F;
 
         if (f5 < f3)
@@ -170,8 +170,8 @@ public class GuiWinGame extends GuiScreen
 
         f3 = f3 * f3;
         f3 = f3 * 96.0F / 255.0F;
-        worldrenderer.pos(0.0D, this.height, this.zLevel).tex(0.0D, f * f2).color(f3, f3, f3, 1.0F).endVertex();
-        worldrenderer.pos(i, this.height, this.zLevel).tex((float)i * f2, f * f2).color(f3, f3, f3, 1.0F).endVertex();
+        worldrenderer.pos(0.0D, height, this.zLevel).tex(0.0D, f * f2).color(f3, f3, f3, 1.0F).endVertex();
+        worldrenderer.pos(i, height, this.zLevel).tex((float)i * f2, f * f2).color(f3, f3, f3, 1.0F).endVertex();
         worldrenderer.pos(i, 0.0D, this.zLevel).tex((float)i * f2, f1 * f2).color(f3, f3, f3, 1.0F).endVertex();
         worldrenderer.pos(0.0D, 0.0D, this.zLevel).tex(0.0D, f1 * f2).color(f3, f3, f3, 1.0F).endVertex();
         tessellator.draw();
@@ -186,8 +186,8 @@ public class GuiWinGame extends GuiScreen
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         int i = 274;
-        int j = this.width / 2 - i / 2;
-        int k = this.height + 50;
+        int j = width / 2 - i / 2;
+        int k = height + 50;
         float f = -((float)this.field_146581_h + partialTicks) * this.field_146578_s;
         GlStateManager.pushMatrix();
         GlStateManager.translate(0.0F, f, 0.0F);
@@ -201,7 +201,7 @@ public class GuiWinGame extends GuiScreen
         {
             if (i1 == this.field_146582_i.size() - 1)
             {
-                float f1 = (float)l + f - (float)(this.height / 2 - 6);
+                float f1 = (float)l + f - (float)(height / 2 - 6);
 
                 if (f1 < 0.0F)
                 {
@@ -209,7 +209,7 @@ public class GuiWinGame extends GuiScreen
                 }
             }
 
-            if ((float)l + f + 12.0F + 8.0F > 0.0F && (float)l + f < (float)this.height)
+            if ((float)l + f + 12.0F + 8.0F > 0.0F && (float)l + f < (float) height)
             {
                 String s = this.field_146582_i.get(i1);
 
@@ -231,8 +231,8 @@ public class GuiWinGame extends GuiScreen
         this.mc.getTextureManager().bindTexture(VIGNETTE_TEXTURE);
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(0, 769);
-        int j1 = this.width;
-        int k1 = this.height;
+        int j1 = width;
+        int k1 = height;
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
         worldrenderer.pos(0.0D, k1, this.zLevel).tex(0.0D, 1.0D).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
         worldrenderer.pos(j1, k1, this.zLevel).tex(1.0D, 1.0D).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();

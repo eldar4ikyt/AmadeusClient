@@ -31,9 +31,9 @@ public class GuiConfirmOpenLink extends GuiYesNo
     {
         super.initGui();
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 50 - 105, this.height / 6 + 96, 100, 20, this.confirmButtonText));
-        this.buttonList.add(new GuiButton(2, this.width / 2 - 50, this.height / 6 + 96, 100, 20, this.copyLinkButtonText));
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 50 + 105, this.height / 6 + 96, 100, 20, this.cancelButtonText));
+        this.buttonList.add(new GuiButton(0, width / 2 - 50 - 105, height / 6 + 96, 100, 20, this.confirmButtonText));
+        this.buttonList.add(new GuiButton(2, width / 2 - 50, height / 6 + 96, 100, 20, this.copyLinkButtonText));
+        this.buttonList.add(new GuiButton(1, width / 2 - 50 + 105, height / 6 + 96, 100, 20, this.cancelButtonText));
     }
 
     /**
@@ -66,7 +66,7 @@ public class GuiConfirmOpenLink extends GuiYesNo
 
         if (this.showSecurityWarning)
         {
-            this.drawCenteredString(this.fontRendererObj, this.openLinkWarning, this.width / 2, 110, 16764108);
+            this.drawCenteredString(this.fontRendererObj, this.openLinkWarning, width / 2, 110, 16764108);
         }
     }
 

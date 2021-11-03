@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-public class RenderUtil {
+public final class RenderUtil {
 
     public static void enableGL2D() {
         GL11.glDisable(2929);
@@ -110,7 +110,7 @@ public class RenderUtil {
         GL11.glDisable(GL11.GL_BLEND);
     }
 
-    public static final void drawBoxFilled(AxisAlignedBB axisAlignedBB) {
+    public static void drawBoxFilled(AxisAlignedBB axisAlignedBB) {
         GL11.glBegin(GL11.GL_QUADS);
         {
             GL11.glVertex3d(axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ);
@@ -181,9 +181,9 @@ public class RenderUtil {
         float green = (color >> 16 & 0xFF) / 255.0F;
         float blue = (color >> 8 & 0xFF) / 255.0F;
         float alpha = (color & 0xFF) / 255.0F;
-        double x = blockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
-        double y = blockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
-        double z = blockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
+        double x = blockPos.getX() - RenderManager.renderPosX;
+        double y = blockPos.getY() - RenderManager.renderPosY;
+        double z = blockPos.getZ() - RenderManager.renderPosZ;
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glLineWidth(2.0F);
@@ -599,9 +599,9 @@ public class RenderUtil {
     public static void drawBox(TileEntityChest pos, Vec3 size, Color color) {
         final RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
 
-        final double x = pos.getPos().getX() - renderManager.renderPosX;
-        final double y = pos.getPos().getY() - renderManager.renderPosY;
-        final double z = pos.getPos().getZ() - renderManager.renderPosZ;
+        final double x = pos.getPos().getX() - RenderManager.renderPosX;
+        final double y = pos.getPos().getY() - RenderManager.renderPosY;
+        final double z = pos.getPos().getZ() - RenderManager.renderPosZ;
 
         final AxisAlignedBB axisAlignedBB = new AxisAlignedBB(x, y, z, x + size.xCoord, y + size.yCoord, z + size.zCoord);
         final Block chest_block_pos = Minecraft.getMinecraft().theWorld.getBlockState(pos.getPos()).getBlock();

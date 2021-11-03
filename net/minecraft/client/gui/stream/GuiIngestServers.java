@@ -35,8 +35,8 @@ public class GuiIngestServers extends GuiScreen
             this.mc.getTwitchStream().func_152909_x();
         }
 
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 155, this.height - 24 - 6, 150, 20, I18n.format("gui.done")));
-        this.buttonList.add(new GuiButton(2, this.width / 2 + 5, this.height - 24 - 6, 150, 20, I18n.format("options.stream.ingest.reset")));
+        this.buttonList.add(new GuiButton(1, width / 2 - 155, height - 24 - 6, 150, 20, I18n.format("gui.done")));
+        this.buttonList.add(new GuiButton(2, width / 2 + 5, height - 24 - 6, 150, 20, I18n.format("options.stream.ingest.reset")));
     }
 
     /**
@@ -85,7 +85,7 @@ public class GuiIngestServers extends GuiScreen
     {
         this.drawDefaultBackground();
         this.field_152311_g.drawScreen(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, this.field_152310_f, this.width / 2, 20, 16777215);
+        this.drawCenteredString(this.fontRendererObj, this.field_152310_f, width / 2, 20, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -93,7 +93,7 @@ public class GuiIngestServers extends GuiScreen
     {
         public ServerList(Minecraft mcIn)
         {
-            super(mcIn, GuiIngestServers.this.width, GuiIngestServers.this.height, 32, GuiIngestServers.this.height - 35, (int)((double)mcIn.fontRendererObj.FONT_HEIGHT * 3.5D));
+            super(mcIn, GuiScreen.width, GuiScreen.height, 32, GuiScreen.height - 35, (int)((double)mcIn.fontRendererObj.FONT_HEIGHT * 3.5D));
             this.setShowSelectionBox(false);
         }
 

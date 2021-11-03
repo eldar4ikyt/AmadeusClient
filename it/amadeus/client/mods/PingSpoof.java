@@ -11,7 +11,7 @@ import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PingSpoof extends Module {
+public final class PingSpoof extends Module {
 
     private final NumberValue<Integer> delay = new NumberValue<Integer>("Delay", 320, 100, 600, this);
     private final List<Packet<?>> packets = new ArrayList<>();

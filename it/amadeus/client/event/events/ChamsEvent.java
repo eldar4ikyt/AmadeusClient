@@ -6,7 +6,7 @@ import lombok.Getter;
 import net.minecraft.client.entity.AbstractClientPlayer;
 
 
-public class ChamsEvent extends Event implements Cancellable {
+public final class ChamsEvent extends Event implements Cancellable {
 
     @Getter AbstractClientPlayer abstractClientPlayer;
     @Getter double x, y, z;

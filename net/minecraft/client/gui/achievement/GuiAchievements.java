@@ -64,7 +64,7 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
     {
         this.mc.getNetHandler().addToSendQueue(new C16PacketClientStatus(C16PacketClientStatus.EnumState.REQUEST_STATS));
         this.buttonList.clear();
-        this.buttonList.add(new GuiOptionButton(1, this.width / 2 + 24, this.height / 2 + 74, 80, 20, I18n.format("gui.done")));
+        this.buttonList.add(new GuiOptionButton(1, width / 2 + 24, height / 2 + 74, 80, 20, I18n.format("gui.done")));
     }
 
     /**
@@ -106,15 +106,15 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
         if (this.loadingAchievements)
         {
             this.drawDefaultBackground();
-            this.drawCenteredString(this.fontRendererObj, I18n.format("multiplayer.downloadingStats"), this.width / 2, this.height / 2, 16777215);
-            this.drawCenteredString(this.fontRendererObj, lanSearchStates[(int)(Minecraft.getSystemTime() / 150L % (long)lanSearchStates.length)], this.width / 2, this.height / 2 + this.fontRendererObj.FONT_HEIGHT * 2, 16777215);
+            this.drawCenteredString(this.fontRendererObj, I18n.format("multiplayer.downloadingStats"), width / 2, height / 2, 16777215);
+            this.drawCenteredString(this.fontRendererObj, lanSearchStates[(int)(Minecraft.getSystemTime() / 150L % (long)lanSearchStates.length)], width / 2, height / 2 + this.fontRendererObj.FONT_HEIGHT * 2, 16777215);
         }
         else
         {
             if (Mouse.isButtonDown(0))
             {
-                int i = (this.width - this.field_146555_f) / 2;
-                int j = (this.height - this.field_146557_g) / 2;
+                int i = (width - this.field_146555_f) / 2;
+                int j = (height - this.field_146557_g) / 2;
                 int k = i + 8;
                 int l = j + 17;
 
@@ -233,8 +233,8 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
 
     protected void drawTitle()
     {
-        int i = (this.width - this.field_146555_f) / 2;
-        int j = (this.height - this.field_146557_g) / 2;
+        int i = (width - this.field_146555_f) / 2;
+        int j = (height - this.field_146557_g) / 2;
         this.fontRendererObj.drawString(I18n.format("gui.achievements"), i + 15, j + 5, 4210752);
     }
 
@@ -263,8 +263,8 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
             j = field_146560_B - 1;
         }
 
-        int k = (this.width - this.field_146555_f) / 2;
-        int l = (this.height - this.field_146557_g) / 2;
+        int k = (width - this.field_146555_f) / 2;
+        int l = (height - this.field_146557_g) / 2;
         int i1 = k + 16;
         int j1 = l + 17;
         this.zLevel = 0.0F;

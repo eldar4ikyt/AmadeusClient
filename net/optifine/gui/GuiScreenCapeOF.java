@@ -36,14 +36,14 @@ public class GuiScreenCapeOF extends GuiScreenOF
         int i = 0;
         this.title = I18n.format("of.options.capeOF.title");
         i = i + 2;
-        this.buttonList.add(new GuiButtonOF(210, this.width / 2 - 155, this.height / 6 + 24 * (i >> 1), 150, 20, I18n.format("of.options.capeOF.openEditor")));
-        this.buttonList.add(new GuiButtonOF(220, this.width / 2 - 155 + 160, this.height / 6 + 24 * (i >> 1), 150, 20, I18n.format("of.options.capeOF.reloadCape")));
+        this.buttonList.add(new GuiButtonOF(210, width / 2 - 155, height / 6 + 24 * (i >> 1), 150, 20, I18n.format("of.options.capeOF.openEditor")));
+        this.buttonList.add(new GuiButtonOF(220, width / 2 - 155 + 160, height / 6 + 24 * (i >> 1), 150, 20, I18n.format("of.options.capeOF.reloadCape")));
         i = i + 6;
-        this.buttonCopyLink = new GuiButtonOF(230, this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), 200, 20, I18n.format("of.options.capeOF.copyEditorLink"));
+        this.buttonCopyLink = new GuiButtonOF(230, width / 2 - 100, height / 6 + 24 * (i >> 1), 200, 20, I18n.format("of.options.capeOF.copyEditorLink"));
         this.buttonCopyLink.visible = this.linkUrl != null;
         this.buttonList.add(this.buttonCopyLink);
         i = i + 4;
-        this.buttonList.add(new GuiButtonOF(200, this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), I18n.format("gui.done")));
+        this.buttonList.add(new GuiButtonOF(200, width / 2 - 100, height / 6 + 24 * (i >> 1), I18n.format("gui.done")));
     }
 
     /**
@@ -130,11 +130,11 @@ public class GuiScreenCapeOF extends GuiScreenOF
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRenderer, this.title, this.width / 2, 20, 16777215);
+        this.drawCenteredString(this.fontRenderer, this.title, width / 2, 20, 16777215);
 
         if (this.message != null)
         {
-            this.drawCenteredString(this.fontRenderer, this.message, this.width / 2, this.height / 6 + 60, 16777215);
+            this.drawCenteredString(this.fontRenderer, this.message, width / 2, height / 6 + 60, 16777215);
 
             if (System.currentTimeMillis() > this.messageHideTimeMs)
             {

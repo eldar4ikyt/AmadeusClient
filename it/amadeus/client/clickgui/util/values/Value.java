@@ -3,21 +3,18 @@ package it.amadeus.client.clickgui.util.values;
 import it.amadeus.client.module.Module;
 
 import java.awt.*;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 
 public class Value<T> {
 
     private final Supplier<?> supplier;
-    public float HUE;
-    public Color ColorPickerC;
     private String description = "";
     private String valueName;
     private T valueObject;
     private T defaultValueObject;
     private Module parent;
-    private double id;
-    private boolean ColorPicker;
 
     public Value(String valueName, T defaultValueObject, Module parent, Supplier<?> supplier, String description) {
         this.supplier = supplier;

@@ -36,7 +36,7 @@ public class GuiSnooper extends GuiScreen
         String s = I18n.format("options.snooper.desc");
         java.util.List<String> list = Lists.newArrayList();
 
-        for (String s1 : this.fontRendererObj.listFormattedStringToWidth(s, this.width - 30))
+        for (String s1 : this.fontRendererObj.listFormattedStringToWidth(s, width - 30))
         {
             list.add(s1);
         }
@@ -44,14 +44,14 @@ public class GuiSnooper extends GuiScreen
         this.field_146607_r = list.toArray(new String[list.size()]);
         this.field_146604_g.clear();
         this.field_146609_h.clear();
-        this.buttonList.add(this.field_146605_t = new GuiButton(1, this.width / 2 - 152, this.height - 30, 150, 20, this.game_settings_2.getKeyBinding(GameSettings.Options.SNOOPER_ENABLED)));
-        this.buttonList.add(new GuiButton(2, this.width / 2 + 2, this.height - 30, 150, 20, I18n.format("gui.done")));
+        this.buttonList.add(this.field_146605_t = new GuiButton(1, width / 2 - 152, height - 30, 150, 20, this.game_settings_2.getKeyBinding(GameSettings.Options.SNOOPER_ENABLED)));
+        this.buttonList.add(new GuiButton(2, width / 2 + 2, height - 30, 150, 20, I18n.format("gui.done")));
         boolean flag = this.mc.getIntegratedServer() != null && this.mc.getIntegratedServer().getPlayerUsageSnooper() != null;
 
         for (Entry<String, String> entry : (new TreeMap<String, String>(this.mc.getPlayerUsageSnooper().getCurrentStats())).entrySet())
         {
             this.field_146604_g.add((flag ? "C " : "") + entry.getKey());
-            this.field_146609_h.add(this.fontRendererObj.trimStringToWidth(entry.getValue(), this.width - 220));
+            this.field_146609_h.add(this.fontRendererObj.trimStringToWidth(entry.getValue(), width - 220));
         }
 
         if (flag)
@@ -59,7 +59,7 @@ public class GuiSnooper extends GuiScreen
             for (Entry<String, String> entry1 : (new TreeMap<String, String>(this.mc.getIntegratedServer().getPlayerUsageSnooper().getCurrentStats())).entrySet())
             {
                 this.field_146604_g.add("S " + entry1.getKey());
-                this.field_146609_h.add(this.fontRendererObj.trimStringToWidth(entry1.getValue(), this.width - 220));
+                this.field_146609_h.add(this.fontRendererObj.trimStringToWidth(entry1.getValue(), width - 220));
             }
         }
 
@@ -104,12 +104,12 @@ public class GuiSnooper extends GuiScreen
     {
         this.drawDefaultBackground();
         this.field_146606_s.drawScreen(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, this.field_146610_i, this.width / 2, 8, 16777215);
+        this.drawCenteredString(this.fontRendererObj, this.field_146610_i, width / 2, 8, 16777215);
         int i = 22;
 
         for (String s : this.field_146607_r)
         {
-            this.drawCenteredString(this.fontRendererObj, s, this.width / 2, i, 8421504);
+            this.drawCenteredString(this.fontRendererObj, s, width / 2, i, 8421504);
             i += this.fontRendererObj.FONT_HEIGHT;
         }
 
@@ -120,7 +120,7 @@ public class GuiSnooper extends GuiScreen
     {
         public List()
         {
-            super(GuiSnooper.this.mc, GuiSnooper.this.width, GuiSnooper.this.height, 80, GuiSnooper.this.height - 40, GuiSnooper.this.fontRendererObj.FONT_HEIGHT + 1);
+            super(GuiSnooper.this.mc, GuiScreen.width, GuiScreen.height, 80, GuiScreen.height - 40, GuiSnooper.this.fontRendererObj.FONT_HEIGHT + 1);
         }
 
         protected int getSize()

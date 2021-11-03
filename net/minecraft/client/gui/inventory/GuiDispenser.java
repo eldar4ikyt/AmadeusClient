@@ -1,5 +1,6 @@
 package net.minecraft.client.gui.inventory;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerDispenser;
@@ -40,8 +41,8 @@ public class GuiDispenser extends GuiContainer
     {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(dispenserGuiTextures);
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
+        int i = (width - this.xSize) / 2;
+        int j = (height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
     }
 }

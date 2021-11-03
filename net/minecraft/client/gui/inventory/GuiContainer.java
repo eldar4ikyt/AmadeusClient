@@ -89,8 +89,8 @@ public abstract class GuiContainer extends GuiScreen
     {
         super.initGui();
         this.mc.thePlayer.openContainer = this.inventorySlots;
-        this.guiLeft = (this.width - this.xSize) / 2;
-        this.guiTop = (this.height - this.ySize) / 2;
+        this.guiLeft = (width - this.xSize) / 2;
+        this.guiTop = (height - this.ySize) / 2;
     }
 
     /**
