@@ -11,9 +11,9 @@ import net.minecraft.network.play.INetHandlerPlayClient;
 
 public class S08PacketPlayerPosLook implements Packet<INetHandlerPlayClient>
 {
-    private double x;
-    private double y;
-    private double z;
+    public double x;
+    public double y;
+    public double z;
    @Setter
    public float yaw;
     @Setter   private float pitch;

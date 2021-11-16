@@ -813,6 +813,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
     }
 
+    public void silentQueue(Packet<?> p_147297_1_)
+    {
+            this.netManager.sendPacket(p_147297_1_);
+    }
+
     public void addToSendQueue(Packet<?> p_147297_1_)
     {
         PacketSend packetSend = new PacketSend(p_147297_1_);

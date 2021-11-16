@@ -5,6 +5,8 @@ import it.amadeus.client.event.events.Moving;
 import it.amadeus.client.event.events.PostMotion;
 import it.amadeus.client.event.events.PreMotion;
 import it.amadeus.client.event.events.Update;
+import it.amadeus.client.mods.NoSlow;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -30,6 +32,7 @@ import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -56,6 +59,7 @@ import net.minecraft.util.MovementInput;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 public class EntityPlayerSP extends AbstractClientPlayer
 {
@@ -830,8 +834,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         boolean flag2 = this.movementInput.moveForward >= f;
         this.movementInput.updatePlayerMoveState();
 
-        if (this.isUsingItem() && !this.isRiding())
-        {
+        if (isUsingItem() && !isRiding() && !this.mc.getAmadeus().getModManager().getModuleByClass(NoSlow.class).isToggled()) {
             this.movementInput.moveStrafe *= 0.2F;
             this.movementInput.moveForward *= 0.2F;
             this.sprintToggleTimer = 0;
@@ -958,5 +961,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     public boolean isMovingOnGround() {
         return isMoving() && onGround;
+    }
+
+
+    public float getDirection() {
+        float var1 = this.rotationYaw;
+        if (this.moveForward < 0.0F)
+            var1 += 180.0F;
+        float forward = 1.0F;
+        if (this.moveForward < 0.0F) {
+            forward = -0.5F;
+        } else if (this.moveForward > 0.0F) {
+            forward = 0.5F;
+        } else {
+            forward = 1.0F;
+        }
+        if (this.moveStrafing > 0.0F)
+            var1 -= 90.0F * forward;
+        if (this.moveStrafing < 0.0F)
+            var1 += 90.0F * forward;
+        var1 *= 0.017453292F;
+        return var1;
+    }
+
+    public void setSpeed(float speed) {
+        this.mc.thePlayer.motionX = -Math.sin(this.mc.thePlayer.getDirection()) * speed;
+        this.mc.thePlayer.motionZ = Math.cos(this.mc.thePlayer.getDirection()) * speed;
     }
 }

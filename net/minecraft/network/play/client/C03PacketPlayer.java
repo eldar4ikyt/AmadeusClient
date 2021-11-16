@@ -10,14 +10,14 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 
 public class C03PacketPlayer implements Packet<INetHandlerPlayServer>
 {
-    protected double x;
+    public double x;
    @Setter public double y;
     protected double z;
     protected float yaw;
     protected float pitch;
     @Setter
-   protected boolean onGround;
-    protected boolean moving;
+    public boolean onGround;
+    public boolean moving;
     @Setter protected boolean rotating;
 
     public C03PacketPlayer()

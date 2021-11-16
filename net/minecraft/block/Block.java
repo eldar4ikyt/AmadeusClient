@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import it.amadeus.client.event.events.EventCollide;
+import it.amadeus.client.mods.Disabler;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -1250,6 +1251,8 @@ public class Block
     {
         return "Block{" + blockRegistry.getNameForObject(this) + "}";
     }
+
+
 
     public static void registerBlocks()
     {

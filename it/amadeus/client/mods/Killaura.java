@@ -4,22 +4,25 @@ import it.amadeus.client.clickgui.util.values.valuetypes.BooleanValue;
 import it.amadeus.client.clickgui.util.values.valuetypes.ModeValue;
 import it.amadeus.client.clickgui.util.values.valuetypes.NumberValue;
 import it.amadeus.client.event.Event;
+import it.amadeus.client.event.events.MoveFlying;
 import it.amadeus.client.event.events.PacketSend;
+import it.amadeus.client.event.events.PostMotion;
 import it.amadeus.client.event.events.PreMotion;
 import it.amadeus.client.module.Module;
+import it.amadeus.client.utilities.MotionUtil;
 import it.amadeus.client.utilities.RotationUtils;
 import it.amadeus.client.utilities.TimerUtil;
 import lombok.Getter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C00PacketKeepAlive;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import org.apache.commons.lang3.RandomUtils;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
@@ -30,23 +33,13 @@ public final class Killaura extends Module {
 
     @Getter
     private static EntityLivingBase currentTarget;
-    private static float[] rotations;
     private final ModeValue<Mode> mode = new ModeValue<>("Mode", Mode.DISTANCE, this);
     private final NumberValue<Double> reach = new NumberValue<>("Reach", 3.24D, 1.0D, 6.7D, this);
-    private final NumberValue<Double> max_aps = new NumberValue<>("Max APS", 12.45D, 1.0D, 20.0D, this);
-    private final NumberValue<Double> min_aps = new NumberValue<>("Min APS", 6.25D, 1.0D, 15.0D, this);
     private final BooleanValue<Boolean> autoblock = new BooleanValue<>("AutoBlock", true, this);
-    private final BooleanValue<Boolean> noRots = new BooleanValue<>("Bypass", true, this);
     private final TimerUtil timer = new TimerUtil();
-    private float tempYaw;
-    private float tempPitch;
     private boolean canBlock;
     private boolean blockedBefore;
-    private double LegitValue;
 
-    public static long randomClickDelay(final double minCPS, final double maxCPS) {
-        return (long) ((Math.random() * (1000 / minCPS - 1000 / maxCPS + 1)) + 1000 / maxCPS);
-    }
 
     @Override
     public String getName() {
@@ -70,6 +63,10 @@ public final class Killaura extends Module {
 
     @Override
     public void onEvent(Event event) {
+        if (event instanceof MoveFlying) {
+            if (currentTarget != null)
+                ((MoveFlying) event).setStrafe(1.0F);
+        }
         if (event instanceof PreMotion) {
             if (currentTarget == null) {
                 switch (this.mode.getValue()) {
@@ -80,32 +77,28 @@ public final class Killaura extends Module {
                         currentTarget = getAnglePriority();
                         break;
                 }
+
             } else {
                 if (isValidTarget(currentTarget)) {
-                    if (timer.hasTimeElapsed((randomClickDelay(min_aps.getValue(), max_aps.getValue()) + RandomUtils.nextLong(100, 300)))) {
+                    if (timer.hasReached(20L)) {//200
                         attack(currentTarget);
                         timer.reset();
                     }
-                    if (autoblock.getValue()) {
-                        ItemStack heldItem = mc.thePlayer.getHeldItem();
-                        this.canBlock = heldItem != null && heldItem.getItem() instanceof net.minecraft.item.ItemSword;
-                        if (canBlock) {
-                            mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem());
-                        }
-                        if (!currentTarget.isDead) {
-                            this.blockedBefore = true;
-                        }
+                }
+                if (autoblock.getValue()) {
+                    this.canBlock = mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword;
+                    if (canBlock) {
+                        mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem());
                     }
                 }
-                if (!mc.isSingleplayer() && mc.getCurrentServerData().serverIP.equalsIgnoreCase("blocksmc.com")) {
-                    LegitValue = (reach.getValue() + 3);
-                } else {
-                    LegitValue = reach.getValue();
-                }
-                if (currentTarget.getDistanceToEntity(mc.thePlayer) > LegitValue || currentTarget.isDead) {
+                if (currentTarget.getDistanceToEntity(mc.thePlayer) > reach.getValue() || currentTarget.isDead) {
                     currentTarget = null;
+                    this.blockedBefore = true;
                 }
             }
+        }
+        if (event instanceof PostMotion) {
+
         }
         if (event instanceof PacketSend) {
             Packet<?> packet = ((PacketSend) event).getPacket();

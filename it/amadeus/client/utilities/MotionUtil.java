@@ -7,7 +7,9 @@ import it.amadeus.client.event.events.Moving;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0CPacketInput;
@@ -24,13 +26,30 @@ public final class MotionUtil {
         mc.getNetHandler().getNetworkManager().sendPacket(p, null, (GenericFutureListener<? extends Future<? super Void>>) null);
     }
 
-    public static void strafe(final float speed,float rotationYaw, boolean bypass) {
+    public static void strafe(final float speed, float rotationYaw, boolean bypass) {
         final double yaw = getDirection(rotationYaw);
-        if(bypass){
+        if (bypass) {
             mc.thePlayer.sendQueue.addToSendQueue(new C0CPacketInput());
         }
         mc.thePlayer.motionX = -Math.sin(yaw) * speed;
         mc.thePlayer.motionZ = Math.cos(yaw) * speed;
+    }
+
+
+    public static void strafe(float speed, float rotationYaw) {
+        if (!mc.thePlayer.isMoving())
+            return;
+        final double yaw = getDirection(rotationYaw);
+        mc.thePlayer.motionX = -Math.sin(yaw) * speed;
+        mc.thePlayer.motionZ = Math.cos(yaw) * speed;
+    }
+
+    public static float move() {
+        return (float) Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
+    }
+
+    public static void verusbypass(float rotationYaw) {
+        strafe(move(), rotationYaw);
     }
 
 
@@ -244,5 +263,53 @@ public final class MotionUtil {
             baseSpeed *= 1.0F + 0.2F * (amp + 1);
         }
         return baseSpeed;
+    }
+
+    public static boolean getOnRealGround(EntityLivingBase entity, double y) {
+        return !mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, entity.getEntityBoundingBox().offset(0.0D, -y, 0.0D)).isEmpty();
+    }
+
+    public static boolean isOverVoid() {
+        for (int i = (int) (mc.thePlayer.posY - 1.0D); i > 0; ) {
+            BlockPos pos = new BlockPos(mc.thePlayer.posX, i, mc.thePlayer.posZ);
+            if (mc.theWorld.getBlockState(pos).getBlock() instanceof net.minecraft.block.BlockAir) {
+                i--;
+                continue;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    public static void setSpeed(double speed, float forward, float strafing, float yaw) {
+        boolean reversed = (forward < 0.0F);
+        float strafingYaw = 90.0F * ((forward > 0.0F) ? 0.5F : (reversed ? -0.5F : 1.0F));
+        if (reversed)
+            yaw += 180.0F;
+        if (strafing > 0.0F) {
+            yaw -= strafingYaw;
+        } else if (strafing < 0.0F) {
+            yaw += strafingYaw;
+        }
+        double x = Math.cos(Math.toRadians((yaw + 90.0F)));
+        double z = Math.cos(Math.toRadians(yaw));
+        mc.thePlayer.motionX = x * speed;
+        mc.thePlayer.motionZ = z * speed;
+    }
+
+    public static double getSpeed() {
+        return (float) Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
+    }
+
+    public static float getSpeed(EntityLivingBase e) {
+        return (float) Math.sqrt((e.posX - e.prevPosX) * (e.posX - e.prevPosX) + (e.posZ - e.prevPosZ) * (e.posZ - e.prevPosZ));
+    }
+
+
+    public static void setSpeed1(double speed) {
+        EntityPlayerSP player = mc.thePlayer;
+        if (mc.thePlayer.isMoving()) {
+            setSpeed(speed, player.moveForward, player.moveStrafing, player.rotationYaw);
+        }
     }
 }

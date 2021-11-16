@@ -61,6 +61,7 @@ public final class ClickGui extends GuiScreen {
         return new Color(213, 2, 45);
     }
 
+
     public void reload(boolean reloadUserInterface) {
         for (Panel p : ClickGui.panels) {
             p.reload();

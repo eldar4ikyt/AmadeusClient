@@ -1226,7 +1226,7 @@ public abstract class Entity implements ICommandSender
     public void moveFlying(float strafe, float forward, float friction)
     {
 
-        MoveFlying moveFlying = new MoveFlying(strafe,forward,friction, this.rotationYaw);
+        MoveFlying moveFlying = new MoveFlying(strafe,forward,friction, this.rotationYaw, this.posX, this.posY, this.posZ);
 
         if(moveFlying.isCancelled()){
             return;

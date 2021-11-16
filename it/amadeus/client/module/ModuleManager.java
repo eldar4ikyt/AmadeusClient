@@ -2,6 +2,7 @@ package it.amadeus.client.module;
 
 import it.amadeus.client.mods.*;
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,20 @@ public final class ModuleManager {
         mods.add(new Killaura());//patch only this shit
         mods.add(new Speed());
         mods.add(new Sprint());
+     //   mods.add(new Scaffold());
+        mods.add(new InventoryMove());
+        mods.add(new NoSlow());
         mods.add(new Flight());
+        mods.add(new AntiDesync());
+        mods.add(new Teleport());
+        mods.add(new Criticals());
+        mods.add(new Stealer());
+        mods.add(new LongJump());
+        mods.add(new AntiHurtCam());
+        mods.add(new AutoArmor());
         mods.add(new Disabler());
         mods.add(new Velocity());
+        mods.add(new TimerMC());
         mods.add(new Fucker());
         mods.add(new Spotify());
         mods.add(new PlayerESP());

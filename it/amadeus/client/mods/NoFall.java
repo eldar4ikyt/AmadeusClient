@@ -5,6 +5,7 @@ import it.amadeus.client.event.Event;
 import it.amadeus.client.event.events.PacketSend;
 import it.amadeus.client.event.events.PreMotion;
 import it.amadeus.client.module.Module;
+import it.amadeus.client.utilities.MotionUtil;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 
@@ -40,6 +41,12 @@ public final class NoFall extends Module {
                     mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
                 }
             }
+            if (this.mode.getValue().equals(Mode.VERUS)) {
+                if (mc.thePlayer.fallDistance > 2.9D && !MotionUtil.isOverVoid()) {
+                    ((PreMotion) event).setOnGround(true);
+                    mc.thePlayer.fallDistance = 0.0F;
+                }
+            }
         }
         if (event instanceof PacketSend) {
             Packet<?> packet = ((PacketSend) event).getPacket();
@@ -52,5 +59,5 @@ public final class NoFall extends Module {
         }
     }
 
-    public enum Mode {VANILLA, PACKETLESS}
+    public enum Mode {VANILLA, PACKETLESS, VERUS}
 }

@@ -18,7 +18,7 @@ public final class Insulter extends Module {
     private static final ArrayList<String> players = new ArrayList<>();
     private final ModeValue<Mode> mode = new ModeValue<>("Mode", Mode.ENGLISH, this);
     private final NumberValue<Double> delay = new NumberValue<>("Chat Speed", 87.0D, 5.0D, 250.0D, this);
-    private final String[] PORTUGUES_LIST = new String[]{"deve ir para um campo de concentração merdas", "\"hax lixo\" a sua irmã aquela cabra", "KKKKKKKKKKKKKKKKKK hax lixo rekt eZ noob merda brazil",
+    private final String[] PORTUGUES_LIST = new String[]{"deve ir para um campo de concentração merdas", "hax lixo a sua irmã aquela cabra", "KKKKKKKKKKKKKKKKKK hax lixo rekt eZ noob merda brazil",
             "dar um tiro na boca. brazil merda", "és pobre como a merda, não tens merda nenhuma", "Pare de se queixar dos trapaceiros de crianças autistas",
             "lixo você e a sua família de ratos imundos", "assusta a merda do EZZZZZZZZZZZZZ", "lixo hax merda!11!!!! Vai-te foder, seu pedaço de merda brasileiro!",
             "BR Raça inferior", "Vai-te embora daqui, És uma merda", "a sua prostituta mãe BR inferior", "espero que sua familia morra", "Eu vou esmagar você como um rato. Merda!", "Pare de chorar, seu filho da puta perdido, seu merdas.",
@@ -80,6 +80,7 @@ public final class Insulter extends Module {
     @Override
     public void onEvent(Event event) {
         if (event instanceof Update) {
+            if(mc.isSingleplayer())return;
             if (mc.thePlayer.ticksExisted % this.delay.getValue().intValue() == 0) {
                 switch (this.mode.getValue()) {
                     case ENGLISH:

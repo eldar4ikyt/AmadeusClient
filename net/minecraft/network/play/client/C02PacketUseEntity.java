@@ -1,6 +1,9 @@
 package net.minecraft.network.play.client;
 
 import java.io.IOException;
+
+import it.amadeus.client.event.events.Attack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -18,8 +21,11 @@ public class C02PacketUseEntity implements Packet<INetHandlerPlayServer>
     {
     }
 
-    public C02PacketUseEntity(Entity entity, C02PacketUseEntity.Action action)
-    {
+    public C02PacketUseEntity(Entity entity, Action action) {
+        if (action == Action.ATTACK) {
+            Attack eventAttack = new Attack(entity);
+            Minecraft.getMinecraft().getAmadeus().getEventManager().hook(eventAttack);
+        }
         this.entityId = entity.getEntityId();
         this.action = action;
     }

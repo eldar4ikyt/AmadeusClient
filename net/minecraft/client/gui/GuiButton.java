@@ -5,6 +5,7 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class GuiButton extends Gui
 {
@@ -77,6 +78,7 @@ public class GuiButton extends Gui
      */
     public void drawButton(Minecraft mc, int mouseX, int mouseY)
     {
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.visible)
         {
             FontRenderer fontrenderer = mc.fontRendererObj;
@@ -85,8 +87,8 @@ public class GuiButton extends Gui
             this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
             int i = this.getHoverState(this.hovered);
            // GlStateManager.enableBlend();
-            //GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-            //GlStateManager.blendFunc(770, 771);
+           // GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+           // GlStateManager.blendFunc(770, 771);
             //this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + i * 20, this.width / 2, this.height);
            // this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
             this.mouseDragged(mc, mouseX, mouseY);
@@ -103,6 +105,7 @@ public class GuiButton extends Gui
 
             this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, j);
         }
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     /**

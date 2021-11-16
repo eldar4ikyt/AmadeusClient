@@ -24,7 +24,14 @@ public final class Amadeus {
     private CommandManager commandManager;
 
     public strictfp void loadClient() {
-        Display.setTitle(NAME + " | " + VERSION);
+
+        System.out.println("[Amadeus] vivi nel labirinto di tutta la tristezza e sofferenza");
+
+        System.out.println("[Amadeus] un esperimento si rivelò un fallimento");
+
+        System.out.println("[Amadeus] condividiamo lo stesso destino...");
+
+       Display.setTitle(NAME + " | " + VERSION);
 
         try{
             ViaMCP.getInstance().start();

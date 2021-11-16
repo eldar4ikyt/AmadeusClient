@@ -40,4 +40,12 @@ public class TimerUtil {
             reset();
         return convert >= time;
     }
+
+    public long getDifference() {
+        return getCurrentMS() - this.lastMS;
+    }
+
+    public boolean hasReached(long milliseconds) {
+        return (getDifference() >= milliseconds);
+    }
 }

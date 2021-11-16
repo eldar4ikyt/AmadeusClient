@@ -387,35 +387,27 @@ public class PlayerControllerMP
         }
     }
 
-    public boolean onPlayerRightClick(EntityPlayerSP player, WorldClient worldIn, ItemStack heldStack, BlockPos hitPos, EnumFacing side, Vec3 hitVec)
-    {
+    public boolean onPlayerRightClick(EntityPlayerSP player, WorldClient worldIn, ItemStack heldStack, BlockPos hitPos, EnumFacing side, Vec3 hitVec) {
         this.syncCurrentPlayItem();
-        float f = (float)(hitVec.xCoord - (double)hitPos.getX());
-        float f1 = (float)(hitVec.yCoord - (double)hitPos.getY());
-        float f2 = (float)(hitVec.zCoord - (double)hitPos.getZ());
+        float f = (float) (hitVec.xCoord - (double) hitPos.getX());
+        float f1 = (float) (hitVec.yCoord - (double) hitPos.getY());
+        float f2 = (float) (hitVec.zCoord - (double) hitPos.getZ());
         boolean flag = false;
 
-        if (!this.mc.theWorld.getWorldBorder().contains(hitPos))
-        {
+        if (!this.mc.theWorld.getWorldBorder().contains(hitPos)) {
             return false;
-        }
-        else
-        {
-            if (this.currentGameType != WorldSettings.GameType.SPECTATOR)
-            {
+        } else {
+            if (this.currentGameType != WorldSettings.GameType.SPECTATOR) {
                 IBlockState iblockstate = worldIn.getBlockState(hitPos);
 
-                if ((!player.isSneaking() || player.getHeldItem() == null) && iblockstate.getBlock().onBlockActivated(worldIn, hitPos, iblockstate, player, side, f, f1, f2))
-                {
+                if ((!player.isSneaking() || player.getHeldItem() == null) && iblockstate.getBlock().onBlockActivated(worldIn, hitPos, iblockstate, player, side, f, f1, f2)) {
                     flag = true;
                 }
 
-                if (!flag && heldStack != null && heldStack.getItem() instanceof ItemBlock)
-                {
-                    ItemBlock itemblock = (ItemBlock)heldStack.getItem();
+                if (!flag && heldStack != null && heldStack.getItem() instanceof ItemBlock) {
+                    ItemBlock itemblock = (ItemBlock) heldStack.getItem();
 
-                    if (!itemblock.canPlaceBlockOnSide(worldIn, hitPos, side, player, heldStack))
-                    {
+                    if (!itemblock.canPlaceBlockOnSide(worldIn, hitPos, side, player, heldStack)) {
                         return false;
                     }
                 }
@@ -423,28 +415,20 @@ public class PlayerControllerMP
 
             this.netClientHandler.addToSendQueue(new C08PacketPlayerBlockPlacement(hitPos, side.getIndex(), player.inventory.getCurrentItem(), f, f1, f2));
 
-            if (!flag && this.currentGameType != WorldSettings.GameType.SPECTATOR)
-            {
-                if (heldStack == null)
-                {
+            if (!flag && this.currentGameType != WorldSettings.GameType.SPECTATOR) {
+                if (heldStack == null) {
                     return false;
-                }
-                else if (this.currentGameType.isCreative())
-                {
+                } else if (this.currentGameType.isCreative()) {
                     int i = heldStack.getMetadata();
                     int j = heldStack.stackSize;
                     boolean flag1 = heldStack.onItemUse(player, worldIn, hitPos, side, f, f1, f2);
                     heldStack.setItemDamage(i);
                     heldStack.stackSize = j;
                     return flag1;
-                }
-                else
-                {
+                } else {
                     return heldStack.onItemUse(player, worldIn, hitPos, side, f, f1, f2);
                 }
-            }
-            else
-            {
+            } else {
                 return true;
             }
         }

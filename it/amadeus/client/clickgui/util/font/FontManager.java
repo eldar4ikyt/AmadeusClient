@@ -23,6 +23,9 @@ public class FontManager {
 
     public UnicodeFontRenderer comfortaa20 = getFont("comfortaa", 20.0F);
 
+
+    public UnicodeFontRenderer comfortaa60 = getFont("comfortaa", 60.0F);
+
     public UnicodeFontRenderer getFont(String name, float size) {
         UnicodeFontRenderer unicodeFont = null;
         try {

@@ -23,13 +23,8 @@ public class bind extends Command {
         if (command.isEmpty()) {
             ChatUtil.print("§cWrong Format, try: " + getSyntax());
         }
-        String mod = args[0];
-        for (Module m : mc.getAmadeus().getModManager().getMods()) {
-            if (m.getName().equalsIgnoreCase(mod)) {
-                m.setKey(Keyboard.getKeyIndex(args[1].toUpperCase()));
-                ChatUtil.print(m.getName() + " was bind to " + Keyboard.getKeyName(Keyboard.getKeyIndex(args[1].toUpperCase())));
-                return;
-            }
-        }
+        Module m = mc.getAmadeus().getModManager().getModuleByName(args[0]);
+        m.setKey(Keyboard.getKeyIndex(args[1].toUpperCase()));
+        ChatUtil.print(args[0] + " was bind to " +args[1]);
     }
 }

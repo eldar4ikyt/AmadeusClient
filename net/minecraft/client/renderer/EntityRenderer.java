@@ -10,6 +10,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+
+import it.amadeus.client.event.events.Render3D;
+import it.amadeus.client.mods.AntiHurtCam;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -633,6 +636,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
             if (flag)
             {
+                //todo: modificare zoom
                 if (!Config.zoomMode)
                 {
                     Config.zoomMode = true;
@@ -674,6 +678,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     private void hurtCameraEffect(float partialTicks)
     {
+        if(mc.getAmadeus().getModManager().getModuleByClass(AntiHurtCam.class).isToggled())return;
         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase)
         {
             EntityLivingBase entitylivingbase = (EntityLivingBase)this.mc.getRenderViewEntity();
@@ -1889,6 +1894,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("aboveClouds");
             this.renderCloudsCheck(renderglobal, partialTicks, pass);
         }
+
+        Render3D event = new Render3D(partialTicks);
+        mc.getAmadeus().getEventManager().hook(event);
 
         if (Reflector.ForgeHooksClient_dispatchRenderLast.exists())
         {

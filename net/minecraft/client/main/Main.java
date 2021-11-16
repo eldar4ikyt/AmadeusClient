@@ -11,6 +11,8 @@ import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.util.List;
+
+import it.amadeus.client.utilities.DynamicLibray;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
@@ -21,6 +23,7 @@ public class Main
 {
     public static void main(String[] p_main_0_)
     {
+        DynamicLibray.inject();
         System.setProperty("java.net.preferIPv4Stack", "true");
         OptionParser optionparser = new OptionParser();
         optionparser.allowsUnrecognizedOptions();

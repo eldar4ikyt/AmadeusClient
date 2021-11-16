@@ -9,6 +9,7 @@ import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import it.amadeus.client.Amadeus;
+import it.amadeus.client.event.events.KeyPress;
 import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -1659,6 +1660,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
                     if (this.currentScreen != null) {
                         this.currentScreen.handleKeyboardInput();
                     } else {
+
+                        final KeyPress keyPress = new KeyPress(k);
+                        getAmadeus().getEventManager().hook(keyPress);
 
                         getAmadeus().getModManager().getMods().forEach(mod -> {
                             if (k == mod.getKey()) mod.toggle();
