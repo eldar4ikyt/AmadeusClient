@@ -48,4 +48,8 @@ public class TimerUtil {
     public boolean hasReached(long milliseconds) {
         return (getDifference() >= milliseconds);
     }
+
+    public boolean hasPassed(double milli) {
+        return ((getTime() - this.lastMS) >= milli);
+    }
 }

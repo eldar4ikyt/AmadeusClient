@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+
+import lombok.Getter;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.ITextureObject;
@@ -35,6 +37,7 @@ public class ShaderManager
     private final List<Integer> shaderSamplerLocations = Lists.newArrayList();
     private final List<ShaderUniform> shaderUniforms = Lists.newArrayList();
     private final List<Integer> shaderUniformLocations = Lists.newArrayList();
+    @Getter
     private final Map<String, ShaderUniform> mappedShaderUniforms = Maps.newHashMap();
     private final int program;
     private final String programFilename;

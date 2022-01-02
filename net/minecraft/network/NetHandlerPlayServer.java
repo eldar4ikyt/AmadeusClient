@@ -4,17 +4,17 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
 import com.google.common.util.concurrent.Futures;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
+
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
@@ -951,36 +951,34 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
         switch (c16packetclientstatus$enumstate)
         {
             case PERFORM_RESPAWN:
-                if (this.playerEntity.playerConqueredTheEnd)
-                {
-                    this.playerEntity = this.serverController.getConfigurationManager().recreatePlayerEntity(this.playerEntity, 0, true);
-                }
-                else if (this.playerEntity.getServerForPlayer().getWorldInfo().isHardcoreModeEnabled())
-                {
-                    if (this.serverController.isSinglePlayer() && this.playerEntity.getName().equals(this.serverController.getServerOwner()))
+                    if (this.playerEntity.playerConqueredTheEnd)
                     {
-                        this.playerEntity.playerNetServerHandler.kickPlayerFromServer("You have died. Game over, man, it's game over!");
-                        this.serverController.deleteWorldAndStopServer();
+                        this.playerEntity = this.serverController.getConfigurationManager().recreatePlayerEntity(this.playerEntity, 0, true);
+                    }
+                    else if (this.playerEntity.getServerForPlayer().getWorldInfo().isHardcoreModeEnabled())
+                    {
+                        if (this.serverController.isSinglePlayer() && this.playerEntity.getName().equals(this.serverController.getServerOwner()))
+                        {
+                            this.playerEntity.playerNetServerHandler.kickPlayerFromServer("You have died. Game over, man, it's game over!");
+                            this.serverController.deleteWorldAndStopServer();
+                        }
+                        else
+                        {
+                            UserListBansEntry userlistbansentry = new UserListBansEntry(this.playerEntity.getGameProfile(), null, "(You just lost the game)", null, "Death in Hardcore");
+                            this.serverController.getConfigurationManager().getBannedPlayers().addEntry(userlistbansentry);
+                            this.playerEntity.playerNetServerHandler.kickPlayerFromServer("You have died. Game over, man, it's game over!");
+                        }
                     }
                     else
                     {
-                        UserListBansEntry userlistbansentry = new UserListBansEntry(this.playerEntity.getGameProfile(), null, "(You just lost the game)", null, "Death in Hardcore");
-                        this.serverController.getConfigurationManager().getBannedPlayers().addEntry(userlistbansentry);
-                        this.playerEntity.playerNetServerHandler.kickPlayerFromServer("You have died. Game over, man, it's game over!");
-                    }
-                }
-                else
-                {
-                    if (this.playerEntity.getHealth() > 0.0F)
-                    {
-                        return;
-                    }
+                        if (this.playerEntity.getHealth() > 0.0F)
+                        {
+                            return;
+                        }
 
-                    this.playerEntity = this.serverController.getConfigurationManager().recreatePlayerEntity(this.playerEntity, 0, false);
-                }
-
+                        this.playerEntity = this.serverController.getConfigurationManager().recreatePlayerEntity(this.playerEntity, 0, false);
+                    }
                 break;
-
             case REQUEST_STATS:
                 this.playerEntity.getStatFile().func_150876_a(this.playerEntity);
                 break;

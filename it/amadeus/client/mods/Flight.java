@@ -9,6 +9,7 @@ import it.amadeus.client.utilities.MotionUtil;
 import net.minecraft.block.BlockAir;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C0CPacketInput;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovementInput;
 import org.lwjgl.input.Keyboard;
@@ -21,6 +22,7 @@ public final class Flight extends Module {
     private int boostTicks = 0;
     private float motion;
     private double launchY;
+
 
     @Override
     public String getName() {
@@ -60,6 +62,9 @@ public final class Flight extends Module {
             }
         }
         if (this.mode.getValue().equals(Mode.FEAR)) {
+            mc.thePlayer.setPosition(0.5, 180.0, 0.5);
+        }
+        if (this.mode.getValue().equals(Mode.FEAROLD)) {
             if (mc.thePlayer.onGround) {
                 for (int i = 0; i < 9; i++) {
                     mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + (float) 0.42D, mc.thePlayer.posZ, false));
@@ -77,8 +82,12 @@ public final class Flight extends Module {
     @Override
     public void onEvent(Event event) {
         if (event instanceof Update) {
+            if (this.mode.getValue().equals(Mode.FEAR)) {
+                MovementInput movementInput = mc.thePlayer.movementInput;
+                mc.thePlayer.motionY = movementInput.jump ? 0.87 : movementInput.sneak ? -0.87 : 0.0F;
+                MotionUtil.setMotion(4.16F);
+            }
             if (this.mode.getValue().equals(Mode.VANILLA)) {
-                double offset = -.015625f;
                 MovementInput movementInput = mc.thePlayer.movementInput;
                 mc.thePlayer.motionY = movementInput.jump ? 0.87 : movementInput.sneak ? -0.87 : 0.0F;
                 MotionUtil.setMotion(speed.getValue().floatValue());
@@ -90,6 +99,17 @@ public final class Flight extends Module {
             }
         }
         if (event instanceof PreMotion) {
+            if (this.mode.getValue().equals(Mode.RONZIO)) {
+                MotionUtil.strafe();
+                MotionUtil.setMotion(this.speed.getValue().floatValue());
+                mc.thePlayer.motionY = 0;
+                mc.timer.timerSpeed = 0.3f;
+                if (mc.thePlayer.ticksExisted % 3 == 0) {
+                    mc.thePlayer.motionY = -16;
+                } else {
+                    mc.thePlayer.setPosition(mc.thePlayer.posX, launchY, mc.thePlayer.posZ);
+                }
+            }
             if (this.mode.getValue().equals(Mode.SKYWALKER)) {
                 if (mc.thePlayer.motionY < 0) {
                     mc.thePlayer.motionY = 0;
@@ -105,6 +125,12 @@ public final class Flight extends Module {
                     mc.thePlayer.setSpeed(0.35F);
                 }
             }
+            if (this.mode.getValue().equals(Mode.STREDIAN)) {
+                if(mc.thePlayer.fallDistance > 1){
+                    MotionUtil.setMotion(+ 2.7f);
+                    ((PreMotion) event).setY(((PreMotion) event).getY() - 0.01D);
+                }
+            }
             if (this.mode.getValue().equals(Mode.BLOCKSMC)) {
                 if (mc.thePlayer.onGround && mc.thePlayer.isMoving()) {
                     mc.thePlayer.jump();
@@ -112,7 +138,7 @@ public final class Flight extends Module {
                 }
                 MotionUtil.setSpeed1(MotionUtil.getSpeed());
             }
-            if (this.mode.getValue().equals(Mode.FEAR)) {
+            if (this.mode.getValue().equals(Mode.FEAROLD)) {
                 mc.thePlayer.motionY = 0;
                 if (mc.thePlayer.isJumping) {
                     mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + 1, mc.thePlayer.posZ);
@@ -158,7 +184,15 @@ public final class Flight extends Module {
         }
         if(event instanceof PacketSend){
             Packet<?> packet = ((PacketSend) event).getPacket();
-            if (this.mode.getValue().equals(Mode.SKYWALKER)) {
+            if (this.mode.getValue().equals(Mode.RONZIO)) {
+                if (packet instanceof C0CPacketInput) {
+                    ((PacketSend) event).setCancelled(true);
+                }
+                if (packet instanceof C03PacketPlayer) {
+                    ((PacketSend) event).setCancelled(true);
+                }
+            }
+            else if (this.mode.getValue().equals(Mode.SKYWALKER)) {
                 if (packet instanceof C03PacketPlayer) {
                     C03PacketPlayer player = (C03PacketPlayer) packet;
                     if (mc.thePlayer.motionY < 0) {
@@ -183,5 +217,5 @@ public final class Flight extends Module {
     }
 
 
-    public enum Mode {VANILLA, DAMAGE, VERUS, FEAR, BLOCKSMC, FASTCOLLIDE, SKYWALKER}
+    public enum Mode {VANILLA, DAMAGE, VERUS, FEAROLD, BLOCKSMC, FASTCOLLIDE, FEAR, SKYWALKER, RONZIO, STREDIAN}
 }

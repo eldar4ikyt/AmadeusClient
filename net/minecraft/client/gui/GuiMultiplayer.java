@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import it.amadeus.client.viamcp.ViaMCP;
 import it.amadeus.client.viamcp.gui.GuiProtocolSelector;
 import it.amadeus.client.viamcp.protocols.ProtocolCollection;
+import lombok.Getter;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
@@ -21,10 +22,12 @@ import java.util.regex.Pattern;
 
 public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
     private static final Logger logger = LogManager.getLogger();
+    @Getter
+    private static boolean BungeeHack;
     private final OldServerPinger oldServerPinger = new OldServerPinger();
     private final GuiScreen parentScreen;
-    private ServerSelectionList serverListSelector;
-    private ServerList savedServerList;
+    public ServerSelectionList serverListSelector;
+    public ServerList savedServerList;
     private GuiButton btnEditServer;
     private GuiButton btnSelectServer;
     private GuiButton btnDeleteServer;
@@ -32,7 +35,6 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
     private boolean addingServer;
     private boolean editingServer;
     private boolean directConnect;
-
     /**
      * The text to be displayed when the player's cursor hovers over a server listing.
      */
@@ -92,6 +94,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
         this.buttonList.add(new GuiButton(3, (width >> 1) + 4 + 50, height - 52, 100, 20, I18n.format("selectServer.add")));
         this.buttonList.add(new GuiButton(8, (width >> 1) + 4, height - 28, 70, 20, I18n.format("selectServer.refresh")));
         this.buttonList.add(new GuiButton(0, (width >> 1) + 4 + 76, height - 28, 75, 20, I18n.format("gui.cancel")));
+        this.buttonList.add(new GuiButton(98, width - 98 - 2, 5, 98, 20, BungeeHack ? "BungeeHack: §aON" : "BungeeHack: §cOFF"));
         this.buttonList.add(new GuiButton(69, 5, 5, 90, 20, ProtocolCollection.getProtocolById(ViaMCP.getInstance().getVersion()).toString().split(Pattern.quote("("))[0].replace(" ", "")));
         this.selectServer(this.serverListSelector.func_148193_k());
     }
@@ -144,15 +147,17 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
                     GuiYesNo guiyesno = new GuiYesNo(this, s, s1, s2, s3, this.serverListSelector.func_148193_k());
                     this.mc.displayGuiScreen(guiyesno);
                 }
+            } else if (button.id == 98) {
+                BungeeHack = !BungeeHack;
+                button.displayString = BungeeHack ? "BungeeHack: §aON" : "BungeeHack: §cOFF";
             } else if (button.id == 1) {
                 this.connectToSelected();
             } else if (button.id == 4) {
                 this.directConnect = true;
                 this.mc.displayGuiScreen(new GuiScreenServerList(this, this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false)));
-            }else if (button.id == 69){
+            } else if (button.id == 69) {
                 this.mc.displayGuiScreen(new GuiProtocolSelector(this));
-            }
-            else if (button.id == 3) {
+            } else if (button.id == 3) {
                 this.addingServer = true;
                 this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false)));
             } else if (button.id == 7 && guilistextended$iguilistentry instanceof ServerListEntryNormal) {

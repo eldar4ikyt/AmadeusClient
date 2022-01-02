@@ -5,7 +5,7 @@ import it.amadeus.client.module.Module;
 import it.amadeus.client.utilities.ChatUtil;
 import org.lwjgl.input.Keyboard;
 
-public class bind extends Command {
+public final class bind extends Command {
 
     public String getAlias() {
         return "bind";

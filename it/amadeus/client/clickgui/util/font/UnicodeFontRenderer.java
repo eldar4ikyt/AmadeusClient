@@ -60,6 +60,18 @@ public class UnicodeFontRenderer extends FontRenderer {
     }
 
 
+    public void chromaString(String string, int x, int y) {
+        int tmpX = x;
+        int currentColor = -1;
+        for (char currentChar : string.toCharArray()) {
+            long l = (System.currentTimeMillis() - (tmpX * 10 - y * 10));
+            currentColor = java.awt.Color.HSBtoRGB(l % (int) 2000.0F / 2000.0F, 0.8F, 0.8F);
+            drawStringWithFont(string, tmpX, y, currentColor);
+            tmpX += getCharWidth(currentChar);
+        }
+    }
+
+
     public int drawStringWithShadow(String text, float x, float y, int color) {
         drawStringWithFont(text, x + 1.0F, y + 1.0F, -16777216);
         return (int) drawStringWithFont(text, x, y, color);

@@ -294,7 +294,7 @@ public class EntityArrow extends Entity implements IProjectile
 
                     if (this.getIsCritical())
                     {
-                        l += this.rand.nextInt(l / 2 + 2);
+                        l += this.rand.nextInt((l >> 1) + 2);
                     }
 
                     DamageSource damagesource;

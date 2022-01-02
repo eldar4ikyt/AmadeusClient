@@ -205,11 +205,11 @@ public abstract class GuiContainer extends GuiScreen
     private void drawItemStack(ItemStack stack, int x, int y, String altText)
     {
         GlStateManager.translate(0.0F, 0.0F, 32.0F);
-        this.zLevel = 200.0F;
+       zLevel = 200.0F;
         this.itemRender.zLevel = 200.0F;
         this.itemRender.renderItemAndEffectIntoGUI(stack, x, y);
         this.itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, stack, x, y - (this.draggedStack == null ? 0 : 8), altText);
-        this.zLevel = 0.0F;
+       zLevel = 0.0F;
         this.itemRender.zLevel = 0.0F;
     }
 
@@ -272,7 +272,7 @@ public abstract class GuiContainer extends GuiScreen
             }
         }
 
-        this.zLevel = 100.0F;
+       zLevel = 100.0F;
         this.itemRender.zLevel = 100.0F;
 
         if (itemstack == null)
@@ -303,7 +303,7 @@ public abstract class GuiContainer extends GuiScreen
         }
 
         this.itemRender.zLevel = 0.0F;
-        this.zLevel = 0.0F;
+       zLevel = 0.0F;
     }
 
     private void updateDragSplitting()

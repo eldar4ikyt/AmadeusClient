@@ -20,6 +20,7 @@ public final class PlayerESP extends Module {
     private final TessellatorModel naruto = new TessellatorModel("/assets/minecraft/amadeus/Naruto/D0401253.obj");
     private final TessellatorModel sussy = new TessellatorModel("/assets/minecraft/amadeus/sussy/sussy.obj");
     private final TessellatorModel spongebob = new TessellatorModel("/assets/minecraft/amadeus/Spongebob/spongebob.obj");
+    private final TessellatorModel parker = new TessellatorModel("/assets/minecraft/amadeus/parker/Parker.obj");
 
     @Override
     public String getName() {
@@ -44,18 +45,14 @@ public final class PlayerESP extends Module {
     @Override
     public void onEvent(Event event) {
         if (event instanceof ChamsEvent) {
+            ((ChamsEvent) event).setCancelled(true);
+            EntityPlayer entity = ((ChamsEvent) event).getAbstractClientPlayer();
+            float yaw = entity.rotationYaw;
             GlStateManager.pushAttrib();
             GlStateManager.pushMatrix();
-            EntityPlayer entity = ((ChamsEvent) event).getAbstractClientPlayer();
-            ((ChamsEvent) event).setCancelled(true);
-
             double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * mc.timer.renderPartialTicks - RenderManager.renderPosX;
             double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * mc.timer.renderPartialTicks - RenderManager.renderPosY;
             double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * mc.timer.renderPartialTicks - RenderManager.renderPosZ;
-
-            float yaw = entity.rotationYaw;
-
-
             GL11.glTranslated(x, y, z);
             GL11.glRotatef(-yaw, 0, entity.height, 0);
             if (this.mode.getValue().equals(Mode.NAZI)) {
@@ -64,6 +61,8 @@ public final class PlayerESP extends Module {
                 GlStateManager.scale(0.076, (entity.isSneaking() ? 0.070 : 0.076), 0.076);
             } else if (this.mode.getValue().equals(Mode.SUSSY)) {
                 GlStateManager.scale(0.496, (entity.isSneaking() ? 0.490 : 0.496), 0.496);
+            } else if (this.mode.getValue().equals(Mode.PARKER)) {
+                GlStateManager.scale(1.026, (entity.isSneaking() ? 1.020 : 1.026), 1.026);
             }
 
             GlStateManager.disableLighting();
@@ -84,17 +83,18 @@ public final class PlayerESP extends Module {
             } else if (this.mode.getValue().equals(Mode.SUSSY)) {
                 GL11.glColor4f(217, 0, 0, 11);
                 this.sussy.render();
-            }
-            else if (this.mode.getValue().equals(Mode.SPONGEBOB)) {
+            } else if (this.mode.getValue().equals(Mode.SPONGEBOB)) {
                 this.spongebob.render();
+            } else if (this.mode.getValue().equals(Mode.PARKER)) {
+                this.parker.render();
             }
 
             GlStateManager.enableLighting();
+            GlStateManager.resetColor();
             GlStateManager.popAttrib();
             GlStateManager.popMatrix();
-            GlStateManager.resetColor();
         }
     }
 
-    public enum Mode {NAZI, SEX, NARUTO, SASUKE, SPONGEBOB, SUSSY}
+    public enum Mode {NAZI, SEX, NARUTO, SASUKE, SPONGEBOB, SUSSY, PARKER}
 }

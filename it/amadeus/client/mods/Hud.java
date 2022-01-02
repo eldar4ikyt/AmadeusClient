@@ -1,10 +1,12 @@
 package it.amadeus.client.mods;
 
 import it.amadeus.client.clickgui.ClickGui;
+import it.amadeus.client.clickgui.util.font.UnicodeFontRenderer;
 import it.amadeus.client.event.Event;
 import it.amadeus.client.event.events.KeyPress;
 import it.amadeus.client.event.events.Overlay;
 import it.amadeus.client.module.Module;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -19,6 +21,19 @@ public final class Hud extends Module {
     private int selected;
     private int ToggleSelected;
     private boolean isOpen;
+
+    public static void drawChromaString(String text, int x, int y, float size) {
+        final UnicodeFontRenderer fr = mc.getAmadeus().getFontManager().getFont("comfortaa", size);
+        int tmpX = x;
+        for (char currentChar : text.toCharArray()) {
+            long l = System.currentTimeMillis() - (tmpX * 10 - y * 10);
+            int currentColor = Color.HSBtoRGB(l % (int) 2000.0F / 2000.0F, 0.8F, 0.8F);
+            fr.drawStringWithFont(text, tmpX, y, currentColor);
+            tmpX += fr.getCharWidth(currentChar);
+        }
+    }
+
+
 
     @Override
     public String getName() {
@@ -43,10 +58,10 @@ public final class Hud extends Module {
     @Override
     public void onEvent(Event event) {
         if (event instanceof Overlay) {
-           // FXGL.entityBuilder().view(new Rectangle(21,21, javafx.scene.paint.Color.RED)).buildAndAttach();
             mc.getTextureManager().bindTexture(new ResourceLocation("amadeus/Hud.png"));
             Gui.drawModalRectWithCustomSizedTexture(1, 1, 0.0F, 0.0F, 126, 66, 126.0F, 66.0F);
             GlStateManager.color(1, 1, 1, 1);
+            GlStateManager.enableAlpha();
             newArrayList();
             GL11.glPushMatrix();
             GlStateManager.translate(5, 27, 0);
@@ -60,10 +75,16 @@ public final class Hud extends Module {
     private void tabGui4Vinny() {
         final ScaledResolution sr = new ScaledResolution(mc);
         int y = 45;
+        int penisY = 0;
+        for (int i = 0; i < Category.values().length; i++) {
+            penisY += 15;
+        }
+        mc.getAmadeus().getBlurrer().bloom(0, y - 2, 117 + 4, penisY + 4, 6, 150);
         for (int i = 0; i < Category.values().length; i++) {
             Category cat = Category.values()[i];
             String name = cat.name().charAt(0) + cat.name().substring(1).toLowerCase();
-            Gui.drawRect((int) 2.0D, (y + i * 15), (int) 117.0D, (y + 15 + i * 15), (selected == i) ? Color.RED.getRGB() : Integer.MIN_VALUE);
+            mc.getAmadeus().getBlurrer().blur(5 + 2, ((y + 27) + i * 15) + 0.5, 117.0D - 2, 15, 7, true, false);
+            Gui.drawRect((int) 2.0D, (y + i * 15), (int) 117.0D, (y + 15 + i * 15), (selected == i) ? Color.RED.getRGB() : new Color(0, 0, 0, 70).getRGB());
             switch (name) {
                 case "Fight":
                     mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont("COMBACT", 30.0F, (y + i * 15 + 2), Color.BLACK.getRGB());
@@ -78,12 +99,19 @@ public final class Hud extends Module {
                     mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont("FUN", 46.0F, (y + i * 15 + 2), Color.BLACK.getRGB());
                     break;
             }
-            if (isOpen && i == selected)
+            if (isOpen && i == selected) {
+                penisY = 0;
+                for (int j = 0; j < mc.getAmadeus().getModManager().getModsByCat(cat).size(); j++) {
+                    penisY += 15;
+                }
+                mc.getAmadeus().getBlurrer().bloom(120 - 2, y + i * 15 - 2, 226 - 120 + 4, penisY + 4, 6, 150);
                 for (int j = 0; j < mc.getAmadeus().getModManager().getModsByCat(cat).size(); j++) {
                     Module m = mc.getAmadeus().getModManager().getModsByCat(cat).get(j);
-                    Gui.drawRect((int) 120.0D, (y + i * 15 + j * 15), (int) 226.0D, (y + i * 15 + j * 15 + 15), (ToggleSelected == j) ? Color.RED.getRGB() : Integer.MIN_VALUE);
+                    mc.getAmadeus().getBlurrer().blur((int) 120.0D + 5, ((y + 27) + i * 15 + j * 15) + 0.5, (int) 226.0D - 120, 15, 7, true, false);
+                    Gui.drawRect((int) 120.0D, (y + i * 15 + j * 15), (int) 226.0D, (y + i * 15 + j * 15 + 15), (ToggleSelected == j) ? Color.RED.getRGB() : new Color(0, 0, 0, 70).getRGB());
                     mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont(m.getName(), 124.0F, (y + i * 15 + j * 15 + 2), m.isToggled() ? Color.ORANGE.getRGB() : Color.BLACK.getRGB());
                 }
+            }
         }
     }
 
@@ -119,9 +147,11 @@ public final class Hud extends Module {
             if (toggled) {
                 mc.getAmadeus().getModManager().getModsByCat(Category.values()[selected]).get(ToggleSelected).onDisable();
                 mc.getAmadeus().getModManager().getModsByCat(Category.values()[selected]).get(ToggleSelected).setToggled(false);
+                mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("random.click"), 1.0F));
             } else {
                 mc.getAmadeus().getModManager().getModsByCat(Category.values()[selected]).get(ToggleSelected).onEnable();
                 mc.getAmadeus().getModManager().getModsByCat(Category.values()[selected]).get(ToggleSelected).setToggled(true);
+                mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("note.pling"), 1.0F));
             }
         }
     }
@@ -136,7 +166,9 @@ public final class Hud extends Module {
                 continue;
             if (m.isToggled()) {
                 final float xPos = sr.getScaledWidth() - mc.getAmadeus().getFontManager().comfortaa20.getStringWidth(m.getName());
-                mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont(m.getName(), (int) xPos, (int) (y + 1.7F), ClickGui.getPrimaryColor().getRGB());
+                mc.getAmadeus().getBlurrer().blur((int) xPos - 2, (int) (y + 1.7F) + 0.2, mc.getAmadeus().getFontManager().comfortaa20.getStringWidth(m.getName()) + 2, 14, 6, true, false);
+                Gui.drawRect((int) xPos - 2, (int) (y + 1.7F), sr.getScaledWidth(), (y + 14), new Color(0, 0, 0, 45).getRGB());
+                mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont(m.getName(), (int) xPos - 1, (int) (y + 1.7F), ClickGui.getPrimaryColor().getRGB());
                 y += 12;
             }
         }

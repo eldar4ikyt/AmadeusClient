@@ -44,9 +44,11 @@ public final class InventoryMove extends Module {
                 } else if (Keyboard.isKeyDown(205)) {
                     mc.thePlayer.rotationYaw += 4.0F;
                 }
-                KeyBinding.setKeyBindState(Keyboard.KEY_W, Keyboard.isKeyDown(Keyboard.KEY_W));
-                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), GameSettings.isKeyDown(mc.gameSettings.keyBindSneak));
+                KeyBinding.setKeyBindState(mc.gameSettings.keyBindLeft.getKeyCode(),  GameSettings.isKeyDown(mc.gameSettings.keyBindLeft));
+                KeyBinding.setKeyBindState(mc.gameSettings.keyBindBack.getKeyCode(), GameSettings.isKeyDown(mc.gameSettings.keyBindBack));
+                KeyBinding.setKeyBindState(mc.gameSettings.keyBindRight.getKeyCode(), GameSettings.isKeyDown(mc.gameSettings.keyBindRight));
                 KeyBinding.setKeyBindState(mc.gameSettings.keyBindJump.getKeyCode(), GameSettings.isKeyDown(mc.gameSettings.keyBindJump));
+                KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), GameSettings.isKeyDown(mc.gameSettings.keyBindSneak));
                 KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), GameSettings.isKeyDown(mc.gameSettings.keyBindSprint));
             }
         }

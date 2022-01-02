@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+
+import lombok.Getter;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResource;
@@ -26,10 +28,10 @@ import org.lwjgl.util.vector.Matrix4f;
 
 public class ShaderGroup
 {
-    private final Framebuffer mainFramebuffer;
+    public final Framebuffer mainFramebuffer;
     private final IResourceManager resourceManager;
     private final String shaderGroupName;
-    private final List<Shader> listShaders = Lists.newArrayList();
+   @Getter private final List<Shader> listShaders = Lists.newArrayList();
     private final Map<String, Framebuffer> mapFramebuffers = Maps.newHashMap();
     private final List<Framebuffer> listFramebuffers = Lists.newArrayList();
     private Matrix4f projectionMatrix;

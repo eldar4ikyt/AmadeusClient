@@ -5,8 +5,10 @@ import it.amadeus.client.clickgui.util.font.UnicodeFontRenderer;
 import it.amadeus.client.module.Module;
 import it.amadeus.client.utilities.Translate;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import it.amadeus.client.clickgui.pannels.Panel;
 
@@ -31,6 +33,7 @@ public final class ClickGui extends GuiScreen {
         int x = 3;
         int y = 5;
         int count = 0;
+        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("mob.enderdragon.growl"), 1.0F));
         if (panels.size() != Module.Category.values().length) {
             for (Module.Category c : Module.Category.values()) {
                 Panel p = new Panel(x, y, c);
@@ -75,12 +78,14 @@ public final class ClickGui extends GuiScreen {
 
     @Override
     public void initGui() {
+        //mc.getAmadeus().getBlurrer().init();
         super.initGui();
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        drawDefaultBackground();
+        //drawDefaultBackground();
+        mc.getAmadeus().getBlurrer().blur(0,0, width, height, 6,true, false);
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
         this.translate.interpolate(sr.getScaledWidth(), sr.getScaledHeight(), 0.45D);
         GL11.glPushMatrix();

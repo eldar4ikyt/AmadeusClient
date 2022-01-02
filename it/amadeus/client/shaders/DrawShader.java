@@ -100,7 +100,7 @@ public class DrawShader {
     public static ShaderUtilsShader shader = new ShaderUtilsShader(shaders);
 
     public static void drawClientShaders() {
-        DrawShader.renderShader(shader, false);
+        renderShader(shader, true);
     }
 
     public static void renderShader(ShaderUtilsShader shader, boolean DefaultUniforms) {

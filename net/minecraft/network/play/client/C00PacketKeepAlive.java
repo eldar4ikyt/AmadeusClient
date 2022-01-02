@@ -10,7 +10,7 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 public class C00PacketKeepAlive implements Packet<INetHandlerPlayServer>
 {
    @Setter
-   private int key;
+   public int key;
 
     public C00PacketKeepAlive()
     {

@@ -267,7 +267,7 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
         int l = (height - this.field_146557_g) / 2;
         int i1 = k + 16;
         int j1 = l + 17;
-        this.zLevel = 0.0F;
+       zLevel = 0.0F;
         GlStateManager.depthFunc(518);
         GlStateManager.pushMatrix();
         GlStateManager.translate((float)i1, (float)j1, -200.0F);
@@ -488,7 +488,7 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(ACHIEVEMENT_BACKGROUND);
         this.drawTexturedModalRect(k, l, 0, 0, this.field_146555_f, this.field_146557_g);
-        this.zLevel = 0.0F;
+       zLevel = 0.0F;
         GlStateManager.depthFunc(515);
         GlStateManager.disableDepth();
         GlStateManager.enableTexture2D();

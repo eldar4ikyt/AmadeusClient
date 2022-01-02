@@ -3,12 +3,10 @@ package it.amadeus.client.clickgui.util;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -28,6 +26,162 @@ public final class RenderUtil {
         GL11.glEnable(2848);
         GL11.glHint(3154, 4354);
         GL11.glHint(3155, 4354);
+    }
+    public static void drawRoundedRect2(final int x, final int y, final int width, final int height, final int cornerRadius, final Color color) {
+        Gui.drawRect(x, y + cornerRadius, x + cornerRadius, y + height - cornerRadius, color.getRGB());
+        Gui.drawRect(x + cornerRadius, y, x + width - cornerRadius, y + height, color.getRGB());
+        Gui.drawRect(x + width - cornerRadius, y + cornerRadius, x + width, y + height - cornerRadius, color.getRGB());
+        drawArc(x + cornerRadius, y + cornerRadius, cornerRadius, 0, 90, color);
+        drawArc(x + width - cornerRadius, y + cornerRadius, cornerRadius, 270, 360, color);
+        drawArc(x + width - cornerRadius, y + height - cornerRadius, cornerRadius, 180, 270, color);
+        drawArc(x + cornerRadius, y + height - cornerRadius, cornerRadius, 90, 180, color);
+    }
+
+    public static void drawArc(final int x, final int y, final int radius, final int startAngle, final int endAngle, final Color color) {
+        GL11.glPushMatrix();
+        GL11.glEnable(3042);
+        GL11.glDisable(3553);
+        GL11.glBlendFunc(770, 771);
+        GL11.glColor4f(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
+        final WorldRenderer worldRenderer = Tessellator.getInstance().getWorldRenderer();
+        worldRenderer.begin(6, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(x, y, 0.0).endVertex();
+        for (int i = (int)(startAngle / 360.0 * 100.0); i <= (int)(endAngle / 360.0 * 100.0); ++i) {
+            final double angle = 6.283185307179586 * i / 100.0 + Math.toRadians(180.0);
+            worldRenderer.pos(x + Math.sin(angle) * radius, y + Math.cos(angle) * radius, 0.0).endVertex();
+        }
+        Tessellator.getInstance().draw();
+        GL11.glEnable(3553);
+        GL11.glDisable(3042);
+        GL11.glPopMatrix();
+    }
+
+    public static void drawRoundedRect2(final float x, final float y, final float x1, final float y1, final float borderC, final int insideC) {
+        enableGL2D();
+        drawRect1(x + 0.5f, y, x + x1 - 0.5f, y + y1 + 0.5f, insideC);
+        drawRect1(x + 0.5f, y - 0.5f, x + x1 - 0.5f, y + y1, insideC);
+        drawRect1(x, y + y1 + 0.5f, x + x1, y + y1, insideC);
+        disableGL2D();
+    }
+
+    public static void drawRoundedRect(double x, double y, final double width, final double height, final double radius, final int color) {
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        double x2 = x + width;
+        double y2 = y + height;
+        final float f = (color >> 24 & 0xFF) / 255.0f;
+        final float f2 = (color >> 16 & 0xFF) / 255.0f;
+        final float f3 = (color >> 8 & 0xFF) / 255.0f;
+        final float f4 = (color & 0xFF) / 255.0f;
+        GL11.glPushAttrib(0);
+        GL11.glScaled(0.5, 0.5, 0.5);
+        x *= 2.0;
+        y *= 2.0;
+        x2 *= 2.0;
+        y2 *= 2.0;
+        GL11.glDisable(3553);
+        GL11.glColor4f(f2, f3, f4, f);
+        GL11.glEnable(2848);
+        GL11.glBegin(9);
+        for (int i = 0; i <= 90; i += 3) {
+            GL11.glVertex2d(x + radius + Math.sin(i * 3.141592653589793 / 180.0) * (radius * -1.0), y + radius + Math.cos(i * 3.141592653589793 / 180.0) * (radius * -1.0));
+        }
+        for (int i = 90; i <= 180; i += 3) {
+            GL11.glVertex2d(x + radius + Math.sin(i * 3.141592653589793 / 180.0) * (radius * -1.0), y2 - radius + Math.cos(i * 3.141592653589793 / 180.0) * (radius * -1.0));
+        }
+        for (int i = 0; i <= 90; i += 3) {
+            GL11.glVertex2d(x2 - radius + Math.sin(i * 3.141592653589793 / 180.0) * radius, y2 - radius + Math.cos(i * 3.141592653589793 / 180.0) * radius);
+        }
+        for (int i = 90; i <= 180; i += 3) {
+            GL11.glVertex2d(x2 - radius + Math.sin(i * 3.141592653589793 / 180.0) * radius, y + radius + Math.cos(i * 3.141592653589793 / 180.0) * radius);
+        }
+        GL11.glEnd();
+        GL11.glEnable(3553);
+        GL11.glDisable(2848);
+        GL11.glEnable(3553);
+        GL11.glScaled(2.0, 2.0, 2.0);
+        GL11.glPopAttrib();
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
+
+
+    public static void drawRoundedRect2(final double x, final double y, final double width, final double height, final double radius, final int color) {
+        drawRoundedRect(x, y, width - x, height - y, radius, color);
+    }
+
+    public static void drawRect1(final float x, final float y, final float x1, final float y1, final int color) {
+        enableGL2D();
+        glColor(color);
+        drawRect(x, y, x1, y1);
+        disableGL2D();
+    }
+
+    public static Color pulseBrightness(final Color color, final int index, final int count) {
+        final float[] hsb = new float[3];
+        Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsb);
+        float brightness = Math.abs((System.currentTimeMillis() % 2000L / 1000.0f + index / (float)count * 2.0f) % 2.0f - 1.0f);
+        brightness = 0.5f + 0.5f * brightness;
+        return new Color(Color.HSBtoRGB(hsb[0], hsb[1], brightness % 2.0f));
+    }
+
+    public static void drawEntityOnScreen(final int posX, final int posY, final int scale, final float mouseX, final float mouseY, final EntityLivingBase ent) {
+        GlStateManager.enableColorMaterial();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float)posX, (float)posY, 50.0f);
+        GlStateManager.scale((float)(-scale), (float)scale, (float)scale);
+        GlStateManager.rotate(180.0f, 0.0f, 0.0f, 1.0f);
+        final float f = ent.renderYawOffset;
+        final float f2 = ent.rotationYaw;
+        final float f3 = ent.rotationPitch;
+        final float f4 = ent.prevRotationYawHead;
+        final float f5 = ent.rotationYawHead;
+        GlStateManager.rotate(135.0f, 0.0f, 1.0f, 0.0f);
+        RenderHelper.enableStandardItemLighting();
+        GlStateManager.rotate(-135.0f, 0.0f, 1.0f, 0.0f);
+        GlStateManager.rotate(-(float)Math.atan(mouseY / 40.0f) * 20.0f, 1.0f, 0.0f, 0.0f);
+        ent.renderYawOffset = (float)Math.atan(mouseX / 40.0f) * 20.0f;
+        ent.rotationYaw = (float)Math.atan(mouseX / 40.0f) * 40.0f;
+        ent.rotationPitch = -(float)Math.atan(mouseY / 40.0f) * 20.0f;
+        ent.rotationYawHead = ent.rotationYaw;
+        ent.prevRotationYawHead = ent.rotationYaw;
+        GlStateManager.translate(0.0f, 0.0f, 0.0f);
+        final RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        rendermanager.setPlayerViewY(180.0f);
+        rendermanager.setRenderShadow(false);
+        rendermanager.renderEntityWithPosYaw(ent, 0.0, 0.0, 0.0, 0.0f, 1.0f);
+        rendermanager.setRenderShadow(true);
+        ent.renderYawOffset = f;
+        ent.rotationYaw = f2;
+        ent.rotationPitch = f3;
+        ent.prevRotationYawHead = f4;
+        ent.rotationYawHead = f5;
+        GlStateManager.popMatrix();
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GlStateManager.disableTexture2D();
+        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+    }
+
+
+    public static void drawLine3D(final float x, final float y, final float z, final float x1, final float y1, final float z1, final int color) {
+        pre3D();
+        GL11.glLoadIdentity();
+        Minecraft.getMinecraft().entityRenderer.orientCamera(Minecraft.getMinecraft().timer.renderPartialTicks);
+        final float var11 = (color >> 24 & 0xFF) / 255.0f;
+        final float var12 = (color >> 16 & 0xFF) / 255.0f;
+        final float var13 = (color >> 8 & 0xFF) / 255.0f;
+        final float var14 = (color & 0xFF) / 255.0f;
+        GL11.glColor4f(var12, var13, var14, var11);
+        GL11.glLineWidth(0.5f);
+        GL11.glBegin(3);
+        GL11.glVertex3d(x, y, z);
+        GL11.glVertex3d(x1, y1, z1);
+        GL11.glEnd();
+        post3D();
     }
 
     public static void drawBoundingBox(AxisAlignedBB aa) {
@@ -108,6 +262,40 @@ public final class RenderUtil {
         if (depth) GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);
         GL11.glDisable(GL11.GL_BLEND);
+    }
+
+    public static void drawRoundedRect(float left, float top, float right, float bottom, int smooth, Color color) {
+        Gui.drawRect((int) (left + smooth), (int) top, (int) (right - smooth), (int) bottom, color.getRGB());
+        Gui.drawRect((int) left, (int) (top + smooth), (int) right, (int) (bottom - smooth), color.getRGB());
+        drawFilledCircle((int) left + smooth, (int) top + smooth, smooth, color);
+        drawFilledCircle((int) right - smooth, (int) top + smooth, smooth, color);
+        drawFilledCircle((int) right - smooth, (int) bottom - smooth, smooth, color);
+        drawFilledCircle((int) left + smooth, (int) bottom - smooth, smooth, color);
+    }
+
+    public static void drawBorderRoundedRect(float left, float top, float right, float bottom, int smooth, Color color, Color borderColor) {
+        drawRoundedRect(left - 1.0F, top - 1.0F, right + 1.0F, bottom + 1.0F, smooth + 1, borderColor);
+        drawRoundedRect(left, top, right, bottom, smooth, color);
+    }
+
+    public static void drawFilledCircle(int xx, int yy, float radius, Color color) {
+        int sections = 50;
+        double dAngle = 6.283185307179586D / sections;
+        GL11.glPushAttrib(8192);
+        GL11.glEnable(3042);
+        GL11.glDisable(3553);
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(2848);
+        GL11.glBegin(6);
+        for (int i = 0; i < sections; i++) {
+            float x = (float) (radius * Math.sin(i * dAngle));
+            float y = (float) (radius * Math.cos(i * dAngle));
+            GL11.glColor4f(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F, color.getAlpha() / 255.0F);
+            GL11.glVertex2f(xx + x, yy + y);
+        }
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glEnd();
+        GL11.glPopAttrib();
     }
 
     public static void drawBoxFilled(AxisAlignedBB axisAlignedBB) {

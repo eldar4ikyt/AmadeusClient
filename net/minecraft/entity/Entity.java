@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import it.amadeus.client.event.events.MoveFlying;
+import it.amadeus.client.mods.Reach;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -14,6 +15,7 @@ import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.crash.CrashReport;
@@ -102,7 +104,7 @@ public abstract class Entity implements ICommandSender
     public float prevRotationPitch;
 
     /** Axis aligned bounding box. */
-    private AxisAlignedBB boundingBox;
+    public AxisAlignedBB boundingBox;
     public boolean onGround;
 
     /**
@@ -1225,14 +1227,11 @@ public abstract class Entity implements ICommandSender
      */
     public void moveFlying(float strafe, float forward, float friction)
     {
+        final MoveFlying moveFlying = new MoveFlying(strafe,forward,friction, this.rotationYaw, this.posX, this.posY, this.posZ);
+        Minecraft.getMinecraft().getAmadeus().getEventManager().hook(moveFlying);
+        if(moveFlying.isCancelled()){return;}
 
-        MoveFlying moveFlying = new MoveFlying(strafe,forward,friction, this.rotationYaw, this.posX, this.posY, this.posZ);
-
-        if(moveFlying.isCancelled()){
-            return;
-        }
-
-        float f = strafe * strafe + forward * forward;
+        float f =strafe * strafe + forward * forward;
 
         if (f >= 1.0E-4F)
         {
@@ -2041,8 +2040,10 @@ public abstract class Entity implements ICommandSender
         }
     }
 
-    public float getCollisionBorderSize()
-    {
+    public float getCollisionBorderSize() {
+        if (Minecraft.getMinecraft().getAmadeus().getModManager().getModuleByClass(Reach.class).isToggled()) {
+                return Reach.isLegit() ? 0.7F : 600.0F;
+        }
         return 0.1F;
     }
 
@@ -2464,7 +2465,7 @@ public abstract class Entity implements ICommandSender
      */
     public void travelToDimension(int dimensionId)
     {
-        if (!this.worldObj.isRemote && !this.isDead)
+        if (!this.worldObj.isRemote)//!this.isDead
         {
             this.worldObj.theProfiler.startSection("changeDimension");
             MinecraftServer minecraftserver = MinecraftServer.getServer();

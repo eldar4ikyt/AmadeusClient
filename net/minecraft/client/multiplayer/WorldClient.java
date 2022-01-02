@@ -106,6 +106,10 @@ public class WorldClient extends World
         this.theProfiler.endSection();
     }
 
+    public Block getBlock(double x, double y, double z){
+        return this.getBlockState(new BlockPos(x, y, z)).getBlock();
+    }
+
     /**
      * Invalidates an AABB region of blocks from the receive queue, in the event that the block has been modified
      * client-side in the intervening 80 receive ticks.

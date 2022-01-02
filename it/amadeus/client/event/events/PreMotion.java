@@ -57,6 +57,7 @@ public final class PreMotion extends Event implements Cancellable {
 
     public void setPitch(final float pitch) {
         this.pitch = pitch;
+        mc.thePlayer.rotationPitchHead = pitch;
         mc.thePlayer.renderPitchHead = pitch;
     }
 

@@ -63,7 +63,7 @@ public class EntityAIVillagerInteract extends EntityAIWatchClosest2
 
                         if ((item == Items.bread || item == Items.potato || item == Items.carrot) && itemstack.stackSize > 3)
                         {
-                            int l = itemstack.stackSize / 2;
+                            int l = itemstack.stackSize >> 1;
                             itemstack.stackSize -= l;
                             itemstack1 = new ItemStack(item, l, itemstack.getMetadata());
                         }

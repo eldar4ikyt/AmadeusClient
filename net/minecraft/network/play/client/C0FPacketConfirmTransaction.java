@@ -9,7 +9,7 @@ public class C0FPacketConfirmTransaction implements Packet<INetHandlerPlayServer
 {
     private int windowId;
     public short uid;
-    private boolean accepted;
+    public boolean accepted;
 
     public C0FPacketConfirmTransaction()
     {

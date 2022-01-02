@@ -8,8 +8,9 @@ import it.amadeus.client.clickgui.util.values.valuetypes.NumberValue;
 import it.amadeus.client.module.Module;
 import it.amadeus.client.utilities.TimerUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -25,20 +26,17 @@ public final class Button {
 
     private final TimerUtil upTimer;
     private final TimerUtil downTimer;
-
+    private final float lastRed = (float) ClickGui.getSecondaryColor(false).getRed() / 255F;
+    private final float lastGreen = (float) ClickGui.getSecondaryColor(false).getGreen() / 255F;
+    private final float lastBlue = (float) ClickGui.getSecondaryColor(false).getBlue() / 255F;
     public long lastInteract;
     public int animation;
     public boolean opened = false;
     public List<Component> settings = new ArrayList<>();
     private int x, y, width, height;
-
     private boolean hovered;
     private boolean clickable = false;
     private boolean isMiddleClick = false;
-
-    private final float lastRed = (float) ClickGui.getSecondaryColor(false).getRed() / 255F;
-    private final float lastGreen = (float) ClickGui.getSecondaryColor(false).getGreen() / 255F;
-    private final float lastBlue = (float) ClickGui.getSecondaryColor(false).getBlue() / 255F;
 
     public Button(Module mod) {
         this.mod = mod;
@@ -91,15 +89,16 @@ public final class Button {
 
         float speed = 256F / (float) Minecraft.getDebugFPS();
 
+        //Minecraft.getMinecraft().getAmadeus().getBlurrer().blur(x,y, width, height, 15,true, false);
         Gui.drawRect(x, y, x + width, y + height, ClickGui.getSecondaryColor(true).getRGB());
 
-       ClickGui.getFont().drawStringWithFont(this.mod.getName() + getKey(), this.x + 5, this.y + (this.height >> 1) - (ClickGui.getFont().getStringHeight(this.mod.getName() + ": " + getKey()) >> 1), this.mod.isToggled() ? ClickGui.getPrimaryColor().getRGB() : new Color(175, 175, 175).getRGB());
+        ClickGui.getFont().drawStringWithFont(this.mod.getName() + getKey(), this.x + 5, this.y + (this.height >> 1) - (ClickGui.getFont().getStringHeight(this.mod.getName() + ": " + getKey()) >> 1), this.mod.isToggled() ? ClickGui.getPrimaryColor().getRGB() : new Color(175, 175, 175).getRGB());
 
-       if(isHovered(mouseX, mouseY)){
-           ClickGui.getFont().drawStringWithFont(mod.getDescription(), this.x + 55, this.y + (this.height >> 1)  - 4, new Color(75, 175, 75).getRGB());
-       }
+        if (isHovered(mouseX, mouseY)) {
+            ClickGui.getFont().drawStringWithFont(mod.getDescription(), this.x + 55, this.y + (this.height >> 1) - 4, new Color(75, 175, 75).getRGB());
+        }
 
-       int addVal = 0;
+        int addVal = 0;
         if (!settings.isEmpty()) {
             GL11.glPushMatrix();
             ClickGui.getFont().drawStringWithFont(opened ? "-" : "+", x + width - 10, this.y + (this.height >> 1) - (ClickGui.getFont().getStringHeight("+") >> 1), new Color(175, 175, 175).getRGB());
@@ -142,6 +141,7 @@ public final class Button {
         ArrayList<Component> settings = getActiveComponents();
         if (this.hovered && Mouse.isButtonDown(0)) {
             this.mod.toggle();
+            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("note.pling"), 1.0F));
         } else if (this.hovered && button == 1) {
             opened = !opened;
             if (opened) {

@@ -510,7 +510,7 @@ public class RenderItem implements IResourceManagerReloadListener
 
     private void setupGuiTransform(int xPosition, int yPosition, boolean isGui3d)
     {
-        GlStateManager.translate((float)xPosition, (float)yPosition, 100.0F + this.zLevel);
+        GlStateManager.translate((float)xPosition, (float)yPosition, 100.0F +zLevel);
         GlStateManager.translate(8.0F, 8.0F, 0.0F);
         GlStateManager.scale(1.0F, 1.0F, -1.0F);
         GlStateManager.scale(0.5F, 0.5F, 0.5F);
@@ -534,7 +534,7 @@ public class RenderItem implements IResourceManagerReloadListener
     {
         if (stack != null && stack.getItem() != null)
         {
-            this.zLevel += 50.0F;
+           zLevel += 50.0F;
 
             try
             {
@@ -575,7 +575,7 @@ public class RenderItem implements IResourceManagerReloadListener
                 throw new ReportedException(crashreport);
             }
 
-            this.zLevel -= 50.0F;
+           zLevel -= 50.0F;
         }
     }
 

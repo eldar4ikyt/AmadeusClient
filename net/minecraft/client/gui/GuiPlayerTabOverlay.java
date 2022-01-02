@@ -266,9 +266,9 @@ public class GuiPlayerTabOverlay extends Gui
             j = 4;
         }
 
-        this.zLevel += 100.0F;
+       zLevel += 100.0F;
         this.drawTexturedModalRect(p_175245_2_ + p_175245_1_ - 11, p_175245_3_, 0 + i * 10, 176 + j * 8, 10, 8);
-        this.zLevel -= 100.0F;
+       zLevel -= 100.0F;
     }
 
     private void drawScoreboardValues(ScoreObjective p_175247_1_, int p_175247_2_, String p_175247_3_, int p_175247_4_, int p_175247_5_, NetworkPlayerInfo p_175247_6_)

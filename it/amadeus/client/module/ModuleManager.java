@@ -2,7 +2,6 @@ package it.amadeus.client.module;
 
 import it.amadeus.client.mods.*;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +11,24 @@ public final class ModuleManager {
     @Getter
     private final List<Module> mods = new ArrayList<>(); //get all Mods
 
+    /*
+    AUTOBLOCK & BREAKER
+     */
+
+
     public ModuleManager() {
         mods.add(new Killaura());//patch only this shit
         mods.add(new Speed());
+        mods.add(new AntiBot());
+        mods.add(new Blink());
+
+        mods.add(new Scaffold());
+
+        mods.add(new MurderFinder());
+        mods.add(new LagLess());
+        mods.add(new SimpleESP());
+        mods.add(new Disabler());
+        mods.add(new OnlyFans());
         mods.add(new Sprint());
         mods.add(new SuperReverseKB());
         mods.add(new InventoryMove());
@@ -27,15 +41,16 @@ public final class ModuleManager {
         mods.add(new LongJump());
         mods.add(new AntiHurtCam());
         mods.add(new AutoArmor());
-        mods.add(new Disabler());
         mods.add(new Velocity());
         mods.add(new TimerMC());
         mods.add(new Fucker());
+        mods.add(new Reach());
         mods.add(new Spotify());
         mods.add(new PlayerESP());
         mods.add(new PingSpoof());
         mods.add(new Insulter());
         mods.add(new NoFall());
+        mods.add(new VinnyInglese());
         mods.add(new Hud());
         mods.add(new Click());
     }

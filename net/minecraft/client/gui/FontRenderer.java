@@ -108,7 +108,7 @@ public class FontRenderer implements IResourceManagerReloadListener
     public ResourceLocation locationFontTextureBase;
     public float offsetBold = 1.0F;
     private final float[] charWidthFloat = new float[256];
-    private boolean blend = false;
+    private boolean blend = false;//false
     private final GlBlendState oldBlendState = new GlBlendState();
 
     public FontRenderer(GameSettings gameSettingsIn, ResourceLocation location, TextureManager textureManagerIn, boolean unicode)

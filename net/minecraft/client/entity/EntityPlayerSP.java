@@ -1,12 +1,7 @@
 package net.minecraft.client.entity;
 
-import it.amadeus.client.Amadeus;
-import it.amadeus.client.event.events.Moving;
-import it.amadeus.client.event.events.PostMotion;
-import it.amadeus.client.event.events.PreMotion;
-import it.amadeus.client.event.events.Update;
+import it.amadeus.client.event.events.*;
 import it.amadeus.client.mods.NoSlow;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -15,7 +10,6 @@ import net.minecraft.client.gui.GuiEnchantment;
 import net.minecraft.client.gui.GuiHopper;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.client.gui.GuiRepair;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraft.client.gui.inventory.GuiBeacon;
 import net.minecraft.client.gui.inventory.GuiBrewingStand;
@@ -32,7 +26,6 @@ import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -59,7 +52,6 @@ import net.minecraft.util.MovementInput;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 
 public class EntityPlayerSP extends AbstractClientPlayer
 {
@@ -203,6 +195,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
             this.posZ = preMotion.getZ();
             this.onGround = preMotion.isOnGround();
 
+            if(this.mc.gameSettings.showDebugInfo != 0){
+                this.mc.thePlayer.rotationYawHead = preMotion.getYaw();
+                this.mc.thePlayer.renderYawOffset = preMotion.getYaw();
+                this.mc.thePlayer.rotationPitchHead = preMotion.getPitch();
+            }
+
             if (this.isRiding()) {
                 this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
                 this.sendQueue.addToSendQueue(new C0CPacketInput(this.moveStrafing, this.moveForward, this.movementInput.jump, this.movementInput.sneak));
@@ -344,6 +342,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
             mc.getAmadeus().getCommandManager().callCommand(message.substring(1));
             return;
         }
+        ChatMessage event = new ChatMessage(message);
+        mc.getAmadeus().getEventManager().hook(event);
+        if (event.isCancelled()) return;
         this.sendQueue.addToSendQueue(new C01PacketChatMessage(message));
     }
 

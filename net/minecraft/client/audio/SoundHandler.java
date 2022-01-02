@@ -194,6 +194,7 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
      */
     public void playSound(ISound sound)
     {
+        //System.out.println("sex " + sound.getSoundLocation());
         this.sndManager.playSound(sound);
     }
 

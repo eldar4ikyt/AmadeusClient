@@ -34,11 +34,13 @@ public final class Criticals extends Module {
     @Override
     public void onEvent(Event event) {
         if (event instanceof Attack) {
-            EntityLivingBase ent = (EntityLivingBase) ((Attack) event).getEntity();
-            double x = mc.thePlayer.posX, y = mc.thePlayer.posY, z = mc.thePlayer.posZ;
-            if ((ent.hurtTime < 5.0D || ent.hurtTime == 0) && shouldCrit()) {
-                PacketUtil.sendC04(x, y + 0.00124D + ThreadLocalRandom.current().nextDouble(1.0E-4D, 9.0E-4D), z, false, false);
-                PacketUtil.sendC04(x, y + 8.5E-4D, z, false, false);
+            if( ((Attack) event).getEntity() instanceof EntityLivingBase){
+                EntityLivingBase ent = (EntityLivingBase)((Attack) event).getEntity();
+                double x = mc.thePlayer.posX, y = mc.thePlayer.posY, z = mc.thePlayer.posZ;
+                if ((ent.hurtTime < 5.0D || ent.hurtTime == 0) && shouldCrit()) {
+                    PacketUtil.sendC04(x, y + 0.00124D + ThreadLocalRandom.current().nextDouble(1.0E-4D, 9.0E-4D), z, false, false);
+                    PacketUtil.sendC04(x, y + 8.5E-4D, z, false, false);
+                }
             }
         }
     }

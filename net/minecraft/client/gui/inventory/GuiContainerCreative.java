@@ -814,7 +814,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
 
         GlStateManager.disableLighting();
         this.drawTexturedModalRect(l, i1, j, k, 28, j1);
-        this.zLevel = 100.0F;
+       zLevel = 100.0F;
         this.itemRender.zLevel = 100.0F;
         l = l + 6;
         i1 = i1 + 8 + (flag1 ? 1 : -1);
@@ -825,7 +825,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         this.itemRender.renderItemOverlays(this.fontRendererObj, itemstack, l, i1);
         GlStateManager.disableLighting();
         this.itemRender.zLevel = 0.0F;
-        this.zLevel = 0.0F;
+       zLevel = 0.0F;
     }
 
     /**

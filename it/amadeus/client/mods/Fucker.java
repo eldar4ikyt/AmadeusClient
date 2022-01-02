@@ -44,7 +44,7 @@ public final class Fucker extends Module {
     @Override
     public void onEvent(Event event) {
         if(event instanceof Update){
-            if(canBreak && !AntiDesync.isDesynced){
+            if(canBreak && !AntiDesync.isDesynced && Killaura.getCurrentTarget() == null){
                 for (int x = -5; x < 5; x++) {
                     for (int y2 = 5; y2 > -5; y2--) {
                         for (int z = -5; z < 5; z++) {

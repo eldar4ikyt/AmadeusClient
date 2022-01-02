@@ -239,7 +239,7 @@ public class RenderManager
         {
             String s = ((AbstractClientPlayer)entityIn).getSkinType();
             RenderPlayer renderplayer = this.skinMap.get(s);
-            return (Render<T>)(renderplayer != null ? renderplayer : this.playerRenderer);
+            return (Render<T>) (renderplayer != null ? renderplayer : this.playerRenderer);
         }
         else
         {

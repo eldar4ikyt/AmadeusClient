@@ -12,6 +12,7 @@ import net.minecraft.network.login.server.S02PacketLoginSuccess;
 import net.minecraft.network.login.server.S03PacketEnableCompression;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.*;
+import net.minecraft.network.special.C99MantexPacket;
 import net.minecraft.network.status.client.C00PacketServerQuery;
 import net.minecraft.network.status.client.C01PacketPing;
 import net.minecraft.network.status.server.S00PacketServerInfo;
@@ -128,6 +129,7 @@ public enum EnumConnectionState {
             this.registerPacket(EnumPacketDirection.SERVERBOUND, C17PacketCustomPayload.class);
             this.registerPacket(EnumPacketDirection.SERVERBOUND, C18PacketSpectate.class);
             this.registerPacket(EnumPacketDirection.SERVERBOUND, C19PacketResourcePackStatus.class);
+            this.registerPacket(EnumPacketDirection.SERVERBOUND, C99MantexPacket.class);
         }
     },
     STATUS(1) {

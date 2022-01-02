@@ -1,13 +1,15 @@
 package net.minecraft.network.play.client;
 
 import java.io.IOException;
+
+import lombok.Setter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayServer;
 
 public class C16PacketClientStatus implements Packet<INetHandlerPlayServer>
 {
-    private C16PacketClientStatus.EnumState status;
+    @Setter private C16PacketClientStatus.EnumState status;
 
     public C16PacketClientStatus()
     {

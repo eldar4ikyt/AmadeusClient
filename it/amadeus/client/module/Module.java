@@ -6,6 +6,8 @@ import it.amadeus.client.interfaces.IModule;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 

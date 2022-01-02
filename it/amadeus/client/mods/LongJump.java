@@ -41,14 +41,24 @@ public final class LongJump extends Module {
         }
     }
 
-    public static void strafe(float speed) {
+    @Override
+    public void onDisable() {
+        mc.thePlayer.motionX = 0;
+        mc.thePlayer.motionY = 0;
+        mc.thePlayer.motionZ = 0;
+        mc.thePlayer.speedInAir = 0.02F;
+        mc.timer.timerSpeed = 1.0F;
+        super.onDisable();
+    }
+
+    private void strafe(float speed) {
         if (!mc.thePlayer.isMoving()) return;
         double yaw = MotionUtil.getDirection(mc.thePlayer.rotationYaw);
         mc.thePlayer.motionX = -Math.sin(yaw) * speed;
         mc.thePlayer.motionZ = Math.cos(yaw) * speed;
     }
 
-    public static void strafe() {
+    private void strafe() {
         strafe((float) MotionUtil.getSpeed());
     }
 }

@@ -4,7 +4,7 @@ import it.amadeus.client.command.Command;
 import it.amadeus.client.utilities.ChatUtil;
 import net.minecraft.util.EnumChatFormatting;
 
-public class vclip extends Command {
+public final class vclip extends Command {
 
     @Override
     public String getAlias() {

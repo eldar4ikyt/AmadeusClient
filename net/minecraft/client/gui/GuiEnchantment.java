@@ -178,7 +178,7 @@ public class GuiEnchantment extends GuiContainer
             int j1 = i1 + 20;
             int k1 = 86;
             String s = EnchantmentNameParts.getInstance().generateNewRandomName();
-            this.zLevel = 0.0F;
+           zLevel = 0.0F;
             this.mc.getTextureManager().bindTexture(ENCHANTMENT_TABLE_GUI_TEXTURE);
             int l1 = this.container.enchantLevels[l];
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

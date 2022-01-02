@@ -32,14 +32,14 @@ public class AdrianAltManager extends GuiScreen {
     public void initGui() {
         Keyboard.enableRepeatEvents(true);
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(0, width / 2 - 100, height / 4 + 92 - 11, "Login Java"));
-        this.buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 + 92 + 12, "Login Microsoft"));
-        this.buttonList.add(new GuiButton(3, width / 2 - 100, height / 4 + 116 + 12, "Clipboard"));
-        this.buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 146 + 12, "Back"));
-        this.email = new GuiTextField(0, this.fontRendererObj, width / 2 - 100, 60, 200, 20);
+        this.buttonList.add(new GuiButton(0, (width >> 1) - 100, height / 4 + 92 - 11, "Login Java"));
+        this.buttonList.add(new GuiButton(2, (width >> 1)- 100, height / 4 + 92 + 12, "Login Microsoft"));
+        this.buttonList.add(new GuiButton(3, (width >> 1) - 100, height / 4 + 116 + 12, "Clipboard"));
+        this.buttonList.add(new GuiButton(1, (width >> 1) - 100, height / 4 + 146 + 12, "Back"));
+        this.email = new GuiTextField(0, this.fontRendererObj, (width >> 1) - 100, 60, 200, 20);
         this.email.setMaxStringLength(2147483647);
         this.email.setFocused(true);
-        this.password = new GuiPasswordField(this.fontRendererObj, width / 2 - 100, 100, 200, 20);
+        this.password = new GuiPasswordField(this.fontRendererObj, (width >> 1) - 100, 100, 200, 20);
         this.password.setMaxStringLength(2147483647);
     }
 
@@ -62,14 +62,14 @@ public class AdrianAltManager extends GuiScreen {
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-        drawCenteredString(this.mc.fontRendererObj, EnumChatFormatting.AQUA + "AltManager", width / 2, 20, -1);
+        drawCenteredString(this.mc.fontRendererObj, EnumChatFormatting.AQUA + "AltManager", width >> 1, 20, -1);
         if (this.email.getText().isEmpty())
-            drawString(this.mc.fontRendererObj, "Username / Email", width / 2 - 96, 66, -7829368);
+            drawString(this.mc.fontRendererObj, "Username / Email", (width >> 1) - 96, 66, -7829368);
         if (this.password.getText().isEmpty())
-            drawString(this.mc.fontRendererObj, "Password", width / 2 - 96, 106, -7829368);
+            drawString(this.mc.fontRendererObj, "Password", (width >> 1) - 96, 106, -7829368);
         this.email.drawTextBox();
         this.password.drawTextBox();
-        drawCenteredString(this.mc.fontRendererObj, this.status, width / 2, 30, -1);
+        drawCenteredString(this.mc.fontRendererObj, this.status, width >> 1, 30, -1);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

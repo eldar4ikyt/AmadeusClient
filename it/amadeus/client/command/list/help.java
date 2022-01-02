@@ -4,7 +4,7 @@ package it.amadeus.client.command.list;
 import it.amadeus.client.command.Command;
 import it.amadeus.client.utilities.ChatUtil;
 
-public class help extends Command {
+public final class help extends Command {
 
     public String getAlias() {
         return "help";

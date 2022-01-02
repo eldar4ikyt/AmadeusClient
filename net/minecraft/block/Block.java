@@ -4,10 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import it.amadeus.client.event.events.EventCollide;
-import it.amadeus.client.mods.Disabler;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -1511,6 +1509,10 @@ public class Block
     private static void registerBlock(int id, String textualID, Block block_)
     {
         registerBlock(id, new ResourceLocation(textualID), block_);
+    }
+
+    public boolean isSolidFullCube() {
+        return blockMaterial.blocksMovement() && isFullCube();
     }
 
     public enum EnumOffsetType

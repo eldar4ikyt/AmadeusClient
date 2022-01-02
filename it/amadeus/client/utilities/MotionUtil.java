@@ -35,6 +35,42 @@ public final class MotionUtil {
         mc.thePlayer.motionZ = Math.cos(yaw) * speed;
     }
 
+    public static double getDirection2() {
+        float rotationYaw = mc.thePlayer.rotationYaw;
+
+        if (mc.thePlayer.moveForward < 0F)
+            rotationYaw += 180F;
+
+        float forward = 1F;
+        if (mc.thePlayer.moveForward < 0F)
+            forward = -0.5F;
+        else if (mc.thePlayer.moveForward > 0F)
+            forward = 0.5F;
+
+        if (mc.thePlayer.moveStrafing > 0F)
+            rotationYaw -= 90F * forward;
+
+        if (mc.thePlayer.moveStrafing < 0F)
+            rotationYaw += 90F * forward;
+
+        return Math.toRadians(rotationYaw);
+    }
+
+    public static void strafe2(final float speed) {
+        if (!mc.thePlayer.isMoving())
+            return;
+        final double yaw = getDirection2();
+        mc.thePlayer.motionX = -Math.sin(yaw) * speed;
+        mc.thePlayer.motionZ = Math.cos(yaw) * speed;
+    }
+
+    public static void strafe() {
+        strafe2(getSpeed2());
+    }
+
+    public static float getSpeed2() {
+        return (float) Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
+    }
 
     public static void strafe(float speed, float rotationYaw) {
         if (!mc.thePlayer.isMoving())

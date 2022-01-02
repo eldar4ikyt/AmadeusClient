@@ -982,6 +982,16 @@ public class GlStateManager
         }
     }
 
+    public static void popAttribAndMatrix() {
+        popAttrib();
+        popMatrix();
+    }
+
+    public static void pushAttribAndMatrix() {
+        pushAttrib();
+        pushMatrix();
+    }
+
     static class AlphaState
     {
         public GlStateManager.BooleanState alphaTest;

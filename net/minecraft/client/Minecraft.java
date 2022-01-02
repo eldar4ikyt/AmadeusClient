@@ -118,7 +118,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 
     public static final boolean isRunningOnMac = Util.getOSType() == Util.EnumOS.OSX;
     private static final Logger logger = LogManager.getLogger();
-    private static final ResourceLocation locationMojangPng = new ResourceLocation("textures/gui/title/mojang.png");
+    private static final ResourceLocation locationMojangPng = new ResourceLocation("amadeus/mojang.png");
     private static final List<DisplayMode> macDisplayModes = Lists.newArrayList(new DisplayMode(2560, 1600), new DisplayMode(2880, 1800));
     /**
      * A 10MiB preallocation to ensure the heap is reasonably sized.
@@ -569,18 +569,12 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
         this.checkGLError("Post startup");
         this.ingameGUI = new GuiIngame(this);
-
-        amadeus.loadClient();
-
-        if (this.serverName != null) {
-            this.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), this, this.serverName, this.serverPort));
-        } else {
-            this.displayGuiScreen(new GuiMainMenu());
-        }
-
+        this.displayGuiScreen(new GuiMainMenu());
         this.renderEngine.deleteTexture(this.mojangLogo);
         this.mojangLogo = null;
         this.loadingScreen = new LoadingScreenRenderer(this);
+
+        amadeus.loadClient();
 
         if (this.gameSettings.fullScreen && !this.fullscreen) {
             this.toggleFullscreen();
@@ -593,7 +587,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
             this.gameSettings.saveOptions();
         }
 
-        this.renderGlobal.makeEntityOutlineShader();
+        //this.renderGlobal.makeEntityOutlineShader();
+
+
     }
 
     private void registerMetadataSerializers() {

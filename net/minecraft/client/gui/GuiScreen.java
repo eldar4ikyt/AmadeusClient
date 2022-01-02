@@ -27,11 +27,14 @@ import net.minecraft.stats.StatList;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import tv.twitch.chat.ChatUserInfo;
 
 import java.awt.*;
@@ -157,12 +160,11 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
      * Draws the screen and all the components in it. Args : mouseX, mouseY, renderPartialTicks
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        for (int i = 0; i < this.buttonList.size(); ++i) {
-            this.buttonList.get(i).drawButton(this.mc, mouseX, mouseY);
+        for (GuiButton guiButton : this.buttonList) {
+            guiButton.drawButton(this.mc, mouseX, mouseY);
         }
-
-        for (int j = 0; j < this.labelList.size(); ++j) {
-            this.labelList.get(j).drawLabel(this.mc, mouseX, mouseY);
+        for (GuiLabel guiLabel : this.labelList) {
+            guiLabel.drawLabel(this.mc, mouseX, mouseY);
         }
     }
 
@@ -237,7 +239,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
                 i2 = height - k - 6;
             }
 
-            this.zLevel = 300.0F;
+           zLevel = 300.0F;
             this.itemRender.zLevel = 300.0F;
             int l = -267386864;
             this.drawGradientRect(l1 - 3, i2 - 4, l1 + i + 3, i2 - 3, l, l);
@@ -263,7 +265,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
                 i2 += 10;
             }
 
-            this.zLevel = 0.0F;
+           zLevel = 0.0F;
             this.itemRender.zLevel = 0.0F;
             GlStateManager.enableLighting();
             GlStateManager.enableDepth();
@@ -589,24 +591,33 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
         }
     }
 
+
     /**
      * Draws the background (i is always 0 as of 1.2.2)
      */
     public void drawBackground(int tint) {
-        GlStateManager.disableLighting();
-        GlStateManager.disableFog();
-        DrawShader.drawClientShaders();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-       // ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-       // AnimatedBG animation = new AnimatedBG();
-    //    animation.BackgroundAnimated();
-      //  Gui.drawScaledCustomSizeModalRect(0, 0, 0.0F, 0.0F, sr.getScaledWidth(), sr.getScaledHeight(), sr.getScaledWidth(), sr.getScaledHeight(), sr.getScaledWidth(), sr.getScaledHeight());
+        GlStateManager.pushAttribAndMatrix();
+        GlStateManager.disableAlpha();
+        DrawShader.drawClientShaders();
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glVertex2f(-1f, -1f);
+        GL11.glVertex2f(-1f, 1f);
+        GL11.glVertex2f(1f, 1f);
+        GL11.glVertex2f(1f, -1f);
+        GL11.glEnd();
+        GL20.glUseProgram(0);
+        GlStateManager.popAttribAndMatrix();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    /*public void drawBackground(int tint) {
+   /* public void drawBackground(int tint) {
         GlStateManager.disableLighting();
         GlStateManager.disableFog();
-        animation.BackgroundAnimated();
+        ScaledResolution sr = new ScaledResolution(this.mc);
+        this.mc.getTextureManager().bindTexture(new ResourceLocation("amadeus/natale/mybitch.jpg"));
+        Gui.drawScaledCustomSizeModalRect(0, 0, 0.0F, 0.0F, sr.getScaledWidth(), sr.getScaledHeight(), sr.getScaledWidth(), sr.getScaledHeight(), sr.getScaledWidth(), sr.getScaledHeight());
+    }
        /* Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         this.mc.getTextureManager().bindTexture(optionsBackground);
@@ -618,7 +629,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
         worldrenderer.pos(this.width, 0.0D, 0.0D).tex((float) this.width / 32.0F, tint).color(64, 64, 64, 255).endVertex();
         worldrenderer.pos(0.0D, 0.0D, 0.0D).tex(0.0D, tint).color(64, 64, 64, 255).endVertex();
         tessellator.draw();
-    }*/
+    }
     /**
      * Returns true if this GUI should pause the game when it is displayed in single-player
      */

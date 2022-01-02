@@ -1,6 +1,8 @@
 package net.minecraft.network.play.client;
 
 import java.io.IOException;
+
+import lombok.Getter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -9,6 +11,7 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 public class C15PacketClientSettings implements Packet<INetHandlerPlayServer>
 {
     private String lang;
+    @Getter
     private int view;
     private EntityPlayer.EnumChatVisibility chatVisibility;
     private boolean enableColors;
@@ -25,6 +28,14 @@ public class C15PacketClientSettings implements Packet<INetHandlerPlayServer>
         this.chatVisibility = chatVisibilityIn;
         this.enableColors = enableColorsIn;
         this.modelPartFlags = modelPartFlagsIn;
+    }
+
+    public C15PacketClientSettings(String langIn, int viewIn, EntityPlayer.EnumChatVisibility chatVisibilityIn, boolean enableColorsIn)
+    {
+        this.lang = langIn;
+        this.view = viewIn;
+        this.chatVisibility = chatVisibilityIn;
+        this.enableColors = enableColorsIn;
     }
 
     /**

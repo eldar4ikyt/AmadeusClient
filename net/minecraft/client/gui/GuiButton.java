@@ -41,8 +41,6 @@ public class GuiButton extends Gui
 
     public GuiButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText)
     {
-        this.width = 200;
-        this.height = 20;
         this.enabled = true;
         this.visible = true;
         this.id = buttonId;
@@ -78,19 +76,11 @@ public class GuiButton extends Gui
      */
     public void drawButton(Minecraft mc, int mouseX, int mouseY)
     {
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.visible)
         {
             FontRenderer fontrenderer = mc.fontRendererObj;
-           // mc.getTextureManager().bindTexture(buttonTextures);
-           // GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
-            int i = this.getHoverState(this.hovered);
-           // GlStateManager.enableBlend();
-           // GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-           // GlStateManager.blendFunc(770, 771);
-            //this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + i * 20, this.width / 2, this.height);
-           // this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
             this.mouseDragged(mc, mouseX, mouseY);
             int j = 14737632;
 
@@ -105,7 +95,6 @@ public class GuiButton extends Gui
 
             this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, j);
         }
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     /**
@@ -145,7 +134,7 @@ public class GuiButton extends Gui
 
     public void playPressSound(SoundHandler soundHandlerIn)
     {
-        soundHandlerIn.playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+        soundHandlerIn.playSound(PositionedSoundRecord.create(new ResourceLocation("random.pop"), 1.0F));
     }
 
     public int getButtonWidth()

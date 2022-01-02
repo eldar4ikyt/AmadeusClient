@@ -70,8 +70,10 @@ public class GuiAchievement extends Gui
 
     public void updateAchievementWindow()
     {
+      /*
         if (this.theAchievement != null && this.notificationTime != 0L && Minecraft.getMinecraft().thePlayer != null)
         {
+
             double d0 = (double)(Minecraft.getSystemTime() - this.notificationTime) / 3000.0D;
 
             if (!this.permanentNotification)
@@ -135,6 +137,7 @@ public class GuiAchievement extends Gui
             GlStateManager.depthMask(true);
             GlStateManager.enableDepth();
         }
+       */
     }
 
     public void clearAchievements()

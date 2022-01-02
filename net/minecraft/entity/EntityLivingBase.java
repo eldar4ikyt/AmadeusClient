@@ -55,6 +55,7 @@ public abstract class EntityLivingBase extends Entity
 {
     private static final UUID sprintingSpeedBoostModifierUUID = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
     private static final AttributeModifier sprintingSpeedBoostModifier = (new AttributeModifier(sprintingSpeedBoostModifierUUID, "Sprinting speed boost", 0.30000001192092896D, 2)).setSaved(false);
+    public float rotationPitchHead;
     private BaseAttributeMap attributeMap;
     private final CombatTracker _combatTracker = new CombatTracker(this);
     private final Map<Integer, PotionEffect> activePotionsMap = Maps.newHashMap();
@@ -185,6 +186,7 @@ public abstract class EntityLivingBase extends Entity
     /** Number of ticks since last jump */
     private int jumpTicks;
     private float absorptionAmount;
+    public float prevRotationPitchHead;
 
     /**
      * Called by the /kill command.
@@ -205,6 +207,7 @@ public abstract class EntityLivingBase extends Entity
         this.randomUnused2 = (float)Math.random() * 12398.0F;
         this.rotationYaw = (float)(Math.random() * Math.PI * 2.0D);
         this.rotationYawHead = this.rotationYaw;
+        this.rotationPitchHead = this.rotationPitch;
         this.stepHeight = 0.6F;
     }
 
@@ -380,6 +383,7 @@ public abstract class EntityLivingBase extends Entity
         this.prevRenderYawOffset = this.renderYawOffset;
         this.prevRotationYawHead = this.rotationYawHead;
         this.prevRotationYaw = this.rotationYaw;
+        this.prevRotationPitchHead = this.rotationPitchHead;
         this.prevRotationPitch = this.rotationPitch;
         this.worldObj.theProfiler.endSection();
     }
@@ -1861,47 +1865,26 @@ public abstract class EntityLivingBase extends Entity
         f2 = this.updateDistance(f1, f2);
         this.worldObj.theProfiler.endSection();
         this.worldObj.theProfiler.startSection("rangeChecks");
-
         while (this.rotationYaw - this.prevRotationYaw < -180.0F)
-        {
             this.prevRotationYaw -= 360.0F;
-        }
-
         while (this.rotationYaw - this.prevRotationYaw >= 180.0F)
-        {
             this.prevRotationYaw += 360.0F;
-        }
-
         while (this.renderYawOffset - this.prevRenderYawOffset < -180.0F)
-        {
             this.prevRenderYawOffset -= 360.0F;
-        }
-
         while (this.renderYawOffset - this.prevRenderYawOffset >= 180.0F)
-        {
             this.prevRenderYawOffset += 360.0F;
-        }
-
         while (this.rotationPitch - this.prevRotationPitch < -180.0F)
-        {
             this.prevRotationPitch -= 360.0F;
-        }
-
         while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
-        {
             this.prevRotationPitch += 360.0F;
-        }
-
+        while (this.rotationPitchHead - this.prevRotationPitchHead < -180.0F)
+            this.prevRotationPitch -= 360.0F;
+        while (this.rotationPitchHead - this.prevRotationPitchHead >= 180.0F)
+            this.prevRotationPitchHead += 360.0F;
         while (this.rotationYawHead - this.prevRotationYawHead < -180.0F)
-        {
             this.prevRotationYawHead -= 360.0F;
-        }
-
         while (this.rotationYawHead - this.prevRotationYawHead >= 180.0F)
-        {
             this.prevRotationYawHead += 360.0F;
-        }
-
         this.worldObj.theProfiler.endSection();
         this.movedDistance += f2;
     }

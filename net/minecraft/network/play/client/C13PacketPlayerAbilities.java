@@ -8,10 +8,10 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 
 public class C13PacketPlayerAbilities implements Packet<INetHandlerPlayServer>
 {
-    private boolean invulnerable;
-    private boolean flying;
-    private boolean allowFlying;
-    private boolean creativeMode;
+    public boolean invulnerable;
+    public boolean flying;
+    public boolean allowFlying;
+    public boolean creativeMode;
     private float flySpeed;
     private float walkSpeed;
 

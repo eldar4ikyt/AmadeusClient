@@ -4,6 +4,7 @@ import it.amadeus.client.clickgui.util.values.valuetypes.NumberValue;
 import it.amadeus.client.event.Event;
 import it.amadeus.client.event.events.Update;
 import it.amadeus.client.module.Module;
+import org.lwjgl.input.Keyboard;
 
 public final class TimerMC extends Module {
 
