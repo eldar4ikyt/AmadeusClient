@@ -16,13 +16,14 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S2APacketParticles;
+import net.minecraft.network.play.server.S40PacketDisconnect;
+import net.minecraft.util.ChatComponentText;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public final class Disabler extends Module {
-
 
     private final TimerUtil timer = new TimerUtil();
     private final Queue<Packet<?>> packetQueue = new ConcurrentLinkedDeque<>();
@@ -52,11 +53,20 @@ public final class Disabler extends Module {
 
     @Override
     public void onEnable() {
-        if (this.mode.getValue().equals(Mode.ALICE)) {
+        if (this.mode.getValue().equals(Mode.ALICE) || this.mode.getValue().equals(Mode.AntiCheatSP)) {
             MotionUtil.sendDirect(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, Double.MAX_VALUE, mc.thePlayer.posZ, false));
             mc.thePlayer.setPosition(mc.thePlayer.posX, Double.MAX_VALUE, mc.thePlayer.posZ);
             mc.renderGlobal.loadRenderers();
         }
+        if (this.mode.getValue().equals(Mode.ALICE) || this.mode.getValue().equals(Mode.AntiCheatSP)) {
+            for (int i = 0; i < 2; i++){
+                MotionUtil.sendDirect(new C03PacketPlayer.C04PacketPlayerPosition(0.0,-70.39562504768378 * i,0.0, false));
+            }
+            mc.thePlayer.onGround = true;
+            mc.renderGlobal.loadRenderers();
+            mc.thePlayer.setPosition(mc.thePlayer.posX, Double.MAX_VALUE, mc.thePlayer.posZ);
+        }
+
         this.packetQueue.clear();
         this.expectedTeleport = false;
         this.timer.reset();
@@ -153,6 +163,7 @@ public final class Disabler extends Module {
                         timer.reset();
                     }
                     break;
+                case AntiCheatSP:
                 case DUPLICATE:
                     if (mc.thePlayer.ticksExisted % 3 == 1) {
                         mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
@@ -193,6 +204,17 @@ public final class Disabler extends Module {
                         ((PacketSend) event).setCancelled(true);
                     }
                     break;
+                case AntiCheatSP:
+                    if (packet instanceof C13PacketPlayerAbilities) {
+                        C13PacketPlayerAbilities c13 = (C13PacketPlayerAbilities) packet;
+                        c13.setAllowFlying(true);
+                        c13.setCreativeMode(true);
+                        c13.setFlying(true);
+                        c13.setFlySpeed(Float.NaN);
+                        c13.setInvulnerable(true);
+                        c13.setWalkSpeed(Float.NaN);
+                    }
+                    break;
                 case RIDING:
                     if (packet instanceof C03PacketPlayer) {
                         MotionUtil.sendDirect(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
@@ -225,7 +247,7 @@ public final class Disabler extends Module {
                         }
                     }
                     break;
-                case OLDCOMBACT:
+                case OMEGACOMBACT:
                     if (packet instanceof C00PacketKeepAlive) {
                         C00PacketKeepAlive packetKeepAlive = (C00PacketKeepAlive) packet;
                         int data = packetKeepAlive.getKey() * 4;
@@ -329,7 +351,7 @@ public final class Disabler extends Module {
                         MotionUtil.sendDirect(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
                         MotionUtil.sendDirect(new C0CPacketInput());
                         final double offset = -0.015625f;
-                        if (mc.currentScreen instanceof GuiContainer) return;
+                        if (isInGuiInventory()) return;
                         boolean canTicked = mc.thePlayer.ticksExisted % 64 == 0;
                         boolean canSendPacket = canTicked && intentionalMove() && !mc.thePlayer.isOnLadder() && !mc.thePlayer.isJumping && !mc.thePlayer.isCollidedHorizontally && mc.thePlayer.hurtTime <= 0 && !doHittingProcess();
                         if (canSendPacket) {
@@ -410,6 +432,14 @@ public final class Disabler extends Module {
                         packet2.y += 1.0E-4D;
                     }
                     break;
+                case AntiCheatSP:
+                    if (packet instanceof S08PacketPlayerPosLook && mc.thePlayer.ticksExisted % 2 == 0) {
+                        ((PacketReceive) event).setCancelled(true);
+                        mc.timer.elapsedPartialTicks = 0.65F;
+                        mc.thePlayer.posX = 0.12D;
+                        mc.thePlayer.posY = Math.toRadians(mc.thePlayer.rotationYaw);
+                    }
+                    break;
                 case ALICE:
                     if (packet instanceof S08PacketPlayerPosLook && mc.thePlayer.ticksExisted % 33 == 1) {
                         ((PacketReceive) event).setCancelled(true);
@@ -456,5 +486,5 @@ public final class Disabler extends Module {
         return (mc.thePlayer.isBlocking() || mc.thePlayer.isSwingInProgress || mc.thePlayer.isUsingItem() || mc.thePlayer.isOnLadder() || mc.thePlayer.isEating() || mc.currentScreen instanceof net.minecraft.client.gui.inventory.GuiInventory || mc.currentScreen instanceof net.minecraft.client.gui.inventory.GuiChest);
     }
 
-    public enum Mode {VERUS, RIDING, SPECTATE, ALICE, NEGATVITY, DUPLICATE, JANITOR, VERUSOLD, VERUSCOSTUM, COMBACT, OLDCOMBACT, VAC, POOP}
+    public enum Mode {VERUS, RIDING, SPECTATE, ALICE, NEGATVITY, DUPLICATE, JANITOR, VERUSOLD, VERUSCOSTUM, COMBACT, OMEGACOMBACT, VAC, POOP, AntiCheatSP}
 }

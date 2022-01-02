@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+
 public final class Hud extends Module {
 
     private int selected;
@@ -42,13 +43,13 @@ public final class Hud extends Module {
     @Override
     public void onEvent(Event event) {
         if (event instanceof Overlay) {
-            GlStateManager.color(1, 1, 1, 1);
+           // FXGL.entityBuilder().view(new Rectangle(21,21, javafx.scene.paint.Color.RED)).buildAndAttach();
             mc.getTextureManager().bindTexture(new ResourceLocation("amadeus/Hud.png"));
             Gui.drawModalRectWithCustomSizedTexture(1, 1, 0.0F, 0.0F, 126, 66, 126.0F, 66.0F);
             GlStateManager.color(1, 1, 1, 1);
             newArrayList();
             GL11.glPushMatrix();
-            GlStateManager.translate(5,27,0);
+            GlStateManager.translate(5, 27, 0);
             tabGui4Vinny();
             GL11.glPopMatrix();
         } else if (event instanceof KeyPress) {
@@ -63,25 +64,25 @@ public final class Hud extends Module {
             Category cat = Category.values()[i];
             String name = cat.name().charAt(0) + cat.name().substring(1).toLowerCase();
             Gui.drawRect((int) 2.0D, (y + i * 15), (int) 117.0D, (y + 15 + i * 15), (selected == i) ? Color.RED.getRGB() : Integer.MIN_VALUE);
-            switch (name){
+            switch (name) {
                 case "Fight":
                     mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont("COMBACT", 30.0F, (y + i * 15 + 2), Color.BLACK.getRGB());
                     break;
                 case "Movements":
-                    mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont("MOVE", 40.0F, (y + i * 15 + 2),  Color.BLACK.getRGB());
+                    mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont("MOVE", 40.0F, (y + i * 15 + 2), Color.BLACK.getRGB());
                     break;
                 case "Render":
-                    mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont("RENDER", 36.0F, (y + i * 15 + 2),  Color.BLACK.getRGB());
+                    mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont("RENDER", 36.0F, (y + i * 15 + 2), Color.BLACK.getRGB());
                     break;
                 case "Fun":
-                    mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont("FUN", 46.0F, (y + i * 15 + 2),  Color.BLACK.getRGB());
+                    mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont("FUN", 46.0F, (y + i * 15 + 2), Color.BLACK.getRGB());
                     break;
             }
             if (isOpen && i == selected)
                 for (int j = 0; j < mc.getAmadeus().getModManager().getModsByCat(cat).size(); j++) {
                     Module m = mc.getAmadeus().getModManager().getModsByCat(cat).get(j);
                     Gui.drawRect((int) 120.0D, (y + i * 15 + j * 15), (int) 226.0D, (y + i * 15 + j * 15 + 15), (ToggleSelected == j) ? Color.RED.getRGB() : Integer.MIN_VALUE);
-                    mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont(m.getName(), 124.0F, (y + i * 15 + j * 15 + 2), m.isToggled() ? Color.ORANGE.getRGB() :  Color.BLACK.getRGB());
+                    mc.getAmadeus().getFontManager().comfortaa20.drawStringWithFont(m.getName(), 124.0F, (y + i * 15 + j * 15 + 2), m.isToggled() ? Color.ORANGE.getRGB() : Color.BLACK.getRGB());
                 }
         }
     }

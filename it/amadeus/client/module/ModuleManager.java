@@ -16,7 +16,7 @@ public final class ModuleManager {
         mods.add(new Killaura());//patch only this shit
         mods.add(new Speed());
         mods.add(new Sprint());
-     //   mods.add(new Scaffold());
+        mods.add(new SuperReverseKB());
         mods.add(new InventoryMove());
         mods.add(new NoSlow());
         mods.add(new Flight());

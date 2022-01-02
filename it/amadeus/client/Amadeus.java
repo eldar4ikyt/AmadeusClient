@@ -9,45 +9,37 @@ import it.amadeus.client.viamcp.ViaMCP;
 import lombok.Getter;
 import org.lwjgl.opengl.Display;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+@Getter
 public final class Amadeus {
 
-    @Getter
     private final String VERSION = "0.1", NAME = "Amadeus", DEVELOPER = "AdrianCode";
-
-    @Getter
     private FontManager fontManager;
-    @Getter
     private EventManager eventManager;
-    @Getter
     private ModuleManager modManager;
-    @Getter
     private CommandManager commandManager;
 
     public strictfp void loadClient() {
-
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.scheduleWithFixedDelay(System::gc, 0L, 5L, TimeUnit.MINUTES);
         System.out.println("[Amadeus] vivi nel labirinto di tutta la tristezza e sofferenza");
-
         System.out.println("[Amadeus] un esperimento si rivelò un fallimento");
-
         System.out.println("[Amadeus] condividiamo lo stesso destino...");
-
-       Display.setTitle(NAME + " | " + VERSION);
-
+        Display.setTitle(NAME + " | " + VERSION);
         try{
             ViaMCP.getInstance().start();
             FileUtil.LoadSpotify();
         }catch (Exception e){
             e.printStackTrace();
         }
-
         fontManager = new FontManager();
-
         eventManager = new EventManager();
         eventManager.setupListeners();
-
         modManager = new ModuleManager();
         commandManager = new CommandManager();
-
         System.runFinalization();
         System.gc();
     }

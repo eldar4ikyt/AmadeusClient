@@ -7,14 +7,13 @@ import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.Map.Entry;
 
+import it.amadeus.client.event.events.EventVelocity;
 import it.amadeus.client.event.events.PacketSend;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.client.ClientBrandRetriever;
 import net.minecraft.client.Minecraft;
@@ -417,10 +416,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
             {
                 int i = packetIn.getEntityID() - entity.getEntityId();
 
-                for (int j = 0; j < aentity.length; ++j)
-                {
-                    aentity[j].setEntityId(aentity[j].getEntityId() + i);
-                }
+                Arrays.stream(aentity).forEach(value -> value.setEntityId(value.getEntityId() + i));
             }
 
             entity.setEntityId(packetIn.getEntityID());
@@ -500,14 +496,14 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
     /**
      * Sets the velocity of the specified entity to the specified value
      */
-    public void handleEntityVelocity(S12PacketEntityVelocity packetIn)
-    {
+
+    public void handleEntityVelocity(S12PacketEntityVelocity packetIn) {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.gameController);
         Entity entity = this.clientWorldController.getEntityByID(packetIn.getEntityID());
-
-        if (entity != null)
-        {
-            entity.setVelocity((double)packetIn.getMotionX() / 8000.0D, (double)packetIn.getMotionY() / 8000.0D, (double)packetIn.getMotionZ() / 8000.0D);
+        EventVelocity eventVelocity = new EventVelocity(8000.0D, 8000.0D, 8000.0D);
+        Minecraft.getMinecraft().getAmadeus().getEventManager().hook(eventVelocity);
+        if (entity != null){
+            entity.setVelocity(packetIn.getMotionX() / eventVelocity.getX(), packetIn.getMotionY() / eventVelocity.getY(), packetIn.getMotionZ() / eventVelocity.getZ());
         }
     }
 

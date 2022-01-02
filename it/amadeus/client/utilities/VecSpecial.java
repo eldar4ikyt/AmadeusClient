@@ -1,8 +1,9 @@
 package it.amadeus.client.utilities;
 
-import com.sun.istack.internal.Nullable;
+
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3i;
+import org.jetbrains.annotations.Nullable;
 
 
 public class VecSpecial
